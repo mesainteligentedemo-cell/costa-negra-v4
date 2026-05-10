@@ -574,6 +574,7 @@
     background: rgba(10,14,18,0.22);
     backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
     transition: background 0.4s ease, transform 0.4s ease;
+    position: relative;
   }
   .fleet-card:hover { background: rgba(17,22,28,0.55); transform: translateY(-2px); }
   .fleet-tag {
@@ -1967,6 +1968,64 @@
     .cn-spec { border-right: none; }
   }
 
+  /* ── MARQUEE TICKER STRIP ── */
+  .cn-marquee-strip {
+    width: 100%; overflow: hidden;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: rgba(10,14,18,0.6);
+    backdrop-filter: blur(6px);
+    position: relative; z-index: 5;
+  }
+  .cn-marquee-track {
+    display: inline-flex; align-items: center; gap: 0;
+    white-space: nowrap;
+    animation: marquee-scroll 28s linear infinite;
+  }
+  .cn-marquee-strip:hover .cn-marquee-track { animation-play-state: paused; }
+  .cn-marquee-track span {
+    font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--bone-dim); padding: 0 0.6rem;
+  }
+  .cn-marquee-track .cn-mq-sep {
+    color: var(--champagne); opacity: 0.5;
+    font-size: 0.55rem; padding: 0;
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── MOVING BORDER en fleet cards (Aceternity Moving Border — conic-gradient) ── */
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+  .fleet-card::after {
+    content: '';
+    position: absolute; inset: -1px; border-radius: inherit;
+    background: conic-gradient(
+      from var(--angle),
+      transparent 0%,
+      var(--champagne) 10%,
+      transparent 20%
+    );
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: border-rotate 3s linear infinite paused;
+  }
+  .fleet-card:hover::after {
+    opacity: 1;
+    animation-play-state: running;
+  }
+  @keyframes border-rotate {
+    to { --angle: 360deg; }
+  }
+
   /* ── GRADIENT TEXT en <em> (skill checklist: gradient en keyword clave) ── */
   .display-1 em, .display-2 em {
     font-style: italic;
@@ -2201,6 +2260,30 @@
         <span data-i18n="hero.scroll">DESLIZA</span><span class="rule"></span><span data-i18n="hero.chapters">10 cap&iacute;tulos</span>
       </div>
     </section>
+
+    <!-- MARQUEE STRIP — entre hero y flota -->
+    <div class="cn-marquee-strip" aria-hidden="true">
+      <div class="cn-marquee-track">
+        <span>COSTA NEGRA</span><span class="cn-mq-sep">·</span>
+        <span>HIPERLUJO PRIVADO</span><span class="cn-mq-sep">·</span>
+        <span>RIVIERA MAYA</span><span class="cn-mq-sep">·</span>
+        <span>ENTREGA EN CUN</span><span class="cn-mq-sep">·</span>
+        <span>CANCÚN</span><span class="cn-mq-sep">·</span>
+        <span>TULUM</span><span class="cn-mq-sep">·</span>
+        <span>PLAYA DEL CARMEN</span><span class="cn-mq-sep">·</span>
+        <span>CONCIERGE 24 H</span><span class="cn-mq-sep">·</span>
+        <span>FLOTA PRIVADA</span><span class="cn-mq-sep">·</span>
+        <span>COSTA NEGRA</span><span class="cn-mq-sep">·</span>
+        <span>HIPERLUJO PRIVADO</span><span class="cn-mq-sep">·</span>
+        <span>RIVIERA MAYA</span><span class="cn-mq-sep">·</span>
+        <span>ENTREGA EN CUN</span><span class="cn-mq-sep">·</span>
+        <span>CANCÚN</span><span class="cn-mq-sep">·</span>
+        <span>TULUM</span><span class="cn-mq-sep">·</span>
+        <span>PLAYA DEL CARMEN</span><span class="cn-mq-sep">·</span>
+        <span>CONCIERGE 24 H</span><span class="cn-mq-sep">·</span>
+        <span>FLOTA PRIVADA</span><span class="cn-mq-sep">·</span>
+      </div>
+    </div>
 
     <section class="section section-fleet" id="flota" data-section="02">
       <p class="kicker" data-i18n="fleet.kicker">02 / Flota</p>
@@ -4051,6 +4134,144 @@
   document.querySelectorAll('.ft-contact-value[href^="mailto:seguros"]').forEach(function (el) {
     el.addEventListener('click', function (e) { e.preventDefault(); openModal(insuranceHTML()); });
   });
+
+}());
+
+/* ======================================================
+   13. SCRAMBLE TEXT · COUNTUP · CURSOR TRAIL
+   ====================================================== */
+(function () {
+  'use strict';
+
+  var isTouchDev2 = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·—';
+
+  /* ── 13a. SCRAMBLE TEXT on nav logo ── */
+  /* On hover the brand name scrambles then resolves back — ReactBits DecryptedText style */
+  var logoWord = document.querySelector('.logo-word');
+  if (logoWord && !isTouchDev2) {
+    var logoOriginal = logoWord.textContent;
+    var scrambleTimer = null;
+    var resolving = false;
+
+    function scrambleTick(frame, totalFrames, original) {
+      var out = '';
+      for (var i = 0; i < original.length; i++) {
+        if (i < Math.floor((frame / totalFrames) * original.length)) {
+          out += original[i]; /* already resolved */
+        } else {
+          out += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+      }
+      logoWord.textContent = out;
+    }
+
+    var logoAnchor = logoWord.closest('a') || logoWord.parentElement;
+    logoAnchor.addEventListener('mouseenter', function () {
+      if (scrambleTimer) clearInterval(scrambleTimer);
+      resolving = false;
+      var frame = 0;
+      var total = 18;
+      scrambleTimer = setInterval(function () {
+        if (resolving) { clearInterval(scrambleTimer); return; }
+        scrambleTick(frame, total, logoOriginal);
+        frame++;
+        if (frame > total) { logoWord.textContent = logoOriginal; clearInterval(scrambleTimer); }
+      }, 45);
+    });
+    logoAnchor.addEventListener('mouseleave', function () {
+      resolving = true;
+      clearInterval(scrambleTimer);
+      logoWord.textContent = logoOriginal;
+    });
+  }
+
+  /* ── 13b. COUNTUP on .why-num (01→04 + any lone integers) ── */
+  document.querySelectorAll('.why-num').forEach(function (el) {
+    var raw = el.textContent.trim();
+    /* Format "01" "02" etc — preserve zero-padding */
+    var num = parseInt(raw, 10);
+    if (isNaN(num)) return;
+    var padLen = raw.length;
+    var fired = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !fired) {
+          fired = true;
+          var start = 0;
+          var duration = 900;
+          var startTime = null;
+          function step(ts) {
+            if (!startTime) startTime = ts;
+            var progress = Math.min((ts - startTime) / duration, 1);
+            /* expo out easing */
+            var eased = 1 - Math.pow(2, -10 * progress);
+            var current = Math.round(eased * num);
+            el.textContent = String(current).padStart(padLen, '0');
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.6 });
+    io.observe(el);
+  });
+
+  /* ── 13c. CURSOR PARTICLE TRAIL ── */
+  /* Tiny canvas dots that follow the cursor and fade out — top Awwwards cursor effect */
+  if (!isTouchDev2) {
+    var trailCanvas = document.createElement('canvas');
+    trailCanvas.style.cssText = 'position:fixed;inset:0;z-index:99995;pointer-events:none;';
+    document.body.appendChild(trailCanvas);
+    var ctx = trailCanvas.getContext('2d');
+
+    function resizeTrail() {
+      trailCanvas.width  = window.innerWidth;
+      trailCanvas.height = window.innerHeight;
+    }
+    resizeTrail();
+    window.addEventListener('resize', resizeTrail, { passive: true });
+
+    var particles = [];
+    var mouse = { x: -999, y: -999 };
+    var lastX = -999, lastY = -999;
+
+    window.addEventListener('mousemove', function (e) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      /* Only spawn when cursor actually moved */
+      if (Math.abs(mouse.x - lastX) + Math.abs(mouse.y - lastY) > 3) {
+        particles.push({
+          x: mouse.x, y: mouse.y,
+          size: Math.random() * 2 + 1,
+          life: 1,
+          vx: (Math.random() - 0.5) * 0.6,
+          vy: (Math.random() - 0.5) * 0.6
+        });
+        lastX = mouse.x; lastY = mouse.y;
+      }
+    }, { passive: true });
+
+    var CHAMPAGNE_RGB = '212,181,126';
+
+    function drawTrail() {
+      ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+      for (var i = particles.length - 1; i >= 0; i--) {
+        var p = particles[i];
+        p.life -= 0.045;
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + CHAMPAGNE_RGB + ',' + (p.life * 0.45) + ')';
+        ctx.fill();
+      }
+      requestAnimationFrame(drawTrail);
+    }
+    drawTrail();
+  }
 
 }());
 
