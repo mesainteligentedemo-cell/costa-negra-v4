@@ -1867,17 +1867,25 @@
 
   /* ── Car modal ── */
   .cn-car-visual {
-    width: 100%; height: 200px;
-    display: flex; align-items: flex-end; justify-content: center;
-    position: relative; overflow: hidden; padding-bottom: 1.5rem;
+    width: 100%; height: 300px;
+    position: relative; overflow: hidden;
   }
-  .cn-car-visual-bg {
+  .cn-car-visual img {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 80%, var(--car-glow, rgba(212,181,126,0.13)) 0%, transparent 70%);
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .cn-car-visual:hover img { transform: scale(1.03); }
+  .cn-car-visual-bg {
+    position: absolute; inset: 0; z-index: 1;
+    background: radial-gradient(ellipse 80% 60% at 50% 80%, var(--car-glow, rgba(212,181,126,0.18)) 0%, transparent 65%);
+    pointer-events: none;
   }
   .cn-car-visual-floor {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(212,181,126,0.22), transparent);
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px; z-index: 2;
+    background: linear-gradient(90deg, transparent, rgba(212,181,126,0.35), transparent);
   }
   .cn-car-visual svg { position: relative; z-index: 1; color: var(--champagne); opacity: 0.9; filter: drop-shadow(0 6px 28px rgba(212,181,126,0.32)); }
   .cn-car-body { padding: 0 2rem 2.5rem; }
@@ -4014,27 +4022,35 @@
   /* ── Car data ── */
   var CARS = [
     { name:'Lamborghini Huracán EVO', tag:'Exótico', type:'exotic', glow:'rgba(232,200,64,0.15)',
+      img:'https://d8j0ntlcm91z4.cloudfront.net/user_2xDKzgUHSbZ2WsUfnTEP222ovTJ/hf_20260510_232907_e670be41-c0e8-4c22-9bb5-6f551f5a0406_min.webp',
       specs:[['Motor','V10 Naturally Aspirated'],['Potencia','631 hp / 600 Nm'],['Transmisión','7-vel. LDF DCT'],['Tracción','AWD (LDVI)'],['0–100 km/h','2.9 seg'],['Vel. máx.','325 km/h'],['Asientos','2 plazas'],['Techo','Descapotable bajo solicitud']],
       price:'Desde USD 1,800 / día', deposit:'Depósito USD 5,000', wa:'Lamborghini+Hurac%C3%A1n+EVO' },
     { name:'Range Rover Autobiography', tag:'SUV de lujo', type:'suv', glow:'rgba(74,155,127,0.15)',
+      img:'https://d8j0ntlcm91z4.cloudfront.net/user_2xDKzgUHSbZ2WsUfnTEP222ovTJ/hf_20260510_232909_1e0d123c-d587-432d-87a0-d3b4bbc11685_min.webp',
       specs:[['Motor','V8 4.4L BMW TwinPower'],['Potencia','523 hp / 750 Nm'],['Transmisión','8-vel. Automática'],['Tracción','4WD Terrain Response 2'],['0–100 km/h','5.0 seg'],['Altura libre','291 mm'],['Asientos','5 plazas — piel Ultrafabrics'],['Extras','Meridian Signature, Pano-roof']],
       price:'Desde USD 650 / día', deposit:'Depósito USD 2,500', wa:'Range+Rover+Autobiography' },
     { name:'Porsche 911 Cabriolet', tag:'Convertible', type:'convertible', glow:'rgba(200,121,65,0.15)',
+      img:'https://d8j0ntlcm91z4.cloudfront.net/user_2xDKzgUHSbZ2WsUfnTEP222ovTJ/hf_20260510_232911_79faf9fe-888a-4cb4-be5a-c3416532f67b_min.webp',
       specs:[['Motor','Flat-six 3.0L Twin-turbo'],['Potencia','443 hp / 530 Nm'],['Transmisión','8-vel. PDK'],['Tracción','RWD / PDK Sport'],['0–100 km/h','3.9 seg'],['Vel. máx.','306 km/h'],['Techo','Capota electro-hidráulica 12s'],['Extras','Sport Chrono, PASM, Carbon ceramics']],
       price:'Desde USD 800 / día', deposit:'Depósito USD 3,000', wa:'Porsche+911+Cabriolet' },
     { name:'Mercedes-Benz G63 AMG', tag:'SUV de lujo', type:'suv', glow:'rgba(123,158,204,0.15)',
+      img:'https://d8j0ntlcm91z4.cloudfront.net/user_2xDKzgUHSbZ2WsUfnTEP222ovTJ/hf_20260510_232913_f5405523-bbc3-4d9e-b61d-0100a0d357c5_min.webp',
       specs:[['Motor','V8 4.0L AMG Biturbo'],['Potencia','577 hp / 850 Nm'],['Transmisión','9G-TRONIC Plus AMG'],['Tracción','4MATIC + 3 bloqueos dif.'],['0–100 km/h','4.5 seg'],['Vel. máx.','220 km/h'],['Asientos','5 plazas — piel Nappa'],['Extras','Burmester® 3D, AMG Night Package']],
       price:'Desde USD 750 / día', deposit:'Depósito USD 3,000', wa:'Mercedes-Benz+G63+AMG' },
     { name:'Jeep Wrangler Rubicon', tag:'Aventura', type:'adventure', glow:'rgba(109,175,94,0.15)',
+      img:'https://d8j0ntlcm91z4.cloudfront.net/user_2xDKzgUHSbZ2WsUfnTEP222ovTJ/hf_20260510_232914_f8b60872-d9b6-47c0-ae46-163ec6b5824a_min.webp',
       specs:[['Motor','2.0L Turbo 4-cil / 3.6L V6'],['Potencia','272 hp / 400 Nm'],['Transmisión','8-vel. Automática'],['Tracción','4WD Rock-Trac + Dana 44'],['0–100 km/h','7.6 seg'],['Prof. en agua','762 mm'],['Techo','Soft-top removible'],['Extras','Liftkit, All-terrain, Snorkel']],
       price:'Desde USD 220 / día', deposit:'Depósito USD 1,000', wa:'Jeep+Wrangler+Rubicon' },
     { name:'Tesla Model X Plaid', tag:'Eléctrico', type:'executive', glow:'rgba(92,200,232,0.15)',
+      img:'https://d8j0ntlcm91z4.cloudfront.net/user_2xDKzgUHSbZ2WsUfnTEP222ovTJ/hf_20260510_232916_1eca26e4-d495-4626-aecc-9a8d2adbf17d_min.webp',
       specs:[['Motor','Tri-motor Electric AWD'],['Potencia','1,020 hp / 1,420 Nm'],['Transmisión','Direct drive'],['0–100 km/h','2.6 seg'],['Autonomía','560 km (WLTP)'],['Carga','Supercharger V3'],['Asientos','6–7 plazas — piel blanca'],['Extras','Falcon doors, 17" touch, FSD']],
       price:'Desde USD 480 / día', deposit:'Depósito USD 2,000', wa:'Tesla+Model+X+Plaid' },
     { name:'Cadillac Escalade ESV', tag:'Grupo VIP', type:'suv', glow:'rgba(200,168,64,0.15)',
+      img:'https://d8j0ntlcm91z4.cloudfront.net/user_2xDKzgUHSbZ2WsUfnTEP222ovTJ/hf_20260510_232918_83722e75-9f0b-4554-801b-d3c4231ad3af_min.webp',
       specs:[['Motor','6.2L V8 EcoTec3'],['Potencia','420 hp / 624 Nm'],['Transmisión','10-vel. Automática'],['Tracción','4WD'],['Longitud','5,718 mm (ESV)'],['Asientos','7 plazas — piel Premium'],['Chófer','Disponible +USD 250/día'],['Extras','AKG 36 spk, SuperCruise, HUD']],
       price:'Desde USD 550 / día', deposit:'Depósito USD 2,500', wa:'Cadillac+Escalade+ESV' },
     { name:'Mercedes-Benz Clase S 580', tag:'Ejecutivo', type:'executive', glow:'rgba(168,136,216,0.15)',
+      img:'https://d8j0ntlcm91z4.cloudfront.net/user_2xDKzgUHSbZ2WsUfnTEP222ovTJ/hf_20260510_232919_d435a92e-3eab-4f59-a5ee-47c0e73ad141_min.webp',
       specs:[['Motor','V8 4.0L Biturbo + 48V EQ Boost'],['Potencia','503 hp / 700 Nm'],['Transmisión','9G-TRONIC Plus'],['Tracción','4MATIC'],['0–100 km/h','4.3 seg'],['Asientos','5 plazas — 1ª clase trasera'],['Suspensión','E-Active Body Control'],['Extras','Burmester® 4D, AR HUD']],
       price:'Desde USD 680 / día', deposit:'Depósito USD 2,500', wa:'Mercedes-Benz+Clase+S+580' }
   ];
@@ -4062,9 +4078,12 @@
     var specs = car.specs.map(function (s) {
       return '<div class="cn-spec"><div class="cn-spec-label">' + s[0] + '</div><div class="cn-spec-value">' + s[1] + '</div></div>';
     }).join('');
+    var visual = car.img
+      ? '<img src="' + car.img + '" alt="' + car.name + '" loading="lazy" decoding="async" />'
+      : SVG[car.type];
     return '<div class="cn-car-visual" style="--car-glow:' + car.glow + '">' +
+        visual +
         '<div class="cn-car-visual-bg"></div>' +
-        SVG[car.type] +
         '<div class="cn-car-visual-floor"></div>' +
       '</div>' +
       '<div class="cn-car-body">' +
