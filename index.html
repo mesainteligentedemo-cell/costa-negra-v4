@@ -1802,6 +1802,159 @@
                 box-shadow 0.55s cubic-bezier(0.22,0.61,0.36,1),
                 border-color 0.55s cubic-bezier(0.22,0.61,0.36,1) !important;
   }
+  /* ============================================================
+     COSTA NEGRA — MODAL SYSTEM
+     ============================================================ */
+  .cn-modal-overlay {
+    position: fixed; inset: 0; z-index: 99990;
+    background: rgba(10,14,18,0.88);
+    backdrop-filter: blur(14px) saturate(1.5);
+    -webkit-backdrop-filter: blur(14px) saturate(1.5);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.22,0.61,0.36,1);
+    overflow-y: auto;
+  }
+  .cn-modal-overlay.is-open { opacity: 1; pointer-events: all; }
+
+  .cn-modal-panel {
+    position: relative;
+    width: 100%; max-width: 700px;
+    max-height: 88vh;
+    background: rgba(15,19,25,0.97);
+    border: 1px solid rgba(245,240,229,0.10);
+    border-radius: 4px;
+    overflow-y: auto; overflow-x: hidden;
+    transform: translateY(28px) scale(0.97);
+    opacity: 0;
+    transition: transform 0.42s cubic-bezier(0.16,1,0.3,1),
+                opacity 0.35s cubic-bezier(0.22,0.61,0.36,1);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.75), 0 0 0 1px rgba(212,181,126,0.07);
+  }
+  .cn-modal-panel::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--champagne), transparent);
+    opacity: 0.5;
+  }
+  .cn-modal-overlay.is-open .cn-modal-panel { transform: translateY(0) scale(1); opacity: 1; }
+
+  .cn-modal-close {
+    position: absolute; top: 1.1rem; right: 1.1rem; z-index: 20;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(245,240,229,0.05); border: 1px solid var(--line-strong);
+    border-radius: 50%; color: var(--bone-dim);
+    font-size: 1rem; font-family: var(--mono);
+    cursor: pointer; line-height: 1;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+  .cn-modal-close:hover { background: rgba(212,181,126,0.12); color: var(--champagne); border-color: var(--champagne); }
+
+  /* ── Car modal ── */
+  .cn-car-visual {
+    width: 100%; height: 200px;
+    display: flex; align-items: flex-end; justify-content: center;
+    position: relative; overflow: hidden; padding-bottom: 1.5rem;
+  }
+  .cn-car-visual-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 80%, var(--car-glow, rgba(212,181,126,0.13)) 0%, transparent 70%);
+  }
+  .cn-car-visual-floor {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,181,126,0.22), transparent);
+  }
+  .cn-car-visual svg { position: relative; z-index: 1; color: var(--champagne); opacity: 0.9; filter: drop-shadow(0 6px 28px rgba(212,181,126,0.32)); }
+  .cn-car-body { padding: 0 2rem 2.5rem; }
+  .cn-car-tag {
+    display: inline-block; font-family: var(--mono); font-size: 0.66rem;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--champagne); margin-bottom: 0.5rem;
+  }
+  .cn-car-name {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(1.65rem, 4vw, 2.4rem); line-height: 1.05;
+    letter-spacing: -0.02em; color: var(--bone); margin: 0 0 1.6rem;
+  }
+  .cn-car-specs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-top: 1px solid var(--line); margin-bottom: 1.6rem;
+  }
+  .cn-spec {
+    padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+    background: rgba(10,14,18,0.4);
+  }
+  .cn-spec:nth-child(2n) { border-right: none; }
+  .cn-spec-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--champagne); margin-bottom: 0.25rem; }
+  .cn-spec-value { font-family: var(--sans); font-size: 0.92rem; color: var(--bone); }
+  .cn-car-price { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.1em; color: var(--bone-dim); margin-bottom: 1.4rem; }
+  .cn-car-price strong { font-family: var(--display); font-size: 1rem; color: var(--bone); font-weight: 500; }
+
+  /* ── Contact modal ── */
+  .cn-contact-modal { padding: 2.5rem 2rem; }
+  .cn-contact-icon {
+    width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+    background: rgba(212,181,126,0.10); border: 1px solid rgba(212,181,126,0.22);
+    border-radius: 50%; margin-bottom: 1.4rem; color: var(--champagne);
+  }
+  .cn-contact-icon svg { width: 22px; height: 22px; }
+  .cn-contact-title { font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 4vw, 2rem); letter-spacing: -0.02em; color: var(--bone); margin: 0 0 0.4rem; }
+  .cn-contact-subtitle { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--champagne); margin: 0 0 1.6rem; }
+  .cn-contact-main { font-family: var(--display); font-weight: 300; font-size: clamp(1.3rem, 3.5vw, 1.8rem); color: var(--bone); display: block; margin-bottom: 0.25rem; transition: color 0.25s ease; }
+  a.cn-contact-main:hover { color: var(--champagne); }
+  .cn-contact-note { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; color: var(--bone-dim); margin-bottom: 1.8rem; text-transform: uppercase; }
+  .cn-detail-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.8rem 0; border-bottom: 1px solid var(--line); gap: 1rem; }
+  .cn-detail-label { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--champagne); flex-shrink: 0; }
+  .cn-detail-value { font-family: var(--sans); font-size: 0.9rem; color: var(--bone); text-align: right; }
+  .cn-contact-actions { margin-top: 1.8rem; display: flex; flex-direction: column; gap: 0.65rem; }
+  .cn-btn-primary {
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    padding: 0.9rem 1.6rem; background: var(--champagne); color: var(--ink);
+    font-family: var(--sans); font-weight: 600; font-size: 0.88rem; letter-spacing: 0.04em;
+    border-radius: var(--r); transition: background 0.3s ease, transform 0.3s ease; text-decoration: none;
+    position: relative; overflow: hidden;
+  }
+  .cn-btn-primary::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+    transform: translateX(-110%); transition: transform 0.6s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .cn-btn-primary:hover::before { transform: translateX(110%); }
+  .cn-btn-primary:hover { background: var(--bone); transform: translateY(-2px); }
+  .cn-btn-secondary {
+    display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+    padding: 0.8rem 1.4rem; background: transparent;
+    border: 1px solid var(--line-strong); color: var(--bone-dim);
+    font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.08em;
+    border-radius: var(--r); transition: border-color 0.3s ease, color 0.3s ease; text-decoration: none;
+  }
+  .cn-btn-secondary:hover { border-color: var(--champagne); color: var(--champagne); }
+
+  /* ── Legal modal ── */
+  .cn-legal-modal { padding: 2.5rem 2rem; }
+  .cn-legal-kicker { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--champagne); margin-bottom: 0.7rem; }
+  .cn-legal-title { font-family: var(--display); font-weight: 400; font-size: clamp(1.4rem, 3vw, 1.9rem); letter-spacing: -0.02em; color: var(--bone); margin: 0 0 0.3rem; }
+  .cn-legal-date { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--bone-dim); margin-bottom: 2rem; }
+  .cn-legal-body { font-family: var(--sans); font-size: 0.88rem; color: var(--bone-dim); line-height: 1.78; }
+  .cn-legal-body h3 { font-family: var(--display); font-weight: 400; font-size: 1.05rem; color: var(--bone); margin: 1.8rem 0 0.5rem; letter-spacing: -0.01em; }
+  .cn-legal-body p { margin: 0 0 0.9rem; }
+  .cn-legal-body ul { padding-left: 1.3rem; margin: 0 0 0.9rem; }
+  .cn-legal-body li { margin-bottom: 0.35rem; }
+  .cn-legal-body strong { color: var(--bone); font-weight: 600; }
+  .cn-legal-body a { color: var(--champagne); }
+
+  /* Scrollbar modal */
+  .cn-modal-panel::-webkit-scrollbar { width: 3px; }
+  .cn-modal-panel::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
+
+  @media (max-width: 540px) {
+    .cn-modal-overlay { padding: 0; align-items: flex-end; }
+    .cn-modal-panel { max-width: 100%; max-height: 94vh; border-radius: 12px 12px 0 0; }
+    .cn-car-body, .cn-contact-modal, .cn-legal-modal { padding: 0 1.4rem 2rem; }
+    .cn-car-body { padding-top: 0; }
+    .cn-car-specs { grid-template-columns: 1fr; }
+    .cn-spec { border-right: none; }
+  }
   </style>
 
 <!-- WEB 4.0 LAYER — CDN Libraries -->
@@ -2196,6 +2349,16 @@
       </div>
 
     </footer>
+
+    <!-- MODAL SYSTEM -->
+    <div id="cn-modal-overlay" class="cn-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cn-modal-heading">
+      <div id="cn-modal-panel" class="cn-modal-panel">
+        <button class="cn-modal-close" id="cn-modal-close" aria-label="Cerrar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l14 14M15 1L1 15"/></svg>
+        </button>
+        <div id="cn-modal-body"></div>
+      </div>
+    </div>
 
   </main>
 
@@ -3362,6 +3525,299 @@
   }
 
 })();
+
+/* ======================================================
+   11. MODAL SYSTEM — Cars + Footer CTAs
+   ====================================================== */
+(function () {
+  'use strict';
+
+  var overlay  = document.getElementById('cn-modal-overlay');
+  var panel    = document.getElementById('cn-modal-panel');
+  var mbody    = document.getElementById('cn-modal-body');
+  var closeBtn = document.getElementById('cn-modal-close');
+  if (!overlay) return;
+
+  /* ── SVG silhouettes by car type ── */
+  var SVG = {
+    exotic:
+      '<svg width="82%" viewBox="0 0 320 90" style="height:auto;position:relative;z-index:1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<path d="M10,80 Q28,78 44,68 L74,40 L100,26 L185,22 L228,26 L265,44 L288,60 L306,76"/>' +
+      '<path d="M100,26 L108,52 L188,52 L210,26" stroke-width="1.5"/>' +
+      '<circle cx="72" cy="80" r="14"/><circle cx="246" cy="80" r="14"/>' +
+      '<line x1="0" y1="88" x2="320" y2="88" stroke-width="0.5" opacity="0.3"/></svg>',
+    convertible:
+      '<svg width="82%" viewBox="0 0 320 90" style="height:auto;position:relative;z-index:1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<path d="M10,80 Q28,76 44,64 L76,44 L108,28 L192,24 L228,28 L270,48 L294,64 L308,78"/>' +
+      '<path d="M108,28 L116,48 L168,48" stroke-width="1.5"/>' +
+      '<circle cx="74" cy="80" r="14"/><circle cx="248" cy="80" r="14"/>' +
+      '<line x1="0" y1="88" x2="320" y2="88" stroke-width="0.5" opacity="0.3"/></svg>',
+    suv:
+      '<svg width="82%" viewBox="0 0 320 90" style="height:auto;position:relative;z-index:1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<path d="M15,80 L22,66 L36,42 L60,26 L88,20 L232,20 L258,26 L280,42 L297,62 L305,78"/>' +
+      '<path d="M88,20 L90,50 L230,50 L234,20" stroke-width="1.5"/>' +
+      '<circle cx="80" cy="80" r="16"/><circle cx="242" cy="80" r="16"/>' +
+      '<line x1="0" y1="88" x2="320" y2="88" stroke-width="0.5" opacity="0.3"/></svg>',
+    adventure:
+      '<svg width="82%" viewBox="0 0 320 90" style="height:auto;position:relative;z-index:1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<path d="M16,80 L16,34 L32,20 L288,20 L302,34 L304,80"/>' +
+      '<path d="M32,20 L32,50 L288,50 L288,20" stroke-width="1.5"/>' +
+      '<line x1="16" y1="34" x2="304" y2="34" stroke-width="1"/>' +
+      '<circle cx="74" cy="80" r="16"/><circle cx="246" cy="80" r="16"/>' +
+      '<line x1="0" y1="88" x2="320" y2="88" stroke-width="0.5" opacity="0.3"/></svg>',
+    executive:
+      '<svg width="82%" viewBox="0 0 320 90" style="height:auto;position:relative;z-index:1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<path d="M8,80 L18,66 L32,50 L64,32 L92,26 L218,26 L254,30 L282,48 L300,64 L312,78"/>' +
+      '<path d="M92,26 L98,52 L220,52 L228,26" stroke-width="1.5"/>' +
+      '<circle cx="78" cy="80" r="15"/><circle cx="248" cy="80" r="15"/>' +
+      '<line x1="0" y1="88" x2="320" y2="88" stroke-width="0.5" opacity="0.3"/></svg>'
+  };
+
+  /* ── Car data ── */
+  var CARS = [
+    { name:'Lamborghini Huracán EVO', tag:'Exótico', type:'exotic', glow:'rgba(232,200,64,0.15)',
+      specs:[['Motor','V10 Naturally Aspirated'],['Potencia','631 hp / 600 Nm'],['Transmisión','7-vel. LDF DCT'],['Tracción','AWD (LDVI)'],['0–100 km/h','2.9 seg'],['Vel. máx.','325 km/h'],['Asientos','2 plazas'],['Techo','Descapotable bajo solicitud']],
+      price:'Desde USD 1,800 / día', deposit:'Depósito USD 5,000', wa:'Lamborghini+Hurac%C3%A1n+EVO' },
+    { name:'Range Rover Autobiography', tag:'SUV de lujo', type:'suv', glow:'rgba(74,155,127,0.15)',
+      specs:[['Motor','V8 4.4L BMW TwinPower'],['Potencia','523 hp / 750 Nm'],['Transmisión','8-vel. Automática'],['Tracción','4WD Terrain Response 2'],['0–100 km/h','5.0 seg'],['Altura libre','291 mm'],['Asientos','5 plazas — piel Ultrafabrics'],['Extras','Meridian Signature, Pano-roof']],
+      price:'Desde USD 650 / día', deposit:'Depósito USD 2,500', wa:'Range+Rover+Autobiography' },
+    { name:'Porsche 911 Cabriolet', tag:'Convertible', type:'convertible', glow:'rgba(200,121,65,0.15)',
+      specs:[['Motor','Flat-six 3.0L Twin-turbo'],['Potencia','443 hp / 530 Nm'],['Transmisión','8-vel. PDK'],['Tracción','RWD / PDK Sport'],['0–100 km/h','3.9 seg'],['Vel. máx.','306 km/h'],['Techo','Capota electro-hidráulica 12s'],['Extras','Sport Chrono, PASM, Carbon ceramics']],
+      price:'Desde USD 800 / día', deposit:'Depósito USD 3,000', wa:'Porsche+911+Cabriolet' },
+    { name:'Mercedes-Benz G63 AMG', tag:'SUV de lujo', type:'suv', glow:'rgba(123,158,204,0.15)',
+      specs:[['Motor','V8 4.0L AMG Biturbo'],['Potencia','577 hp / 850 Nm'],['Transmisión','9G-TRONIC Plus AMG'],['Tracción','4MATIC + 3 bloqueos dif.'],['0–100 km/h','4.5 seg'],['Vel. máx.','220 km/h'],['Asientos','5 plazas — piel Nappa'],['Extras','Burmester® 3D, AMG Night Package']],
+      price:'Desde USD 750 / día', deposit:'Depósito USD 3,000', wa:'Mercedes-Benz+G63+AMG' },
+    { name:'Jeep Wrangler Rubicon', tag:'Aventura', type:'adventure', glow:'rgba(109,175,94,0.15)',
+      specs:[['Motor','2.0L Turbo 4-cil / 3.6L V6'],['Potencia','272 hp / 400 Nm'],['Transmisión','8-vel. Automática'],['Tracción','4WD Rock-Trac + Dana 44'],['0–100 km/h','7.6 seg'],['Prof. en agua','762 mm'],['Techo','Soft-top removible'],['Extras','Liftkit, All-terrain, Snorkel']],
+      price:'Desde USD 220 / día', deposit:'Depósito USD 1,000', wa:'Jeep+Wrangler+Rubicon' },
+    { name:'Tesla Model X Plaid', tag:'Eléctrico', type:'executive', glow:'rgba(92,200,232,0.15)',
+      specs:[['Motor','Tri-motor Electric AWD'],['Potencia','1,020 hp / 1,420 Nm'],['Transmisión','Direct drive'],['0–100 km/h','2.6 seg'],['Autonomía','560 km (WLTP)'],['Carga','Supercharger V3'],['Asientos','6–7 plazas — piel blanca'],['Extras','Falcon doors, 17" touch, FSD']],
+      price:'Desde USD 480 / día', deposit:'Depósito USD 2,000', wa:'Tesla+Model+X+Plaid' },
+    { name:'Cadillac Escalade ESV', tag:'Grupo VIP', type:'suv', glow:'rgba(200,168,64,0.15)',
+      specs:[['Motor','6.2L V8 EcoTec3'],['Potencia','420 hp / 624 Nm'],['Transmisión','10-vel. Automática'],['Tracción','4WD'],['Longitud','5,718 mm (ESV)'],['Asientos','7 plazas — piel Premium'],['Chófer','Disponible +USD 250/día'],['Extras','AKG 36 spk, SuperCruise, HUD']],
+      price:'Desde USD 550 / día', deposit:'Depósito USD 2,500', wa:'Cadillac+Escalade+ESV' },
+    { name:'Mercedes-Benz Clase S 580', tag:'Ejecutivo', type:'executive', glow:'rgba(168,136,216,0.15)',
+      specs:[['Motor','V8 4.0L Biturbo + 48V EQ Boost'],['Potencia','503 hp / 700 Nm'],['Transmisión','9G-TRONIC Plus'],['Tracción','4MATIC'],['0–100 km/h','4.3 seg'],['Asientos','5 plazas — 1ª clase trasera'],['Suspensión','E-Active Body Control'],['Extras','Burmester® 4D, AR HUD']],
+      price:'Desde USD 680 / día', deposit:'Depósito USD 2,500', wa:'Mercedes-Benz+Clase+S+580' }
+  ];
+
+  /* ── Open / close ── */
+  function openModal(html) {
+    mbody.innerHTML = html;
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    panel.scrollTop = 0;
+    setTimeout(function () { closeBtn.focus(); }, 80);
+  }
+  function closeModal() {
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+  });
+
+  /* ── Car modal HTML builder ── */
+  function carHTML(car) {
+    var specs = car.specs.map(function (s) {
+      return '<div class="cn-spec"><div class="cn-spec-label">' + s[0] + '</div><div class="cn-spec-value">' + s[1] + '</div></div>';
+    }).join('');
+    return '<div class="cn-car-visual" style="--car-glow:' + car.glow + '">' +
+        '<div class="cn-car-visual-bg"></div>' +
+        SVG[car.type] +
+        '<div class="cn-car-visual-floor"></div>' +
+      '</div>' +
+      '<div class="cn-car-body">' +
+        '<p class="cn-car-tag">' + car.tag + '</p>' +
+        '<h2 class="cn-car-name" id="cn-modal-heading">' + car.name + '</h2>' +
+        '<div class="cn-car-specs">' + specs + '</div>' +
+        '<p class="cn-car-price"><strong>' + car.price + '</strong>&nbsp;&nbsp;&middot;&nbsp;&nbsp;' + car.deposit + '</p>' +
+        '<a class="cn-btn-primary" href="https://wa.me/5219841234567?text=Hola%2C+me+interesa+el+' + car.wa + '+de+Costa+Negra" target="_blank" rel="noopener">Consultar disponibilidad</a>' +
+      '</div>';
+  }
+
+  /* ── Fleet card click → car modal ── */
+  document.querySelectorAll('.fleet-card').forEach(function (card, i) {
+    card.style.cursor = 'pointer';
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', 'Ver ficha: ' + CARS[i].name);
+    function show() { openModal(carHTML(CARS[i])); }
+    card.addEventListener('click', show);
+    card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(); } });
+  });
+
+  /* ── Footer fleet col links → car modal ── */
+  var nameMap = {};
+  CARS.forEach(function (c) { nameMap[c.name.toLowerCase()] = c; });
+  document.querySelectorAll('.footer-col:first-child a').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var car = nameMap[link.textContent.trim().toLowerCase()];
+      if (car) { e.preventDefault(); openModal(carHTML(car)); }
+    });
+  });
+
+  /* ── Helper: detail row ── */
+  function row(label, value) {
+    return '<div class="cn-detail-row"><span class="cn-detail-label">' + label + '</span><span class="cn-detail-value">' + value + '</span></div>';
+  }
+
+  /* ── WA icon SVG ── */
+  var WA_SVG = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.557 4.126 1.528 5.859L0 24l6.335-1.508A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.37l-.36-.213-3.726.887.942-3.625-.234-.372A9.782 9.782 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>';
+
+  /* ── Contact modals ── */
+  function waHTML() {
+    return '<div class="cn-contact-modal">' +
+      '<div class="cn-contact-icon">' + WA_SVG + '</div>' +
+      '<p class="cn-contact-subtitle">Concierge privado</p>' +
+      '<h2 class="cn-contact-title" id="cn-modal-heading">Reservar por WhatsApp</h2>' +
+      '<a class="cn-contact-main" href="https://wa.me/5219841234567" target="_blank" rel="noopener">+52&nbsp;984&nbsp;123&nbsp;4567</a>' +
+      '<p class="cn-contact-note">24 h &middot; 365 d&iacute;as &middot; respuesta &lt; 10 min</p>' +
+      row('Idiomas', 'Espa&ntilde;ol &middot; English &middot; Fran&ccedil;ais') +
+      row('Tambi&eacute;n', 'Telegram &middot; iMessage bajo solicitud') +
+      '<div class="cn-contact-actions">' +
+        '<a class="cn-btn-primary" href="https://wa.me/5219841234567?text=Hola%2C+quiero+reservar+un+veh%C3%ADculo+Costa+Negra" target="_blank" rel="noopener">Abrir WhatsApp</a>' +
+        '<a class="cn-btn-secondary" href="tel:+529841234567">Solo llamar</a>' +
+      '</div></div>';
+  }
+
+  function emailHTML() {
+    return '<div class="cn-contact-modal">' +
+      '<div class="cn-contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 7 10-7"/></svg></div>' +
+      '<p class="cn-contact-subtitle">Correspondencia privada</p>' +
+      '<h2 class="cn-contact-title" id="cn-modal-heading">Correo Concierge</h2>' +
+      '<a class="cn-contact-main" href="mailto:concierge@costanegra.com">concierge@costanegra.com</a>' +
+      '<p class="cn-contact-note">Respuesta &lt; 2 h en horario CUN (GMT&minus;6)</p>' +
+      row('Para', 'Reservas, cotizaciones, contratos') +
+      row('Documentos', 'PDF &middot; Contratos &middot; P&oacute;lizas') +
+      row('Seguros', 'seguros@costanegra.mx') +
+      '<div class="cn-contact-actions">' +
+        '<a class="cn-btn-primary" href="mailto:concierge@costanegra.com?subject=Solicitud+de+reserva+Costa+Negra">Redactar correo</a>' +
+        '<a class="cn-btn-secondary" href="mailto:seguros@costanegra.mx">Correo de seguros</a>' +
+      '</div></div>';
+  }
+
+  function emergencyHTML() {
+    return '<div class="cn-contact-modal">' +
+      '<div class="cn-contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 015.1 12.77a19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>' +
+      '<p class="cn-contact-subtitle">L&iacute;nea directa operacional</p>' +
+      '<h2 class="cn-contact-title" id="cn-modal-heading">Emergencias 24 / 7</h2>' +
+      '<a class="cn-contact-main" href="tel:+529842000000">+52&nbsp;984&nbsp;200&nbsp;0000</a>' +
+      '<p class="cn-contact-note">Activa todo el a&ntilde;o &mdash; incluso 2 AM</p>' +
+      row('Tiempo de respuesta', 'Veh&iacute;culo de reemplazo &lt; 60 min') +
+      row('Cubre', 'Mec&aacute;nica &middot; Ponchadura &middot; Accidente &middot; Llaves') +
+      row('Gr&uacute;a', 'Incluida &mdash; toda la Riviera Maya') +
+      '<div class="cn-contact-actions">' +
+        '<a class="cn-btn-primary" href="tel:+529842000000">Llamar ahora</a>' +
+        '<a class="cn-btn-secondary" href="https://wa.me/5219842000000?text=Emergencia+Costa+Negra" target="_blank" rel="noopener">WhatsApp emergencias</a>' +
+      '</div></div>';
+  }
+
+  /* ── Legal modals ── */
+  function termsHTML() {
+    return '<div class="cn-legal-modal">' +
+      '<p class="cn-legal-kicker">Documento legal</p>' +
+      '<h2 class="cn-legal-title" id="cn-modal-heading">T&eacute;rminos y Condiciones</h2>' +
+      '<p class="cn-legal-date">Vigentes desde 1 de enero 2026 &middot; Costa Negra Rentals S.A. de C.V. (RFC: CNR260101ABC)</p>' +
+      '<div class="cn-legal-body">' +
+        '<h3>1. Partes del contrato</h3>' +
+        '<p>El arrendatario (cliente) y Costa Negra Rentals S.A. de C.V., empresa mexicana con domicilio en Av. Constituyentes 1, Playa del Carmen, Quintana Roo, C.P. 77710.</p>' +
+        '<h3>2. Requisitos del conductor</h3>' +
+        '<p><strong>M&iacute;nimo 25 a&ntilde;os</strong> de edad (30 para veh&iacute;culos ex&oacute;ticos), licencia vigente de M&eacute;xico, EUA, Canad&aacute;, UE o Reino Unido, y pasaporte para visitantes internacionales. Verificaci&oacute;n de historial vehicular en 10 minutos.</p>' +
+        '<h3>3. Dep&oacute;sito en garant&iacute;a</h3>' +
+        '<p>USD 500&ndash;5,000 seg&uacute;n veh&iacute;culo. Liberaci&oacute;n en 72 h h&aacute;biles tras devoluci&oacute;n en condiciones originales.</p>' +
+        '<h3>4. Uso autorizado</h3>' +
+        '<p>Veh&iacute;culos autorizados solo en territorio de M&eacute;xico. Prohibido uso en pistas de carreras, transporte remunerado o fuera de Quintana Roo y Yucat&aacute;n sin autorizaci&oacute;n expresa.</p>' +
+        '<h3>5. Combustible</h3>' +
+        '<p>Entrega y devoluci&oacute;n con tanque lleno. Diferencia: costo del combustible + cargo administrativo USD 25.</p>' +
+        '<h3>6. Cancelaciones</h3>' +
+        '<p>+72 h: reembolso 100% &nbsp;&middot;&nbsp; 24&ndash;72 h: reembolso 50% &nbsp;&middot;&nbsp; &minus;24 h o no-show: sin reembolso.</p>' +
+        '<h3>7. Jurisdicci&oacute;n y cumplimiento</h3>' +
+        '<p>Tribunales de Playa del Carmen, Quintana Roo. Cumplimiento PROFECO &mdash; 01&nbsp;800&nbsp;468&nbsp;8722 o conciliaexpress.profeco.gob.mx.</p>' +
+      '</div></div>';
+  }
+
+  function privacyHTML() {
+    return '<div class="cn-legal-modal">' +
+      '<p class="cn-legal-kicker">Documento legal</p>' +
+      '<h2 class="cn-legal-title" id="cn-modal-heading">Aviso de Privacidad</h2>' +
+      '<p class="cn-legal-date">Actualizado: 1 de enero 2026 &middot; Costa Negra Rentals S.A. de C.V.</p>' +
+      '<div class="cn-legal-body">' +
+        '<h3>Responsable</h3>' +
+        '<p>Costa Negra Rentals S.A. de C.V. &mdash; privacidad@costanegra.mx</p>' +
+        '<h3>Datos personales recabados</h3>' +
+        '<p>Nombre, fecha de nacimiento, licencia de conducir, pasaporte, datos bancarios (tokenizados), correo, tel&eacute;fono, historial de reservaciones.</p>' +
+        '<h3>Finalidades primarias</h3>' +
+        '<p>Verificaci&oacute;n de identidad, gesti&oacute;n del contrato, procesamiento de pagos, comunicaci&oacute;n operativa, cumplimiento fiscal y legal.</p>' +
+        '<h3>Finalidades secundarias (opcionales)</h3>' +
+        '<p>Promociones personalizadas, encuestas de satisfacci&oacute;n, programa de clientes frecuentes. Puede negarlas sin afectar el servicio.</p>' +
+        '<h3>Transferencias</h3>' +
+        '<p>Solo a aseguradoras, autoridades por ley y procesadores de pago (Stripe) bajo acuerdo de confidencialidad.</p>' +
+        '<h3>Derechos ARCO</h3>' +
+        '<p>Env&iacute;a solicitud con identificaci&oacute;n oficial a privacidad@costanegra.mx. Respuesta: 20 d&iacute;as h&aacute;biles.</p>' +
+        '<h3>Cookies</h3>' +
+        '<p>Cookies t&eacute;cnicas necesarias + Google Analytics 4 anonimizado. Desact&iacute;valas desde tu navegador sin perder funcionalidad.</p>' +
+      '</div></div>';
+  }
+
+  function insuranceHTML() {
+    return '<div class="cn-legal-modal">' +
+      '<p class="cn-legal-kicker">Cobertura activa</p>' +
+      '<h2 class="cn-legal-title" id="cn-modal-heading">P&oacute;liza de Seguro</h2>' +
+      '<p class="cn-legal-date">Vigente 2026 &middot; GNP &mdash; P&oacute;liza Comercial Fleet Premium</p>' +
+      '<div class="cn-legal-body">' +
+        '<h3>Coberturas incluidas en toda renta</h3>' +
+        '<p><strong>Responsabilidad Civil:</strong> da&ntilde;os a terceros hasta MXN 300,000 en bienes y MXN 1,500,000 en personas.</p>' +
+        '<p><strong>Cobertura Amplia Premium:</strong> colisi&oacute;n, volcadura, robo total y parcial, fen&oacute;menos naturales (incluye huracanes).</p>' +
+        '<p><strong>Asistencia en carretera 24/7:</strong> gr&uacute;a, paso de corriente, cambio de llanta, cerrajer&iacute;a &mdash; toda la Riviera Maya.</p>' +
+        '<h3>Deducible est&aacute;ndar</h3>' +
+        '<p>10% del valor del veh&iacute;culo (cubierto con el dep&oacute;sito en garant&iacute;a). Ex&oacute;ticos: hasta 20%.</p>' +
+        '<h3>Opci&oacute;n deducible cero</h3>' +
+        '<p>USD 65&ndash;250 / d&iacute;a adicionales seg&uacute;n veh&iacute;culo. Elimina el deducible en da&ntilde;os y robo parcial.</p>' +
+        '<h3>Exclusiones importantes</h3>' +
+        '<p>No cubre: manejo bajo influencia de alcohol o sustancias, uso fuera del &aacute;rea autorizada, pistas de carreras, conductores no incluidos en el contrato.</p>' +
+        '<h3>Nota sobre seguro de tarjeta</h3>' +
+        '<p>La mayor&iacute;a de seguros de tarjeta <strong>no aplican en M&eacute;xico</strong> para veh&iacute;culos de lujo o ex&oacute;ticos. Costa Negra provee cobertura primaria desde el d&iacute;a 1.</p>' +
+        '<h3>Contacto de seguros</h3>' +
+        '<p>seguros@costanegra.mx &middot; +52&nbsp;984&nbsp;200&nbsp;0000 (24/7)</p>' +
+      '</div></div>';
+  }
+
+  /* ── Footer CTA button handlers ── */
+  var ctaWa = document.querySelector('.footer-cta-wa');
+  var ctaEmail = document.querySelector('.footer-cta-email');
+  var ctaEmergency = document.querySelector('.footer-cta-emergency');
+  if (ctaWa) ctaWa.addEventListener('click', function (e) { e.preventDefault(); openModal(waHTML()); });
+  if (ctaEmail) ctaEmail.addEventListener('click', function (e) { e.preventDefault(); openModal(emailHTML()); });
+  if (ctaEmergency) ctaEmergency.addEventListener('click', function (e) { e.preventDefault(); openModal(emergencyHTML()); });
+
+  /* ── Legal links (footer cols + footer bottom) ── */
+  function bindLegal(key, fn) {
+    document.querySelectorAll('[data-i18n="' + key + '"]').forEach(function (el) {
+      if (el.tagName === 'A') el.addEventListener('click', function (e) { e.preventDefault(); openModal(fn()); });
+    });
+  }
+  bindLegal('footer.terms', termsHTML);
+  bindLegal('footer.privacy', privacyHTML);
+  bindLegal('footer.insurance', insuranceHTML);
+
+  /* ── Footer contact column quick links ── */
+  document.querySelectorAll('.ft-contact-value[href^="https://wa.me"]').forEach(function (el) {
+    el.addEventListener('click', function (e) { e.preventDefault(); openModal(waHTML()); });
+  });
+  document.querySelectorAll('.ft-contact-value[href^="mailto:concierge"]').forEach(function (el) {
+    el.addEventListener('click', function (e) { e.preventDefault(); openModal(emailHTML()); });
+  });
+  document.querySelectorAll('.ft-contact-value[href^="tel:"]').forEach(function (el) {
+    el.addEventListener('click', function (e) { e.preventDefault(); openModal(emergencyHTML()); });
+  });
+  document.querySelectorAll('.ft-contact-value[href^="mailto:seguros"]').forEach(function (el) {
+    el.addEventListener('click', function (e) { e.preventDefault(); openModal(insuranceHTML()); });
+  });
+
+}());
 
 </script>
 
