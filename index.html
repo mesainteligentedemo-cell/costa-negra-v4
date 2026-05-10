@@ -1966,6 +1966,63 @@
     .cn-car-specs { grid-template-columns: 1fr; }
     .cn-spec { border-right: none; }
   }
+
+  /* ── GRADIENT TEXT en <em> (skill checklist: gradient en keyword clave) ── */
+  .display-1 em, .display-2 em {
+    font-style: italic;
+    background: linear-gradient(
+      135deg,
+      var(--champagne) 0%,
+      #F0E8D5 40%,
+      var(--champagne) 70%,
+      #F8F4EC 100%
+    );
+    background-size: 280% 280%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: em-shimmer 8s ease infinite;
+  }
+  @keyframes em-shimmer {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* ── CTA SHIMMER SWEEP (skill: Magic UI ShimmerButton) ── */
+  .cta-primary { position: relative; overflow: hidden; }
+  .cta-primary::before {
+    content: '';
+    position: absolute; top: 0; left: -120%;
+    width: 65%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.26), transparent);
+    transform: skewX(-18deg);
+    pointer-events: none;
+  }
+  .cta-primary:hover::before {
+    animation: shimmer-sweep 0.65s cubic-bezier(0.22,0.61,0.36,1) forwards;
+  }
+  @keyframes shimmer-sweep {
+    from { left: -120%; }
+    to   { left: 130%; }
+  }
+
+  /* ── SECTION AMBIENT GLOW (skill: patrón Raycast — atmósfera única por sección) ── */
+  .section[data-section]::before {
+    content: '';
+    position: absolute; inset: 0; z-index: -1;
+    pointer-events: none;
+  }
+  .section[data-section="01"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(212,181,126,0.07) 0%, transparent 65%); }
+  .section[data-section="02"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(200,160,40,0.08)  0%, transparent 65%); }
+  .section[data-section="03"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(14,124,123,0.08)  0%, transparent 65%); }
+  .section[data-section="04"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(212,181,126,0.055) 0%, transparent 65%); }
+  .section[data-section="05"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(14,124,123,0.07)  0%, transparent 65%); }
+  .section[data-section="06"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(180,120,60,0.07)  0%, transparent 65%); }
+  .section[data-section="07"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(212,181,126,0.06)  0%, transparent 65%); }
+  .section[data-section="08"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(240,210,150,0.07) 0%, transparent 65%); }
+  .section[data-section="09"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(212,181,126,0.05)  0%, transparent 65%); }
+  .section[data-section="10"]::before { background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(200,160,40,0.09)  0%, transparent 65%); }
   </style>
 
 <!-- WEB 4.0 LAYER — CDN Libraries -->
@@ -3317,11 +3374,16 @@
       smooth: true,
       smoothTouch: false
     });
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+    /* Skill web-4o: sync Lenis con GSAP ticker para que ScrollTrigger
+       calcule el scroll desde Lenis y no desde window.scrollY — elimina
+       el jank en parallax y animaciones scrub */
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }(0));
     }
-    requestAnimationFrame(raf);
   }
   if (document.readyState === 'complete') {
     initLenis();
