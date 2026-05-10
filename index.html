@@ -1664,6 +1664,17 @@
     .cn-cursor-dot, .cn-cursor-ring { display: none !important; }
   }
 
+  /* Word-reveal split animation */
+  .cn-word {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+  .cn-word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+
   /* Fleet card 3D perspective container */
   .fleet-grid { perspective: 1400px; }
 
@@ -3527,7 +3538,169 @@
 })();
 
 /* ======================================================
-   11. MODAL SYSTEM — Cars + Footer CTAs
+   11. WEB 4.0 REFINEMENTS — Cursor · Word-split · Magnetic · Parallax
+   ====================================================== */
+(function () {
+  'use strict';
+
+  var isTouchDev = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+  /* ── 11a. CURSOR STATE MANAGEMENT ──────────────────── */
+  /* CSS already defines body.cursor-hover and body.cursor-cta rules;
+     we just need the JS to toggle those classes on body. */
+  if (!isTouchDev) {
+    var CTA_SELECTORS = '.cta-primary,.cta-secondary,.footer-cta-wa,.footer-cta-email,.footer-cta-emergency,.cn-btn-primary,.cn-btn-secondary,.cn-modal-close';
+    var HOVER_SELECTORS = 'a,button,[role="button"],[tabindex="0"],.fleet-card,.faq-item';
+
+    document.querySelectorAll(CTA_SELECTORS).forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        document.body.classList.remove('cursor-hover');
+        document.body.classList.add('cursor-cta');
+      });
+      el.addEventListener('mouseleave', function () {
+        document.body.classList.remove('cursor-cta');
+      });
+    });
+
+    document.querySelectorAll(HOVER_SELECTORS).forEach(function (el) {
+      /* Skip elements already registered as CTAs */
+      if (el.matches(CTA_SELECTORS)) return;
+      el.addEventListener('mouseenter', function () { document.body.classList.add('cursor-hover'); });
+      el.addEventListener('mouseleave', function () { document.body.classList.remove('cursor-hover'); });
+    });
+  }
+
+  /* ── 11b. MAGNETIC ON FOOTER CTAs ──────────────────── */
+  if (!isTouchDev) {
+    document.querySelectorAll('.footer-cta-wa, .footer-cta-email, .footer-cta-emergency').forEach(function (el) {
+      el.style.transition = 'transform 0.45s cubic-bezier(0.22,0.61,0.36,1), background 0.3s ease, color 0.3s ease';
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var dx = (e.clientX - r.left - r.width  / 2) * 0.2;
+        var dy = (e.clientY - r.top  - r.height / 2) * 0.2;
+        el.style.transform = 'translate(' + dx + 'px,' + (dy - 1) + 'px)';
+      });
+      el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+    });
+  }
+
+  /* ── 11c. WORD-BY-WORD TEXT REVEAL ─────────────────── */
+  /*
+   * Walks childNodes, wrapping text-node words in .cn-word spans
+   * while leaving element children (em, strong, br) completely intact.
+   * Each .cn-word starts hidden (translateY(110%) + opacity:0)
+   * and stagger-animates in.
+   */
+  function wrapWords(el) {
+    var spans = [];
+    var nodes = Array.prototype.slice.call(el.childNodes);
+    nodes.forEach(function (node) {
+      if (node.nodeType === 3) {
+        /* Text node — split by whitespace */
+        var parts = node.textContent.split(/(\s+)/);
+        var frag = document.createDocumentFragment();
+        parts.forEach(function (part) {
+          if (/^\s+$/.test(part) || part === '') {
+            frag.appendChild(document.createTextNode(part));
+          } else {
+            var outer = document.createElement('span');
+            outer.className = 'cn-word-wrap';
+            var inner = document.createElement('span');
+            inner.className = 'cn-word';
+            inner.style.cssText = 'opacity:0;transform:translateY(110%)';
+            inner.textContent = part;
+            outer.appendChild(inner);
+            frag.appendChild(outer);
+            spans.push(inner);
+          }
+        });
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === 1 && node.nodeName !== 'BR') {
+        /* Element node (em, strong, etc.) — wrap the whole element */
+        var outer2 = document.createElement('span');
+        outer2.className = 'cn-word-wrap';
+        var inner2 = document.createElement('span');
+        inner2.className = 'cn-word';
+        inner2.style.cssText = 'opacity:0;transform:translateY(110%)';
+        node.parentNode.insertBefore(outer2, node);
+        outer2.appendChild(inner2);
+        inner2.appendChild(node);
+        spans.push(inner2);
+      }
+    });
+    return spans;
+  }
+
+  function revealWords(spans, baseDelay) {
+    spans.forEach(function (span, i) {
+      setTimeout(function () {
+        span.style.transition = 'transform 1s cubic-bezier(0.16,1,0.3,1), opacity 0.7s ease';
+        span.style.transform  = 'translateY(0)';
+        span.style.opacity    = '1';
+      }, (baseDelay || 0) + i * 68);
+    });
+  }
+
+  /* Hero h1 — fires after loader hides */
+  var heroH1 = document.querySelector('.section-hero .display-1');
+  if (heroH1) {
+    var heroSpans = wrapWords(heroH1);
+    var loaderEl3 = document.querySelector('[data-loader]');
+    function fireHeroWords() { revealWords(heroSpans, 320); }
+    if (loaderEl3) {
+      var loaderObs3 = new MutationObserver(function (muts) {
+        muts.forEach(function (m) {
+          if (loaderEl3.classList.contains('is-hidden')) {
+            fireHeroWords();
+            loaderObs3.disconnect();
+          }
+        });
+      });
+      loaderObs3.observe(loaderEl3, { attributes: true, attributeFilter: ['class'] });
+    } else {
+      setTimeout(fireHeroWords, 600);
+    }
+  }
+
+  /* Section .display-2 headlines — fire on scroll */
+  document.querySelectorAll('.section .display-2').forEach(function (el) {
+    var wordSpans = wrapWords(el);
+    var fired = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !fired) {
+          fired = true;
+          revealWords(wordSpans, 60);
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.15 });
+    io.observe(el);
+  });
+
+  /* ── 11d. PARALLAX ON SECTION KICKERS ──────────────── */
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    document.querySelectorAll('.section .kicker').forEach(function (el) {
+      gsap.fromTo(el,
+        { y: 0 },
+        {
+          y: -18,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el.closest('.section') || el,
+            start: 'top bottom',
+            end:   'bottom top',
+            scrub: 1.2
+          }
+        }
+      );
+    });
+  }
+
+}());
+
+/* ======================================================
+   12. MODAL SYSTEM — Cars + Footer CTAs
    ====================================================== */
 (function () {
   'use strict';
