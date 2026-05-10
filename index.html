@@ -1,0 +1,3089 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: COSTA NEGRA Landing
+  screenshotPath: ../images/preview.png
+-->
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Costa Negra — Hiperlujo Privado · Riviera Maya</title>
+  <meta name="description" content="Flota privada exótica en Riviera Maya. Lamborghini, Porsche, G63 AMG. Entrega valet en CUN. Concierge bilingüe 24/7." />
+  <meta property="og:title" content="Costa Negra — Renta de hiperlujo en Riviera Maya" />
+  <meta property="og:description" content="Llegas. Las llaves te esperan. Flota privada en Cancún, Playa del Carmen y Tulum. Concierge bilingüe 24/7." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Onest:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+  /* ============================================================
+     COSTA NEGRA — Cinematic full-scroll luxury site
+     ============================================================ */
+  :root {
+    --ink: #0A0E12;
+    --ink-2: #11161C;
+    --slate: #1F2937;
+    --champagne: #D4B57E;
+    --champagne-soft: #B08D52;
+    --bone: #F5F0E5;
+    --bone-dim: #C5BFB1;
+    --caribbean: #0E7C7B;
+    --line: rgba(245, 240, 229, 0.10);
+    --line-strong: rgba(245, 240, 229, 0.26);
+    --display: "Fraunces", "Times New Roman", serif;
+    --sans: "Onest", -apple-system, "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --pad-page: clamp(1.5rem, 4vw, 4rem);
+    --r: 3px;
+    --text-shadow-soft: 0 1px 2px rgba(10, 14, 18, 0.55);
+    --text-shadow-display: 0 2px 12px rgba(10, 14, 18, 0.65);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--ink); color: var(--bone);
+    font-family: var(--sans); font-weight: 400;
+    font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    width: 100%; max-width: 100vw;
+  }
+  body { overflow-x: hidden; position: relative; min-height: 100vh; min-height: 100dvh; }
+  img, video, canvas, svg { max-width: 100%; height: auto; }
+  button, .cta { touch-action: manipulation; }
+  a { color: inherit; text-decoration: none; }
+  .grain {
+    position: fixed; inset: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 9999;
+    mix-blend-mode: overlay; opacity: 0.45;
+  }
+  .bg-stage {
+    position: fixed; inset: 0; z-index: 0;
+    overflow: hidden; pointer-events: none;
+  }
+  .bg-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    background: var(--ink);
+  }
+  .bg-noscript {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .bg-mask {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(180deg,
+        rgba(10,14,18,0.62) 0%, rgba(10,14,18,0.30) 12%,
+        rgba(10,14,18,0.22) 50%, rgba(10,14,18,0.30) 88%,
+        rgba(10,14,18,0.78) 100%),
+      linear-gradient(90deg,
+        rgba(10,14,18,0.32) 0%, rgba(10,14,18,0.10) 35%,
+        rgba(10,14,18,0.10) 65%, rgba(10,14,18,0.32) 100%);
+  }
+  /* ============================================================
+     LOADER fullscreen — hypercar orbitando + porcentaje
+     Cubre TODO mientras se cargan los frames. Al terminar, fade out.
+     ============================================================ */
+  .bg-loader {
+    position: fixed; inset: 0; z-index: 9998;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2rem; background: var(--ink);
+    transition: opacity 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .bg-loader.is-hidden { opacity: 0; pointer-events: none; }
+  .bg-loader-track {
+    position: relative;
+    width: clamp(180px, 26vw, 240px);
+    height: clamp(180px, 26vw, 240px);
+    border-radius: 50%;
+    border: 1px dashed rgba(212, 181, 126, 0.22);
+  }
+  .bg-loader-track::before {
+    content: ""; position: absolute; inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 181, 126, 0.06);
+  }
+  .bg-loader-orbit {
+    position: absolute; inset: 0;
+    animation: loader-orbit-spin 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    transform-origin: center center;
+  }
+  .bg-loader-car {
+    position: absolute;
+    top: -18px; left: 50%;
+    transform: translateX(-50%);
+    width: 64px; height: 32px;
+    color: var(--champagne);
+    filter: drop-shadow(0 2px 8px rgba(212, 181, 126, 0.5));
+  }
+  .bg-loader-car svg { width: 100%; height: 100%; display: block; }
+  @keyframes loader-orbit-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .bg-loader-center {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    text-align: center;
+  }
+  .bg-loader-pct-big {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    color: var(--bone); line-height: 1;
+    font-variation-settings: "opsz" 100;
+    font-feature-settings: "tnum";
+    letter-spacing: -0.02em;
+  }
+  .bg-loader-pct-big sup {
+    font-size: 0.45em; color: var(--champagne); margin-left: 0.1em;
+    font-style: italic; vertical-align: super;
+  }
+  .bg-loader-text {
+    font-family: var(--mono); font-size: clamp(0.72rem, 1.5vw, 0.82rem);
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--bone-dim); font-feature-settings: "tnum";
+    margin-top: 0.4rem;
+  }
+  .bg-loader-brand {
+    font-family: var(--display); font-weight: 500;
+    font-size: 0.78rem; letter-spacing: 0.32em;
+    color: var(--champagne); margin-top: -0.5rem;
+    text-shadow: var(--text-shadow-soft);
+  }
+  .bg-loader-bar {
+    display: block; width: clamp(160px, 20vw, 220px); height: 1px;
+    background: var(--line-strong); position: relative; overflow: hidden;
+  }
+  .bg-loader-fill {
+    position: absolute; inset: 0; background: var(--champagne);
+    transform-origin: left center; transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  /* Mientras carga, NADA del sitio es visible. Bloquea scroll. */
+  html.is-loading,
+  html.is-loading body { overflow: hidden; height: 100%; }
+  html.is-loading .nav,
+  html.is-loading .scroll-progress,
+  html.is-loading .content,
+  html.is-loading .grain { visibility: hidden; }
+  html.is-loading .bg-canvas,
+  html.is-loading .bg-mask { opacity: 0; }
+
+  /* ============================================================
+     ROTATE PROMPT — overlay animado para mobile/tablet en portrait.
+     Pide al usuario girar el dispositivo a horizontal antes de
+     arrancar el sitio. Se oculta automaticamente al rotar.
+     ============================================================ */
+  .rotate-prompt {
+    position: fixed; inset: 0; z-index: 99999;
+    background: #000;
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0; padding: 1.5rem;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+    overflow: hidden;
+    font-family: var(--display);
+  }
+  html.is-portrait-locked,
+  html.is-portrait-locked body { overflow: hidden; height: 100%; }
+  html.is-portrait-locked .rotate-prompt { display: flex; }
+  html.is-portrait-locked .grain { display: none; }
+  .rotate-prompt.is-fading { opacity: 0; pointer-events: none; }
+  .rotate-prompt-icon {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 3rem;
+    width: clamp(180px, 60vw, 240px);
+    height: auto;
+  }
+  .rotate-prompt-icon::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: rgba(113, 63, 18, 0.20); /* yellow-900/20 */
+    filter: blur(64px);
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .rotate-prompt-car {
+    position: relative; z-index: 10;
+    width: 100%; height: auto;
+    color: #B08D52; /* champagne-soft, más cerca de yellow-600/80 */
+    opacity: 0.85;
+    transform-origin: center center;
+    filter: drop-shadow(0 0 30px rgba(212, 181, 126, 0.4));
+    animation: rotate-device-anim 3.4s cubic-bezier(0.45, 0.05, 0.4, 1) infinite;
+    transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.4, 1);
+  }
+  /* El auto empieza vertical (como el celular en portrait) y rota a horizontal
+     para mostrar visualmente como debe girarse el dispositivo. */
+  @keyframes rotate-device-anim {
+    0%   { transform: rotate(90deg) scale(0.88); }
+    22%  { transform: rotate(90deg) scale(0.88); }
+    52%  { transform: rotate(0deg) scale(1); }
+    80%  { transform: rotate(0deg) scale(1); }
+    100% { transform: rotate(90deg) scale(0.88); }
+  }
+  /* Cuando hay JS con DeviceOrientation, el JS toma control y la animacion
+     se desactiva para que el auto rote en tiempo real con el celular. */
+  .rotate-prompt-icon.is-live .rotate-prompt-car {
+    animation: none;
+  }
+  .rotate-prompt-title {
+    font-family: var(--display); font-weight: 300;
+    font-size: clamp(2.5rem, 9vw, 3.75rem); /* text-5xl → md:text-6xl */
+    color: #FFFFFF; margin: 0 0 1.5rem;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    letter-spacing: -0.025em; line-height: 1.05;
+    max-width: 14ch;
+  }
+  .rotate-prompt-title em {
+    font-style: italic;
+    color: rgba(202, 138, 4, 0.8); /* yellow-600/80 */
+    font-family: var(--display);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .rotate-prompt-text {
+    font-family: var(--sans); font-weight: 300;
+    font-size: clamp(1.05rem, 4vw, 1.25rem); /* text-lg → md:text-xl */
+    color: #9CA3AF; /* gray-400 */
+    max-width: 20rem; /* max-w-xs */
+    margin: 0 0 4rem; /* mb-16 */
+    line-height: 1.625; /* leading-relaxed */
+  }
+  .rotate-prompt-hint {
+    font-family: var(--sans); /* sans-serif para el bold */
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 600; /* font-semibold */
+    letter-spacing: 0.3em; /* tracking-[0.3em] */
+    text-transform: uppercase;
+    color: rgba(161, 98, 7, 0.6); /* yellow-700/60 */
+    margin: 0 0 2rem; /* mb-8 */
+    animation: hint-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes hint-pulse {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
+  }
+  .rotate-prompt-skip {
+    margin: 0;
+    background: transparent;
+    border: 1px solid rgba(161, 98, 7, 0.5); /* border-yellow-700/50 */
+    color: #FFFFFF;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 0.875rem; /* text-sm */
+    letter-spacing: 0.1em; /* tracking-widest */
+    text-transform: uppercase;
+    padding: 0.75rem 3rem; /* py-3 px-12 */
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.25s ease, border-color 0.3s ease, color 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    position: relative;
+    z-index: 2;
+    min-height: 48px;
+  }
+  .rotate-prompt-skip:hover,
+  .rotate-prompt-skip:active,
+  .rotate-prompt-skip:focus {
+    background: rgba(255, 255, 255, 0.05); /* hover:bg-white/5 */
+    outline: none;
+  }
+  .rotate-prompt-spacer { display: none; }
+  .rotate-prompt-decor {
+    margin-top: 5rem; /* mt-20 */
+    width: 8rem; /* w-32 */
+    height: 1px;
+    background: rgba(113, 63, 18, 0.4); /* bg-yellow-900/40 */
+    position: relative; overflow: hidden;
+    align-self: center;
+  }
+  .rotate-prompt-decor::after {
+    content: ""; position: absolute; inset: 0; background: var(--champagne);
+    transform-origin: left center; transform: scaleX(0);
+    animation: decor-fill 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  @keyframes decor-fill {
+    0%   { transform: scaleX(0); transform-origin: left center; }
+    50%  { transform: scaleX(1); transform-origin: left center; }
+    51%  { transform: scaleX(1); transform-origin: right center; }
+    100% { transform: scaleX(0); transform-origin: right center; }
+  }
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; padding: 1.4rem var(--pad-page);
+    background: linear-gradient(to bottom, rgba(10,14,18,0.65) 0%, rgba(10,14,18,0) 100%);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .logo {
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    font-family: var(--display); font-weight: 500;
+    font-size: 1.05rem; letter-spacing: 0.18em;
+    color: var(--bone); font-variation-settings: "opsz" 14;
+  }
+  .logo-mark {
+    width: 28px; height: 28px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--champagne); color: var(--ink);
+    font-family: var(--display); font-style: italic;
+    font-weight: 600; font-size: 1rem; letter-spacing: 0;
+  }
+  .logo-word { font-size: 0.85rem; }
+  .nav-links {
+    display: flex; gap: 2.25rem;
+    font-size: 0.82rem; font-weight: 400; letter-spacing: 0.06em;
+    color: var(--bone-dim);
+  }
+  .nav-links a { position: relative; padding: 0.35rem 0; transition: color 0.3s ease; }
+  .nav-links a:hover { color: var(--bone); }
+  .nav-links a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 1px; background: var(--champagne);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav .cta-secondary { justify-self: end; }
+
+  /* ============================================================
+     LANG SWITCHER — selector de idioma estilo glassmorphism luxury
+     ============================================================ */
+  .nav-right {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    justify-self: end;
+  }
+  .lang-switcher { position: relative; display: inline-flex; }
+  .lang-current {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    background: rgba(10,14,18,0.45);
+    border: 1px solid var(--line-strong);
+    color: var(--bone);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--r);
+    cursor: pointer;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lang-current:hover,
+  .lang-current[aria-expanded="true"] {
+    border-color: var(--champagne);
+    color: var(--champagne);
+    outline: none;
+  }
+  .lang-globe {
+    width: 14px; height: 14px;
+    display: inline-block; flex-shrink: 0;
+  }
+  .lang-code { font-feature-settings: "tnum"; }
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    list-style: none;
+    margin: 0; padding: 0.4rem 0;
+    background: rgba(10,14,18,0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r);
+    min-width: 200px;
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: none;
+    z-index: 200;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,181,126,0.06);
+  }
+  .lang-switcher.is-open .lang-menu { display: block; }
+  .lang-menu::-webkit-scrollbar { width: 4px; }
+  .lang-menu::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
+  .lang-menu li { margin: 0; padding: 0; }
+  .lang-menu li button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--bone);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 400;
+    padding: 0.65rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lang-menu li button:hover,
+  .lang-menu li button:focus {
+    background: rgba(212,181,126,0.10);
+    color: var(--champagne);
+    outline: none;
+  }
+  .lang-menu li button.is-active {
+    background: rgba(212,181,126,0.14);
+    color: var(--champagne);
+  }
+  .lang-menu li button.is-active::after {
+    content: "•";
+    margin-left: auto;
+    color: var(--champagne);
+    font-size: 1rem;
+  }
+  .lang-menu li button .lang-flag {
+    font-size: 1.15rem;
+    line-height: 1;
+    display: inline-block;
+    width: 1.4rem;
+    text-align: center;
+  }
+  .lang-menu li button .lang-name {
+    font-size: 0.84rem;
+    letter-spacing: 0.01em;
+  }
+
+  @media (max-width: 767px) {
+    .lang-current { font-size: 0.68rem; padding: 0.5rem 0.7rem; }
+    .lang-menu { right: -0.5rem; min-width: 180px; }
+    .nav-right { gap: 0.4rem; }
+  }
+  .scroll-progress {
+    position: fixed; z-index: 90; top: 50%; right: var(--pad-page);
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
+    color: var(--bone-dim); pointer-events: none;
+  }
+  .scroll-progress-num { font-feature-settings: "tnum"; color: var(--bone); }
+  .scroll-progress-num.scroll-progress-total { color: var(--bone-dim); opacity: 0.6; }
+  .scroll-progress-track {
+    display: block; width: 1px; height: 200px;
+    background: var(--line-strong); position: relative; overflow: hidden;
+  }
+  .scroll-progress-fill {
+    position: absolute; inset: 0; background: var(--champagne);
+    transform-origin: top center; transform: scaleY(0);
+  }
+  .cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.95rem 1.5rem; border-radius: var(--r);
+    font-family: var(--sans); font-weight: 500;
+    font-size: 0.85rem; letter-spacing: 0.04em;
+    transition: all 0.3s ease; cursor: pointer; border: 1px solid transparent;
+  }
+  .cta-primary { background: var(--champagne); color: var(--ink); }
+  .cta-primary:hover { background: var(--bone); transform: translateY(-1px); }
+  .cta-secondary {
+    background: rgba(10,14,18,0.45); color: var(--bone);
+    border: 1px solid var(--line-strong);
+    font-size: 0.78rem; padding: 0.65rem 1.15rem;
+    backdrop-filter: blur(8px);
+  }
+  .cta-secondary:hover { border-color: var(--champagne); color: var(--champagne); }
+  .cta-ghost { background: transparent; color: var(--bone); padding: 0.95rem 0.6rem; }
+  .cta-ghost:hover { color: var(--champagne); }
+  .cta-large { padding: 1.15rem 2rem; font-size: 0.95rem; }
+  .content { position: relative; z-index: 10; }
+  .section {
+    position: relative;
+    min-height: 100vh; min-height: 100dvh;
+    padding: clamp(6rem, 14vh, 10rem) var(--pad-page);
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 1280px; margin: 0 auto;
+  }
+  .kicker {
+    font-family: var(--mono); font-size: 0.74rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--champagne); margin: 0 0 1.8rem;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    text-shadow: var(--text-shadow-soft);
+  }
+  .kicker .dot {
+    width: 6px; height: 6px; background: var(--champagne);
+    border-radius: 50%; display: inline-block;
+  }
+  .display-1 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(2.8rem, 7.5vw, 6rem);
+    line-height: 1.02; letter-spacing: -0.025em;
+    margin: 0 0 1.6rem; color: var(--bone);
+    font-variation-settings: "opsz" 100, "SOFT" 50;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+    text-rendering: geometricPrecision;
+    max-width: 16ch; text-shadow: var(--text-shadow-display);
+  }
+  .display-2 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(2.2rem, 5.4vw, 4.4rem);
+    line-height: 1.05; letter-spacing: -0.02em;
+    margin: 0 0 1.6rem; color: var(--bone);
+    font-variation-settings: "opsz" 100, "SOFT" 50;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+    text-rendering: geometricPrecision;
+    max-width: 18ch; text-shadow: var(--text-shadow-display);
+  }
+  .display-1 em, .display-2 em {
+    font-style: italic; color: var(--champagne);
+    font-variation-settings: "opsz" 100, "SOFT" 100;
+  }
+  .lede {
+    font-size: clamp(1.1rem, 1.4vw, 1.3rem); line-height: 1.55;
+    color: var(--bone); max-width: 52ch; margin: 0 0 2.6rem;
+    font-weight: 400; text-shadow: var(--text-shadow-soft);
+  }
+  .cta-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .section-hero { min-height: 100vh; min-height: 100dvh; }
+  .hero-meta {
+    position: absolute; bottom: 2.5rem; left: var(--pad-page);
+    display: flex; align-items: center; gap: 0.75rem;
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em;
+    color: var(--bone-dim); text-transform: uppercase;
+  }
+  .hero-meta .rule { width: 60px; height: 1px; background: var(--line-strong); }
+  .fleet-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0; border-top: 1px solid var(--line); margin-top: 1.5rem;
+  }
+  .fleet-card {
+    padding: 2.2rem 1.5rem;
+    border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+    background: rgba(10,14,18,0.22);
+    backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
+    transition: background 0.4s ease, transform 0.4s ease;
+  }
+  .fleet-card:hover { background: rgba(17,22,28,0.55); transform: translateY(-2px); }
+  .fleet-tag {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--champagne); margin: 0 0 1rem;
+  }
+  .fleet-card h3 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 1.4rem; line-height: 1.15;
+    margin: 0 0 0.5rem; color: var(--bone);
+  }
+  .fleet-detail { font-size: 0.92rem; color: var(--bone-dim); margin: 0 0 1.5rem; font-weight: 400; }
+  .fleet-price {
+    font-size: 0.85rem; color: var(--bone-dim); margin: 0;
+    border-top: 1px solid var(--line); padding-top: 1rem;
+  }
+  .fleet-price strong {
+    font-family: var(--display); font-weight: 500;
+    font-size: 1.15rem; color: var(--bone);
+  }
+  .steps {
+    list-style: none; margin: 1.5rem 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; border-top: 1px solid var(--line);
+  }
+  .steps li {
+    padding: 2.5rem 1.5rem;
+    border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    background: rgba(10,14,18,0.22);
+    backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  }
+  .steps li:last-child { border-right: none; }
+  .step-num {
+    font-family: var(--mono); font-size: 0.78rem;
+    letter-spacing: 0.16em; color: var(--champagne); margin: 0 0 1.6rem;
+  }
+  .steps h3 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 1.5rem; margin: 0 0 0.85rem; color: var(--bone);
+  }
+  .steps p { font-size: 0.98rem; line-height: 1.6; color: var(--bone); margin: 0; font-weight: 400; }
+  .included-grid {
+    list-style: none; margin: 1.5rem 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0; border-top: 1px solid var(--line);
+  }
+  .included-grid li {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+    font-size: 0.98rem; color: var(--bone);
+    background: rgba(10,14,18,0.22);
+    backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
+    font-weight: 400;
+  }
+  .included-grid li strong { color: var(--bone); font-weight: 600; }
+  .area-list { list-style: none; margin: 1.5rem 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .area-list li {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--line);
+    background: rgba(10,14,18,0.22);
+    backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
+    font-size: 1rem; gap: 1rem; flex-wrap: wrap; font-weight: 400;
+  }
+  .area-place { color: var(--bone); font-weight: 400; }
+  .area-time {
+    font-family: var(--mono); font-size: 0.78rem;
+    color: var(--champagne); letter-spacing: 0.06em;
+  }
+  .req-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; margin-top: 1.5rem; border-top: 1px solid var(--line);
+  }
+  .req-card {
+    padding: 2.2rem 1.5rem;
+    border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+    background: rgba(10,14,18,0.22);
+    backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  }
+  .req-card:last-child { border-right: none; }
+  .req-card h3 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 1.3rem; margin: 0 0 1.4rem; color: var(--bone);
+  }
+  .req-card ul { list-style: none; margin: 0; padding: 0; }
+  .req-card li {
+    padding: 0.7rem 0; border-bottom: 1px solid var(--line);
+    font-size: 0.95rem; color: var(--bone); font-weight: 400; line-height: 1.5;
+  }
+  .req-card li:last-child { border-bottom: none; }
+  .req-card li strong { color: var(--champagne); font-weight: 600; }
+  .why-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0; margin-top: 1.5rem; border-top: 1px solid var(--line);
+  }
+  .why-card {
+    padding: 2.5rem 1.8rem;
+    border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+    background: rgba(10,14,18,0.22);
+    backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  }
+  .why-card:nth-child(2n) { border-right: none; }
+  .why-num {
+    font-family: var(--mono); font-size: 0.78rem;
+    letter-spacing: 0.16em; color: var(--champagne); margin: 0 0 1.4rem;
+  }
+  .why-card h3 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 1.6rem; margin: 0 0 1rem; color: var(--bone);
+  }
+  .why-card p { font-size: 1rem; line-height: 1.6; color: var(--bone); margin: 0; font-weight: 400; }
+  .section-testimonials { align-items: center; text-align: center; }
+  .section-testimonials .kicker, .section-testimonials .display-2 {
+    text-align: center; align-self: center;
+  }
+  .quote {
+    margin: 2.5rem auto 0; max-width: 56ch;
+    background: rgba(10,14,18,0.22);
+    backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
+    padding: 2.2rem 2rem; border: 1px solid var(--line);
+  }
+  .quote blockquote {
+    font-family: var(--display); font-weight: 300; font-style: italic;
+    font-size: clamp(1.2rem, 2vw, 1.65rem); line-height: 1.4;
+    color: var(--bone); margin: 0 0 1.5rem;
+  }
+  .quote figcaption {
+    font-family: var(--mono); font-size: 0.76rem;
+    letter-spacing: 0.1em; color: var(--champagne); text-transform: uppercase;
+  }
+  .faq-item {
+    margin-top: 0; border-bottom: 1px solid var(--line);
+    background: rgba(10,14,18,0.22);
+    backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  }
+  .faq-item:first-of-type { margin-top: 1.5rem; border-top: 1px solid var(--line); }
+  .faq-item summary {
+    cursor: pointer; padding: 1.4rem 1.5rem;
+    font-family: var(--display); font-weight: 400;
+    font-size: 1.15rem; color: var(--bone);
+    list-style: none; position: relative; padding-right: 3rem;
+    transition: color 0.3s ease;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "+"; position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--mono); font-size: 1.1rem;
+    color: var(--champagne); transition: transform 0.3s ease;
+  }
+  .faq-item[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+  .faq-item:hover summary { color: var(--champagne); }
+  .faq-item p {
+    padding: 0 1.5rem 1.5rem; font-size: 0.98rem;
+    color: var(--bone); line-height: 1.65; margin: 0; font-weight: 400;
+  }
+  .section-book { align-items: center; text-align: center; }
+  .section-book .kicker, .section-book .display-1, .section-book .lede {
+    text-align: center; align-self: center; max-width: 28ch;
+    margin-left: auto; margin-right: auto;
+  }
+  .book-cta-row {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 1rem; margin: 1rem 0 2rem;
+  }
+  /* WhatsApp CTA — multiline en mobile (label arriba, número abajo) */
+  .cta-wa {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.4em;
+    line-height: 1.25;
+    text-align: center;
+  }
+  .cta-wa-label { white-space: nowrap; }
+  .cta-wa-number {
+    font-family: var(--mono);
+    font-feature-settings: "tnum";
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    font-size: 0.95em;
+  }
+  .cta-wa-sep { opacity: 0.65; }
+  .book-note {
+    font-family: var(--mono); font-size: 0.82rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--bone); margin: 0;
+    text-shadow: var(--text-shadow-soft);
+    line-height: 1.6;
+  }
+  .footer {
+    padding: 3rem var(--pad-page) 2.5rem;
+    background: rgba(10,14,18,0.32);
+    backdrop-filter: blur(26px) saturate(1.18); -webkit-backdrop-filter: blur(26px) saturate(1.18);
+    border-top: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 1.4rem;
+    font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.06em;
+    color: var(--bone); position: relative; z-index: 10;
+    line-height: 1.7;
+  }
+  .footer-row {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem; flex-wrap: wrap;
+  }
+  .footer-logo {
+    font-family: var(--display); font-weight: 500;
+    font-size: 0.95rem; letter-spacing: 0.2em; color: var(--bone);
+  }
+  .footer-tag { font-size: 0.78rem; color: var(--bone); }
+  .footer-meta { font-size: 0.78rem; color: var(--bone); gap: 1.2rem 1.4rem; }
+  .footer-meta span { color: var(--bone); }
+  .footer-meta a { color: var(--bone); }
+  .footer a:hover { color: var(--champagne); }
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .fleet-card.reveal:nth-child(1) { transition-delay: 0s; }
+  .fleet-card.reveal:nth-child(2) { transition-delay: 0.06s; }
+  .fleet-card.reveal:nth-child(3) { transition-delay: 0.12s; }
+  .fleet-card.reveal:nth-child(4) { transition-delay: 0.18s; }
+  .fleet-card.reveal:nth-child(5) { transition-delay: 0.24s; }
+  .fleet-card.reveal:nth-child(6) { transition-delay: 0.30s; }
+  .fleet-card.reveal:nth-child(7) { transition-delay: 0.36s; }
+  .fleet-card.reveal:nth-child(8) { transition-delay: 0.42s; }
+  .steps li.reveal:nth-child(1) { transition-delay: 0s; }
+  .steps li.reveal:nth-child(2) { transition-delay: 0.10s; }
+  .steps li.reveal:nth-child(3) { transition-delay: 0.20s; }
+  .req-card.reveal:nth-child(1) { transition-delay: 0s; }
+  .req-card.reveal:nth-child(2) { transition-delay: 0.10s; }
+  .req-card.reveal:nth-child(3) { transition-delay: 0.20s; }
+  .why-card.reveal:nth-child(1) { transition-delay: 0s; }
+  .why-card.reveal:nth-child(2) { transition-delay: 0.08s; }
+  .why-card.reveal:nth-child(3) { transition-delay: 0.16s; }
+  .why-card.reveal:nth-child(4) { transition-delay: 0.24s; }
+  /* ============================================================
+     RESPONSIVE — mobile S/M/L · tablet · laptop · desktop · ultrawide
+     ============================================================ */
+
+  /* Tap targets accesibles — TODOS los dispositivos táctiles */
+  @media (hover: none) and (pointer: coarse) {
+    .cta, .nav-links a, .faq-item summary, .footer a {
+      min-height: 44px;
+    }
+    .cta { min-width: 44px; }
+  }
+
+  /* Tablet landscape / Laptop pequeño 1024-1279 */
+  @media (max-width: 1279px) {
+    .section { max-width: 100%; }
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .req-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* Tablet portrait 768-1023 */
+  @media (max-width: 1023px) {
+    .nav { grid-template-columns: auto 1fr auto; }
+    .nav-links { gap: 1.4rem; font-size: 0.78rem; }
+    .scroll-progress { right: 1rem; }
+    .scroll-progress-track { height: 140px; }
+    .fleet-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: repeat(3, 1fr); }
+    .req-grid { grid-template-columns: repeat(3, 1fr); }
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .included-grid { grid-template-columns: repeat(2, 1fr); }
+    .fleet-card, .req-card { padding: 1.8rem 1.3rem; }
+    .why-card { padding: 2rem 1.5rem; }
+  }
+
+  /* Mobile L 541-767 */
+  @media (max-width: 767px) {
+    .nav { grid-template-columns: 1fr auto; padding: 1rem var(--pad-page); }
+    .nav-links { display: none; }
+    .nav .cta-secondary { font-size: 0.74rem; padding: 0.6rem 1rem; }
+    .scroll-progress { display: none; }
+    .fleet-grid, .steps, .included-grid, .req-grid, .why-grid {
+      grid-template-columns: 1fr;
+    }
+    .fleet-card, .steps li, .req-card, .why-card,
+    .fleet-card:nth-child(2n), .why-card:nth-child(2n),
+    .req-card:last-child {
+      border-right: none;
+    }
+    .steps li { padding: 2.2rem 1.6rem; }
+    .section {
+      padding: clamp(5rem, 14vh, 7.5rem) var(--pad-page);
+      min-height: auto;
+    }
+    .section-hero { min-height: 100vh; min-height: 100dvh; }
+    .footer-row { flex-direction: column; align-items: flex-start; }
+    .reveal { transform: translateY(20px); }
+    .area-list li {
+      flex-direction: column; align-items: flex-start;
+      gap: 0.5rem; padding: 1.4rem 1.5rem;
+    }
+    .quote { padding: 2rem 1.6rem; }
+    .quote blockquote { font-size: 1.2rem; line-height: 1.45; }
+    .bg-mask {
+      background:
+        linear-gradient(180deg,
+          rgba(10,14,18,0.42) 0%, rgba(10,14,18,0.22) 30%,
+          rgba(10,14,18,0.25) 70%, rgba(10,14,18,0.78) 100%);
+    }
+    /* Loader mobile — estilo cinematográfico tipo "Gira el dispositivo":
+       auto centrado con glow gold, sin órbita. Animación float + glow pulse. */
+    .bg-loader { gap: 1.6rem; padding: 2rem 1.5rem; }
+    .bg-loader-track {
+      width: auto; height: auto; border: none;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 1.8rem;
+    }
+    .bg-loader-track::before { display: none; }
+    .bg-loader-orbit {
+      animation: none;
+      position: static; inset: auto;
+      width: auto; height: auto;
+      display: flex; justify-content: center;
+    }
+    .bg-loader-car {
+      position: static; top: auto; left: auto;
+      transform: none;
+      width: 160px; height: 70px;
+      animation: loader-car-float 3.4s cubic-bezier(0.45, 0.05, 0.4, 1) infinite;
+    }
+    @keyframes loader-car-float {
+      0%, 100% {
+        transform: translateY(0);
+        filter: drop-shadow(0 6px 22px rgba(212, 181, 126, 0.45));
+      }
+      50% {
+        transform: translateY(-6px);
+        filter: drop-shadow(0 12px 32px rgba(212, 181, 126, 0.75));
+      }
+    }
+    .bg-loader-center {
+      position: static; top: auto; left: auto;
+      transform: none;
+    }
+    .bg-loader-pct-big { font-size: clamp(2.8rem, 11vw, 3.8rem); }
+    .bg-loader-brand {
+      font-size: 0.82rem; letter-spacing: 0.36em;
+      margin-top: 0;
+    }
+  }
+
+  /* Mobile M 376-540 — luxury fluid typography, generous breathing */
+  @media (max-width: 540px) {
+    :root { --pad-page: 1.4rem; }
+
+    /* Tipografia — mas respirable, mejor jerarquia */
+    .display-1 {
+      font-size: clamp(2.1rem, 10.5vw, 3.1rem);
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      max-width: 100%;
+      margin-bottom: 1.4rem;
+    }
+    .display-2 {
+      font-size: clamp(1.75rem, 8.5vw, 2.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.018em;
+      max-width: 100%;
+      margin-bottom: 1.3rem;
+    }
+    .lede {
+      font-size: 1.02rem;
+      line-height: 1.62;
+      max-width: 38ch;
+      margin-bottom: 2.2rem;
+    }
+    .kicker {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      margin-bottom: 1.5rem;
+    }
+
+    /* CTA stack vertical, full-width */
+    .cta-row {
+      flex-direction: column; align-items: stretch;
+      width: 100%; gap: 0.7rem;
+    }
+    .cta {
+      justify-content: center; width: 100%;
+      padding: 1.05rem 1.3rem; font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+    .cta-secondary { width: auto; }
+
+    /* Hero limpio en mobile */
+    .hero-meta { display: none; }
+    .logo-word { font-size: 0.78rem; letter-spacing: 0.16em; }
+    .logo-mark { width: 26px; height: 26px; font-size: 0.95rem; }
+    .nav { padding: 0.85rem var(--pad-page); }
+    .nav .cta-secondary { font-size: 0.7rem; padding: 0.55rem 0.9rem; }
+
+    /* Cards — mas padding, mejor jerarquia */
+    .fleet-card { padding: 1.85rem 1.4rem; }
+    .fleet-card h3 { font-size: 1.4rem; line-height: 1.18; margin-bottom: 0.5rem; }
+    .fleet-detail { font-size: 0.95rem; line-height: 1.55; margin-bottom: 1.4rem; }
+    .fleet-price { font-size: 0.88rem; padding-top: 1.1rem; }
+    .fleet-price strong { font-size: 1.2rem; }
+    .fleet-tag { margin-bottom: 1.1rem; letter-spacing: 0.18em; }
+
+    .req-card { padding: 1.85rem 1.4rem; }
+    .req-card h3 { font-size: 1.3rem; margin-bottom: 1.3rem; }
+    .req-card li { font-size: 0.96rem; line-height: 1.55; padding: 0.85rem 0; }
+
+    .why-card { padding: 2rem 1.5rem; }
+    .why-card h3 { font-size: 1.42rem; line-height: 1.18; margin-bottom: 0.9rem; }
+    .why-card p { font-size: 1rem; line-height: 1.62; }
+    .why-num { margin-bottom: 1.3rem; letter-spacing: 0.18em; }
+
+    .steps li { padding: 1.95rem 1.4rem; }
+    .steps h3 { font-size: 1.45rem; line-height: 1.18; margin-bottom: 0.75rem; }
+    .steps p { font-size: 0.98rem; line-height: 1.62; }
+    .step-num { margin-bottom: 1.4rem; letter-spacing: 0.18em; }
+
+    .included-grid li { padding: 1.4rem 1.4rem; font-size: 0.98rem; line-height: 1.6; }
+
+    .area-list li {
+      padding: 1.3rem 1.4rem; gap: 0.4rem;
+      font-size: 1rem;
+    }
+    .area-place { font-size: 1rem; line-height: 1.5; }
+    .area-time { font-size: 0.78rem; letter-spacing: 0.08em; }
+
+    .faq-item summary {
+      font-size: 1.08rem; padding: 1.3rem 1.4rem;
+      padding-right: 2.8rem; line-height: 1.35;
+    }
+    .faq-item summary::after { right: 1.3rem; }
+    .faq-item p {
+      font-size: 0.98rem; line-height: 1.68;
+      padding: 0 1.4rem 1.4rem;
+    }
+
+    .quote { padding: 2rem 1.5rem; }
+    .quote blockquote {
+      font-size: 1.18rem; line-height: 1.45;
+      margin-bottom: 1.3rem;
+    }
+    .quote figcaption { font-size: 0.74rem; letter-spacing: 0.12em; }
+
+    /* Section spacing — mas aire entre secciones */
+    .section { padding: 4.5rem var(--pad-page); }
+    .section-hero { padding: 0 var(--pad-page); }
+    .section-book .display-1, .section-book .lede { max-width: 100%; }
+    .book-cta-row { gap: 1.1rem; margin: 1.4rem 0 2.2rem; }
+    .book-cta-row .cta { width: 100%; text-align: center; }
+
+    /* Footer */
+    .footer { padding: 2.6rem var(--pad-page) 2rem; gap: 1.5rem; }
+    .footer-row { gap: 0.7rem; }
+    .footer-tag { font-size: 0.84rem; line-height: 1.55; letter-spacing: 0.05em; }
+    .footer-meta {
+      font-size: 0.8rem;
+      gap: 0.55rem 1rem;
+      line-height: 1.7;
+      letter-spacing: 0.05em;
+    }
+    .footer-meta span { display: block; }
+    .footer-logo { font-size: 1rem; letter-spacing: 0.22em; }
+
+    /* Loader */
+    .bg-loader-text { font-size: 0.72rem; letter-spacing: 0.2em; }
+    .bg-loader-bar { width: 62vw; }
+
+    /* Rotate prompt — copy luxury (estilo Tailwind reference) */
+    .rotate-prompt-icon { width: clamp(170px, 55vw, 220px); margin-bottom: 2.5rem; }
+    .rotate-prompt-title { margin-bottom: 1.25rem; }
+    .rotate-prompt-text { margin-bottom: 3rem; }
+    .rotate-prompt-hint { margin-bottom: 1.75rem; }
+    .rotate-prompt-decor { margin-top: 4rem; }
+
+    /* WhatsApp CTA — label arriba, numero abajo */
+    .cta-wa {
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 1.1rem 1.3rem;
+      width: 100%;
+    }
+    .cta-wa-label {
+      font-size: 0.98rem;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+    .cta-wa-sep { display: none; }
+    .cta-wa-number {
+      font-size: 0.95rem;
+      letter-spacing: 0.09em;
+      opacity: 0.95;
+    }
+    .book-note {
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      line-height: 1.75;
+      max-width: 32ch;
+      margin: 0 auto;
+    }
+  }
+
+  /* Mobile S 320-375 (iPhone SE, Galaxy A pequeños) */
+  @media (max-width: 375px) {
+    :root { --pad-page: 1.15rem; }
+    .display-1 {
+      font-size: clamp(1.85rem, 9.5vw, 2.5rem);
+      line-height: 1.06;
+      margin-bottom: 1.2rem;
+    }
+    .display-2 {
+      font-size: clamp(1.55rem, 8vw, 2.05rem);
+      line-height: 1.1;
+      margin-bottom: 1.15rem;
+    }
+    .lede { font-size: 0.97rem; line-height: 1.6; margin-bottom: 1.9rem; }
+    .kicker { font-size: 0.68rem; margin-bottom: 1.3rem; }
+    .nav-links { display: none; }
+    .logo-word { font-size: 0.72rem; }
+    .fleet-card { padding: 1.65rem 1.25rem; }
+    .fleet-card h3 { font-size: 1.28rem; }
+    .req-card, .why-card, .steps li { padding: 1.7rem 1.25rem; }
+    .req-card h3, .why-card h3, .steps h3 { font-size: 1.22rem; }
+    .quote { padding: 1.7rem 1.3rem; }
+    .quote blockquote { font-size: 1.08rem; line-height: 1.45; }
+    .faq-item summary {
+      font-size: 1.02rem; padding: 1.15rem 1.25rem;
+      padding-right: 2.6rem;
+    }
+    .faq-item p { padding: 0 1.25rem 1.25rem; font-size: 0.95rem; }
+    .section { padding: 4rem var(--pad-page); }
+    .cta { padding: 0.95rem 1.15rem; font-size: 0.87rem; }
+    .cta-wa { padding: 1rem 1.2rem; }
+    .cta-wa-label { font-size: 0.92rem; }
+    .cta-wa-number { font-size: 0.9rem; }
+    .rotate-prompt-icon { width: clamp(150px, 50vw, 190px); margin-bottom: 2rem; }
+    .rotate-prompt-title { font-size: clamp(2.2rem, 9.5vw, 3rem); margin-bottom: 1rem; }
+    .rotate-prompt-text { font-size: 1rem; margin-bottom: 2.5rem; }
+    .rotate-prompt-skip { padding: 0.7rem 2.2rem; }
+    .rotate-prompt-decor { margin-top: 3.5rem; width: 7rem; }
+  }
+
+  /* Ultrawide 1920+ — limitar ancho del contenido */
+  @media (min-width: 1920px) {
+    .section { max-width: 1440px; }
+    .display-1 { font-size: clamp(3rem, 6vw, 7rem); }
+    .display-2 { font-size: clamp(2.5rem, 4.5vw, 5rem); }
+  }
+
+  /* ============================================================
+     LANDSCAPE PHONE (iPhone SE, 14, Pro Max, Galaxy en horizontal)
+     Caracteristica: alto bajo (<500px) + orientacion horizontal
+     ============================================================ */
+  @media (orientation: landscape) and (max-height: 500px) {
+    :root { --pad-page: clamp(1.5rem, 3vw, 3rem); }
+    .nav {
+      grid-template-columns: auto 1fr auto;
+      padding: 0.6rem var(--pad-page);
+    }
+    .nav-links { display: flex; gap: 1.1rem; font-size: 0.72rem; }
+    .nav .cta-secondary { font-size: 0.7rem; padding: 0.45rem 0.85rem; }
+    .logo-word { font-size: 0.78rem; }
+    .scroll-progress { display: none; }
+    .section {
+      min-height: 100vh; min-height: 100dvh;
+      padding: clamp(4rem, 12vh, 5.5rem) var(--pad-page);
+      max-width: 100%;
+      justify-content: center;
+    }
+    .section-hero {
+      min-height: 100vh; min-height: 100dvh;
+      padding-top: 4.5rem;
+    }
+    .display-1 {
+      font-size: clamp(1.8rem, 5.5vh, 3rem);
+      line-height: 1.05; max-width: 22ch;
+    }
+    .display-2 {
+      font-size: clamp(1.5rem, 4.5vh, 2.4rem);
+      line-height: 1.08; max-width: 22ch;
+    }
+    .lede {
+      font-size: clamp(0.85rem, 2.2vh, 1rem);
+      line-height: 1.45; margin-bottom: 1.4rem;
+    }
+    .kicker { font-size: 0.7rem; margin-bottom: 1rem; }
+    .hero-meta { display: none; }
+    .cta-row { flex-direction: row; gap: 0.5rem; flex-wrap: wrap; }
+    .cta {
+      padding: 0.65rem 1.1rem; font-size: 0.78rem;
+      min-height: 38px; width: auto;
+    }
+    .cta-large { padding: 0.85rem 1.4rem; font-size: 0.85rem; }
+    /* Grids 2 columnas en landscape phone — mas usable que 1 col */
+    .fleet-grid { grid-template-columns: repeat(2, 1fr); }
+    .req-grid { grid-template-columns: repeat(3, 1fr); }
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .included-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: repeat(3, 1fr); }
+    .fleet-card, .req-card, .why-card, .steps li { padding: 1.4rem 1rem; }
+    .fleet-card h3 { font-size: 1.1rem; }
+    .req-card h3, .why-card h3 { font-size: 1.05rem; }
+    .steps h3 { font-size: 1.1rem; }
+    .fleet-detail, .steps p, .why-card p, .req-card li {
+      font-size: 0.85rem; line-height: 1.45;
+    }
+    .included-grid li { padding: 1rem 1.1rem; font-size: 0.88rem; }
+    .area-list li { padding: 0.9rem 1.2rem; font-size: 0.9rem; }
+    .quote {
+      padding: 1.4rem 1.6rem; max-width: 50ch;
+    }
+    .quote blockquote { font-size: 1.1rem; line-height: 1.4; }
+    .faq-item summary {
+      padding: 1rem 1.3rem; padding-right: 2.5rem; font-size: 1rem;
+    }
+    .faq-item p { padding: 0 1.3rem 1.1rem; font-size: 0.88rem; }
+    .footer { padding: 1.8rem var(--pad-page) 1.4rem; }
+    .footer-row { flex-direction: row; flex-wrap: wrap; }
+  }
+
+  /* ============================================================
+     TABLET LANDSCAPE (iPad mini, iPad Air, iPad Pro horizontal)
+     Caracteristica: alto >=600px + ancho 1024-1366px + touch
+     ============================================================ */
+  @media (orientation: landscape) and (min-height: 601px) and (min-width: 768px) and (max-width: 1366px) and (pointer: coarse) {
+    .section { max-width: 100%; padding: clamp(5rem, 12vh, 8rem) var(--pad-page); }
+    .display-1 { font-size: clamp(2.6rem, 6vw, 4.6rem); max-width: 18ch; }
+    .display-2 { font-size: clamp(2rem, 4.6vw, 3.6rem); max-width: 20ch; }
+    .lede { font-size: clamp(1rem, 1.5vw, 1.2rem); max-width: 60ch; }
+    .fleet-grid { grid-template-columns: repeat(3, 1fr); }
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .req-grid { grid-template-columns: repeat(3, 1fr); }
+    .included-grid { grid-template-columns: repeat(3, 1fr); }
+    .steps { grid-template-columns: repeat(3, 1fr); }
+    .nav-links { display: flex; gap: 1.6rem; font-size: 0.8rem; }
+    .scroll-progress { display: flex; right: 1.5rem; }
+    .scroll-progress-track { height: 160px; }
+  }
+
+  /* Print fallback */
+  @media print {
+    .bg-stage, .scroll-progress, .grain { display: none !important; }
+    .content { color: #000; background: #fff; }
+    .section { min-height: auto; page-break-inside: avoid; }
+  }
+
+  /* ============================================================
+     LUXURY HOVER EFFECTS — micro-interacciones únicas por módulo.
+     Cada tipo de bloque tiene su propia firma visual al hover.
+     Todas las animaciones usan cubic-bezier(0.22,0.61,0.36,1) para
+     consistencia (ease-out suave tipo Apple).
+     ============================================================ */
+
+  /* Base: todos los cards transparentes responden al cursor con will-change */
+  .fleet-card,
+  .steps li,
+  .req-card,
+  .why-card,
+  .quote,
+  .faq-item,
+  .included-grid li,
+  .area-list li {
+    position: relative;
+    overflow: hidden;
+    will-change: transform, background, box-shadow, border-color;
+    transition:
+      background 0.55s cubic-bezier(0.22,0.61,0.36,1),
+      transform 0.55s cubic-bezier(0.22,0.61,0.36,1),
+      box-shadow 0.55s cubic-bezier(0.22,0.61,0.36,1),
+      border-color 0.55s cubic-bezier(0.22,0.61,0.36,1);
+  }
+
+  /* ---------- 1. FLEET CARDS — golden corner glow + cinema lift ---------- */
+  .fleet-card::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(circle at 85% 0%,
+      rgba(212,181,126,0.18), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .fleet-card:hover {
+    background: rgba(20,28,38,0.42);
+    transform: translateY(-6px) scale(1.008);
+    box-shadow:
+      0 22px 48px rgba(0,0,0,0.55),
+      0 0 0 1px rgba(212,181,126,0.28),
+      inset 0 1px 0 rgba(245,240,229,0.06);
+    border-color: rgba(212,181,126,0.18);
+  }
+  .fleet-card:hover::after { opacity: 1; }
+  .fleet-card:hover .fleet-tag { letter-spacing: 0.22em; color: #E8C896; }
+  .fleet-card .fleet-tag { transition: letter-spacing 0.55s cubic-bezier(0.22,0.61,0.36,1), color 0.4s ease; }
+
+  /* ---------- 2. STEPS — vertical gold bar slides in from left + push ---------- */
+  .steps li::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: linear-gradient(180deg, transparent, var(--champagne), transparent);
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 0.7s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .steps li:hover {
+    background: rgba(20,28,38,0.42);
+    transform: translateX(6px);
+    box-shadow: -8px 0 24px rgba(212,181,126,0.08);
+  }
+  .steps li:hover::before { transform: scaleY(1); }
+  .steps li:hover .step-num { color: #E8C896; transform: translateX(2px); }
+  .steps li .step-num { transition: color 0.4s ease, transform 0.5s cubic-bezier(0.22,0.61,0.36,1); }
+
+  /* ---------- 3. INCLUDED GRID — sweep gold tint diagonal ---------- */
+  .included-grid li::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(135deg,
+      transparent 0%, rgba(212,181,126,0.08) 50%, transparent 100%);
+    transform: translateX(-110%);
+    transition: transform 0.8s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .included-grid li:hover {
+    background: rgba(20,28,38,0.42);
+  }
+  .included-grid li:hover::before { transform: translateX(110%); }
+  .included-grid li:hover strong { color: var(--champagne); }
+  .included-grid li strong { transition: color 0.45s ease; }
+
+  /* ---------- 4. AREA LIST — slide-in padding + side accent ---------- */
+  .area-list li {
+    transition: background 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                padding-left 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                padding-right 0.55s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .area-list li::before {
+    content: ""; position: absolute; left: 0; top: 50%;
+    width: 3px; height: 0; background: var(--champagne);
+    transform: translateY(-50%);
+    transition: height 0.5s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .area-list li:hover {
+    background: rgba(20,28,38,0.42);
+    padding-left: 2.2rem;
+  }
+  .area-list li:hover::before { height: 60%; }
+  .area-list li:hover .area-time {
+    color: #E8C896; letter-spacing: 0.12em;
+  }
+  .area-list li .area-time { transition: color 0.4s ease, letter-spacing 0.5s cubic-bezier(0.22,0.61,0.36,1); }
+
+  /* ---------- 5. REQ CARDS — top gold border draws + soft lift ---------- */
+  .req-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: linear-gradient(90deg,
+      transparent, var(--champagne), transparent);
+    transform: scaleX(0);
+    transition: transform 0.65s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .req-card:hover {
+    background: rgba(20,28,38,0.45);
+    transform: translateY(-4px);
+    box-shadow:
+      0 16px 36px rgba(0,0,0,0.45),
+      inset 0 1px 0 rgba(212,181,126,0.12);
+    border-color: rgba(212,181,126,0.18);
+  }
+  .req-card:hover::before { transform: scaleX(1); }
+  .req-card:hover h3 { color: #E8C896; }
+  .req-card h3 { transition: color 0.45s ease; }
+
+  /* ---------- 6. WHY CARDS — bottom gold underline draws + scale ---------- */
+  .why-card::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 1px; background: linear-gradient(90deg,
+      transparent, var(--champagne), transparent);
+    transform: scaleX(0);
+    transition: transform 0.7s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .why-card:hover {
+    background: rgba(20,28,38,0.45);
+    transform: translateY(-5px) scale(1.005);
+    box-shadow: 0 20px 44px rgba(0,0,0,0.5);
+    border-color: rgba(212,181,126,0.16);
+  }
+  .why-card:hover::after { transform: scaleX(1); }
+  .why-card:hover .why-num {
+    letter-spacing: 0.22em; color: #E8C896;
+  }
+  .why-card .why-num { transition: letter-spacing 0.55s cubic-bezier(0.22,0.61,0.36,1), color 0.45s ease; }
+  .why-card:hover h3 {
+    transform: translateY(-2px);
+  }
+  .why-card h3 { transition: transform 0.5s cubic-bezier(0.22,0.61,0.36,1); }
+
+  /* ---------- 7. QUOTES (testimonials) — frame glow + gentle rise ---------- */
+  .quote {
+    transition: background 0.55s ease, border-color 0.55s ease,
+                transform 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                box-shadow 0.55s ease;
+  }
+  .quote:hover {
+    background: rgba(20,28,38,0.42);
+    border-color: rgba(212,181,126,0.28);
+    transform: translateY(-3px);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 0 0 1px rgba(212,181,126,0.06);
+  }
+  .quote:hover blockquote { color: var(--bone); }
+  .quote:hover figcaption { letter-spacing: 0.16em; }
+  .quote figcaption { transition: letter-spacing 0.5s cubic-bezier(0.22,0.61,0.36,1); }
+
+  /* ---------- 8. FAQ — hover glow + summary chevron rotation hint ---------- */
+  .faq-item:hover {
+    background: rgba(20,28,38,0.42);
+  }
+  .faq-item:hover summary::after {
+    color: #E8C896;
+    text-shadow: 0 0 12px rgba(212,181,126,0.5);
+  }
+  .faq-item summary::after { transition: transform 0.35s ease, color 0.3s ease, text-shadow 0.4s ease; }
+  /* Cuando está abierto, brillo permanente sutil en el contenido */
+  .faq-item[open] {
+    background: rgba(20,28,38,0.36);
+    border-left: 2px solid rgba(212,181,126,0.4);
+  }
+  .faq-item[open] summary::after { color: #E8C896; }
+
+  /* ---------- 9. CTAs — shimmer sweep + lift premium ---------- */
+  .cta {
+    position: relative; overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .cta::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(120deg,
+      transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+    transform: translateX(-110%);
+    transition: transform 0.75s cubic-bezier(0.22,0.61,0.36,1);
+    pointer-events: none;
+  }
+  .cta:hover::before { transform: translateX(110%); }
+  .cta-primary:hover {
+    background: var(--bone); transform: translateY(-2px);
+    box-shadow:
+      0 14px 30px rgba(212,181,126,0.32),
+      0 0 0 1px rgba(212,181,126,0.45);
+  }
+  .cta-secondary:hover {
+    border-color: var(--champagne); color: var(--champagne);
+    background: rgba(212,181,126,0.10);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  }
+  .cta-ghost:hover { color: var(--champagne); transform: translateX(4px); }
+
+  /* ---------- 10. Reduced motion — respeta preferencia del usuario ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .fleet-card, .steps li, .req-card, .why-card, .quote, .faq-item,
+    .included-grid li, .area-list li, .cta {
+      transition: background 0.2s ease, border-color 0.2s ease !important;
+      transform: none !important;
+    }
+    .fleet-card::after, .steps li::before, .included-grid li::before,
+    .area-list li::before, .req-card::before, .why-card::after,
+    .cta::before {
+      display: none !important;
+    }
+  }
+
+  /* ============================================================
+   COSTA NEGRA — WEB 4.0 ENHANCEMENT LAYER
+   Custom cursor · Smooth scroll · 3D cards · Spotlight ·
+   Magnetic CTAs · Section reveals · Progress line · Aurora
+   ============================================================ */
+
+  /* Custom cursor */
+  .cn-cursor-dot {
+    width: 6px; height: 6px;
+    background: var(--champagne);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    transform: translate(-50%, -50%);
+    z-index: 99997;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+  }
+  .cn-cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(212, 181, 126, 0.55);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    transform: translate(-50%, -50%);
+    z-index: 99996;
+    pointer-events: none;
+    transition: width 0.4s cubic-bezier(0.16,1,0.3,1),
+                height 0.4s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.3s ease,
+                background 0.3s ease,
+                opacity 0.3s ease;
+  }
+  body.cursor-hover .cn-cursor-ring {
+    width: 48px; height: 48px;
+    border-color: var(--champagne);
+    background: rgba(212, 181, 126, 0.07);
+  }
+  body.cursor-cta .cn-cursor-ring {
+    width: 56px; height: 56px;
+    border-color: var(--champagne);
+    background: rgba(212, 181, 126, 0.12);
+  }
+  body.cursor-cta .cn-cursor-dot {
+    width: 8px; height: 8px;
+  }
+  @media (pointer: coarse) {
+    .cn-cursor-dot, .cn-cursor-ring { display: none !important; }
+  }
+
+  /* Fleet card 3D perspective container */
+  .fleet-grid { perspective: 1400px; }
+
+  /* Fleet cards — 3D tilt smoothing */
+  .fleet-card {
+    transform-style: preserve-3d;
+    transition: background 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                box-shadow 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                border-color 0.55s cubic-bezier(0.22,0.61,0.36,1) !important;
+  }
+  .fleet-card.is-tilting {
+    transition: background 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                box-shadow 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                border-color 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                transform 0.08s linear !important;
+  }
+  .fleet-card.is-leaving {
+    transition: all 0.6s cubic-bezier(0.16,1,0.3,1) !important;
+  }
+
+  /* Spotlight on testimonials (follows cursor) */
+  .quote::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 180px at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      rgba(212, 181, 126, 0.10), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  .quote:hover::before { opacity: 1; }
+  .quote > * { position: relative; z-index: 1; }
+
+  /* Section header entrance (overrides reveal) */
+  .cn-section-reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    will-change: opacity, transform;
+  }
+  .cn-section-reveal.is-animated {
+    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+                transform 1s cubic-bezier(0.16,1,0.3,1);
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Bottom progress line */
+  .cn-progress-line {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--champagne) 50%, transparent 100%);
+    width: 0%;
+    z-index: 200;
+    pointer-events: none;
+    transition: width 0.1s linear;
+  }
+
+  /* Nav scroll state */
+  .nav.is-scrolled {
+    background: rgba(10, 14, 18, 0.94) !important;
+    backdrop-filter: blur(24px) saturate(1.9) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.9) !important;
+    border-bottom: 1px solid rgba(245, 240, 229, 0.05);
+  }
+
+  /* Magnetic CTA override */
+  .cta {
+    will-change: transform;
+  }
+  .cta-primary:not(.no-magnetic),
+  .cta-secondary:not(.no-magnetic) {
+    transition: all 0.4s cubic-bezier(0.22,0.61,0.36,1),
+                transform 0.25s cubic-bezier(0.34,1.56,0.64,1) !important;
+  }
+
+  /* WhatsApp CTA pulse glow */
+  @keyframes cn-wa-glow {
+    0%, 100% { box-shadow: 0 14px 30px rgba(212,181,126,0.32), 0 0 0 0 rgba(212,181,126,0.35); }
+    50% { box-shadow: 0 14px 30px rgba(212,181,126,0.32), 0 0 0 10px rgba(212,181,126,0); }
+  }
+  .cta-wa {
+    animation: cn-wa-glow 2.8s ease-in-out infinite;
+  }
+
+  /* Hero content entrance */
+  .cn-hero-item {
+    opacity: 0;
+    transform: translateY(28px);
+    will-change: opacity, transform;
+  }
+
+  /* Section counter animation */
+  .kicker .cn-counter {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Grain enhancement — animated */
+  .grain {
+    animation: cn-grain-shift 8s steps(2) infinite;
+    opacity: 0.55 !important;
+  }
+  @keyframes cn-grain-shift {
+    0%   { transform: translate(0, 0); }
+    10%  { transform: translate(-1%, -1%); }
+    20%  { transform: translate(1%, 0%); }
+    30%  { transform: translate(0%, 1%); }
+    40%  { transform: translate(-1%, 0%); }
+    50%  { transform: translate(1%, 1%); }
+    60%  { transform: translate(0%, -1%); }
+    70%  { transform: translate(-1%, 1%); }
+    80%  { transform: translate(1%, -1%); }
+    90%  { transform: translate(0%, 0%); }
+    100% { transform: translate(0%, 0%); }
+  }
+
+  /* FAQ enhanced open state */
+  .faq-item[open] {
+    background: rgba(20,28,38,0.38) !important;
+    border-left: 2px solid rgba(212,181,126,0.45) !important;
+  }
+
+  /* Area list — enhanced left bar */
+  .area-list li::before {
+    background: linear-gradient(180deg, transparent, var(--champagne) 50%, transparent) !important;
+  }
+
+  /* Why card cursor-glow */
+  .why-card, .req-card {
+    transition: background 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                transform 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                box-shadow 0.55s cubic-bezier(0.22,0.61,0.36,1),
+                border-color 0.55s cubic-bezier(0.22,0.61,0.36,1) !important;
+  }
+  </style>
+
+<!-- WEB 4.0 LAYER — CDN Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+</head>
+<body>
+
+  <svg class="grain" aria-hidden="true">
+    <filter id="cn-noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#cn-noise)" />
+  </svg>
+
+  <div class="bg-stage" aria-hidden="true">
+    <canvas class="bg-canvas"></canvas>
+    <div class="bg-mask"></div>
+  </div>
+
+  <!-- Loader fullscreen — hypercar orbitando + porcentaje -->
+  <div class="bg-loader" data-loader role="status" aria-label="Cargando experiencia">
+    <div class="bg-loader-track">
+      <div class="bg-loader-orbit">
+        <div class="bg-loader-car" aria-hidden="true">
+          <svg viewBox="0 0 70 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.5 21
+                     C 4.5 14, 11 11, 17 10.5
+                     L 22 7.5
+                     C 25 5, 45 5, 48 7.5
+                     L 53 10.5
+                     C 60 11, 65.5 15, 66.5 21
+                     L 66.5 24
+                     C 66.5 25.2, 65.5 26, 64.3 26
+                     L 60 26"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M40 26 L 30 26"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M10 26 L 5.7 26
+                     C 4.5 26, 3.5 25.2, 3.5 24
+                     L 3.5 21"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 8 L 22 12 L 48 12 L 48 8"
+                  stroke="currentColor" stroke-width="1" stroke-opacity="0.55" stroke-linejoin="round"/>
+            <circle cx="20" cy="26" r="3.6" stroke="currentColor" stroke-width="1.4" fill="none"/>
+            <circle cx="50" cy="26" r="3.6" stroke="currentColor" stroke-width="1.4" fill="none"/>
+            <circle cx="20" cy="26" r="1" fill="currentColor"/>
+            <circle cx="50" cy="26" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+      <div class="bg-loader-center">
+        <span class="bg-loader-pct-big"><span data-loader-pct>0</span><sup>%</sup></span>
+      </div>
+    </div>
+    <span class="bg-loader-brand">COSTA NEGRA</span>
+    <span class="bg-loader-text" data-i18n="loader.text">Preparando tu llegada</span>
+    <span class="bg-loader-bar"><span class="bg-loader-fill" data-loader-fill></span></span>
+  </div>
+
+  <!-- Rotate prompt — solo visible en mobile/tablet en orientacion vertical -->
+  <div class="rotate-prompt" data-rotate-prompt aria-live="polite">
+    <div class="rotate-prompt-icon" aria-hidden="true">
+      <svg class="rotate-prompt-car" data-rotate-icon viewBox="0 0 260 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Lamborghini Huracán — silueta refinada, perfil lateral aerodinámico -->
+        <!-- Línea principal: nariz baja → cofre → parabrisas → cabina → trasera -->
+        <path d="M 8 78
+                 C 10 74, 14 70, 20 68
+                 L 30 64
+                 C 36 60, 44 56, 54 53
+                 L 64 51
+                 C 70 50, 76 50, 82 51
+                 L 92 47
+                 C 100 38, 110 31, 124 27
+                 L 160 27
+                 C 174 30, 184 36, 192 44
+                 L 202 49
+                 C 210 47, 218 47, 226 49
+                 C 236 52, 244 58, 250 66
+                 C 254 70, 257 74, 258 78
+                 L 252 78"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Underbody / belly con cortes para wheel wells -->
+        <path d="M 16 78 L 46 78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 78 78 L 184 78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 218 78 L 252 78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <!-- Greenhouse / cabina y parabrisas -->
+        <path d="M 96 42 L 110 30 L 158 30 L 178 42"
+              stroke="currentColor" stroke-width="1.3" stroke-opacity="0.6" stroke-linejoin="round" fill="none"/>
+        <!-- Línea de puerta -->
+        <path d="M 116 42 L 116 60" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.4" stroke-linecap="round"/>
+        <!-- Quarter glass / cabina inclinada hacia atrás -->
+        <path d="M 158 30 L 178 42 L 158 42 Z" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.35" fill="currentColor" fill-opacity="0.05"/>
+        <!-- Side air intake aerodinámico -->
+        <path d="M 118 58 L 168 58" stroke="currentColor" stroke-width="1.1" stroke-opacity="0.5" stroke-linecap="round"/>
+        <path d="M 124 64 L 162 64" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.3" stroke-linecap="round"/>
+        <!-- Faro delantero (línea inclinada) -->
+        <path d="M 14 70 L 24 64" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.6" stroke-linecap="round"/>
+        <!-- Faro trasero -->
+        <path d="M 244 62 L 252 66" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.6" stroke-linecap="round"/>
+        <!-- Front wheel: rim multi-radio con detalle -->
+        <circle cx="62" cy="78" r="15" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <circle cx="62" cy="78" r="9" stroke="currentColor" stroke-width="1.1" stroke-opacity="0.55" fill="none"/>
+        <circle cx="62" cy="78" r="2" fill="currentColor"/>
+        <line x1="62" y1="70" x2="62" y2="86" stroke="currentColor" stroke-width="1" stroke-opacity="0.55" stroke-linecap="round"/>
+        <line x1="55" y1="74" x2="69" y2="82" stroke="currentColor" stroke-width="1" stroke-opacity="0.55" stroke-linecap="round"/>
+        <line x1="55" y1="82" x2="69" y2="74" stroke="currentColor" stroke-width="1" stroke-opacity="0.55" stroke-linecap="round"/>
+        <line x1="54" y1="78" x2="70" y2="78" stroke="currentColor" stroke-width="1" stroke-opacity="0.45" stroke-linecap="round"/>
+        <!-- Rear wheel -->
+        <circle cx="201" cy="78" r="15" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <circle cx="201" cy="78" r="9" stroke="currentColor" stroke-width="1.1" stroke-opacity="0.55" fill="none"/>
+        <circle cx="201" cy="78" r="2" fill="currentColor"/>
+        <line x1="201" y1="70" x2="201" y2="86" stroke="currentColor" stroke-width="1" stroke-opacity="0.55" stroke-linecap="round"/>
+        <line x1="194" y1="74" x2="208" y2="82" stroke="currentColor" stroke-width="1" stroke-opacity="0.55" stroke-linecap="round"/>
+        <line x1="194" y1="82" x2="208" y2="74" stroke="currentColor" stroke-width="1" stroke-opacity="0.55" stroke-linecap="round"/>
+        <line x1="193" y1="78" x2="209" y2="78" stroke="currentColor" stroke-width="1" stroke-opacity="0.45" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h2 class="rotate-prompt-title" data-i18n="rotate.title">Gira el <em>dispositivo</em></h2>
+    <p class="rotate-prompt-text" data-i18n="rotate.text">Dise&ntilde;ada para vivirse en horizontal. Toma un segundo. Lo vas a agradecer.</p>
+    <p class="rotate-prompt-hint" data-i18n="rotate.hint">Detectando rotaci&oacute;n</p>
+    <button type="button" class="rotate-prompt-skip" data-skip-rotate data-i18n="rotate.skip">
+      Continuar as&iacute;
+    </button>
+    <span class="rotate-prompt-spacer" aria-hidden="true"></span>
+    <span class="rotate-prompt-decor" aria-hidden="true"></span>
+  </div>
+
+  <header class="nav">
+    <a class="logo" href="#hero">
+      <span class="logo-mark">C</span><span class="logo-word">COSTA NEGRA</span>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#flota" data-i18n="nav.flota">Flota</a>
+      <a href="#como" data-i18n="nav.experiencia">Experiencia</a>
+      <a href="#servicio" data-i18n="nav.concierge">Concierge</a>
+      <a href="#preguntas" data-i18n="nav.preguntas">Preguntas</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang-switcher" data-lang-switcher>
+        <button type="button" class="lang-current" data-lang-toggle aria-haspopup="listbox" aria-expanded="false" aria-label="Idioma">
+          <svg class="lang-globe" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.1"/>
+            <path d="M8 1.5 Q3 8 8 14.5 Q13 8 8 1.5" stroke="currentColor" stroke-width="1.1" fill="none"/>
+            <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/>
+          </svg>
+          <span class="lang-code" data-lang-display>ES</span>
+        </button>
+        <ul class="lang-menu" data-lang-menu role="listbox"></ul>
+      </div>
+      <a class="cta cta-secondary" href="#reservar" data-i18n="nav.cta">Reservar acceso</a>
+    </div>
+  </header>
+
+  <aside class="scroll-progress" aria-hidden="true">
+    <span class="scroll-progress-num" data-progress-current>00</span>
+    <span class="scroll-progress-track">
+      <span class="scroll-progress-fill" data-progress-fill></span>
+    </span>
+    <span class="scroll-progress-num scroll-progress-total">10</span>
+  </aside>
+
+  <main class="content">
+
+    <section class="section section-hero" id="hero" data-section="01">
+      <p class="kicker" data-i18n="hero.kicker" data-i18n-keep-dot><span class="dot"></span>Hiperlujo privado &middot; Riviera Maya</p>
+      <h1 class="display-1" data-i18n="hero.headline">Aterrizas. <em>Las llaves</em> ya est&aacute;n en tu mano.</h1>
+      <p class="lede" data-i18n="hero.lede">Flota privada ex&oacute;tica, GT y todoterreno premium. Entrega valet en CUN, tu villa o tu muelle. Concierge biling&uuml;e que opera mientras t&uacute; descansas &mdash; 24 horas, todos los d&iacute;as del a&ntilde;o.</p>
+      <div class="cta-row">
+        <a class="cta cta-primary" href="#reservar" data-i18n="hero.cta_primary">Reservar acceso</a>
+        <a class="cta cta-ghost" href="#flota" data-i18n="hero.cta_ghost">Ver flota &rarr;</a>
+      </div>
+      <div class="hero-meta">
+        <span data-i18n="hero.scroll">DESLIZA</span><span class="rule"></span><span data-i18n="hero.chapters">10 cap&iacute;tulos</span>
+      </div>
+    </section>
+
+    <section class="section section-fleet" id="flota" data-section="02">
+      <p class="kicker" data-i18n="fleet.kicker">02 / Flota</p>
+      <h2 class="display-2" data-i18n="fleet.headline">Un auto. <em>Un estado de &aacute;nimo</em>.</h2>
+      <p class="lede" data-i18n="fleet.lede">Cada unidad fue elegida a mano para el clima del Caribe y mantenida sin concesiones. No rentamos autos &mdash; entregamos el momento que solo ese auto crea.</p>
+      <div class="fleet-grid">
+        <article class="fleet-card"><p class="fleet-tag" data-i18n="fleet.car1.tag">Ex&oacute;tico</p><h3>Lamborghini Hurac&aacute;n EVO</h3><p class="fleet-detail" data-i18n="fleet.car1.detail">V10 &middot; 631 hp &middot; AWD &middot; descapotable bajo solicitud</p><p class="fleet-price" data-i18n="fleet.price">Tarifa privada <strong>bajo consulta</strong></p></article>
+        <article class="fleet-card"><p class="fleet-tag" data-i18n="fleet.car2.tag">SUV de lujo</p><h3>Range Rover Autobiography</h3><p class="fleet-detail" data-i18n="fleet.car2.detail">V8 &middot; cabina de cinco &middot; acabados a la altura del Caribe</p><p class="fleet-price" data-i18n="fleet.price">Tarifa privada <strong>bajo consulta</strong></p></article>
+        <article class="fleet-card"><p class="fleet-tag" data-i18n="fleet.car3.tag">Convertible</p><h3>Porsche 911 Cabriolet</h3><p class="fleet-detail" data-i18n="fleet.car3.detail">Twin-turbo flat-six &middot; PDK &middot; techo abajo, viento a favor</p><p class="fleet-price" data-i18n="fleet.price">Tarifa privada <strong>bajo consulta</strong></p></article>
+        <article class="fleet-card"><p class="fleet-tag" data-i18n="fleet.car4.tag">SUV de lujo</p><h3>Mercedes-Benz G63 AMG</h3><p class="fleet-detail" data-i18n="fleet.car4.detail">V8 biturbo &middot; 577 hp &middot; presencia indiscutible</p><p class="fleet-price" data-i18n="fleet.price">Tarifa privada <strong>bajo consulta</strong></p></article>
+        <article class="fleet-card"><p class="fleet-tag" data-i18n="fleet.car5.tag">Aventura</p><h3>Jeep Wrangler Rubicon</h3><p class="fleet-detail" data-i18n="fleet.car5.detail">Soft-top &middot; listo para cenotes, selva y caminos sin nombre</p><p class="fleet-price" data-i18n="fleet.price">Tarifa privada <strong>bajo consulta</strong></p></article>
+        <article class="fleet-card"><p class="fleet-tag" data-i18n="fleet.car6.tag">El&eacute;ctrico</p><h3>Tesla Model X Plaid</h3><p class="fleet-detail" data-i18n="fleet.car6.detail">Tri-motor &middot; 1,020 hp &middot; puertas falc&oacute;n &middot; silencio total</p><p class="fleet-price" data-i18n="fleet.price">Tarifa privada <strong>bajo consulta</strong></p></article>
+        <article class="fleet-card"><p class="fleet-tag" data-i18n="fleet.car7.tag">Grupo VIP</p><h3>Cadillac Escalade ESV</h3><p class="fleet-detail" data-i18n="fleet.car7.detail">Siete plazas &middot; chofer privado disponible &middot; transfer aeropuerto</p><p class="fleet-price" data-i18n="fleet.price">Tarifa privada <strong>bajo consulta</strong></p></article>
+        <article class="fleet-card"><p class="fleet-tag" data-i18n="fleet.car8.tag">Ejecutivo</p><h3>Mercedes-Benz Clase S 580</h3><p class="fleet-detail" data-i18n="fleet.car8.detail">4Matic &middot; paquete confort trasero &middot; oficina rodante</p><p class="fleet-price" data-i18n="fleet.price">Tarifa privada <strong>bajo consulta</strong></p></article>
+      </div>
+    </section>
+
+    <section class="section section-how" id="como" data-section="03">
+      <p class="kicker" data-i18n="how.kicker">03 / Experiencia</p>
+      <h2 class="display-2" data-i18n="how.headline">Tres pasos. <em>Cero fricci&oacute;n</em>.</h2>
+      <ol class="steps">
+        <li><p class="step-num">01</p><h3 data-i18n="how.step1.title">Eliges</h3><p data-i18n="how.step1.text">Reservas tu unidad por WhatsApp o web. Un agente biling&uuml;e confirma en menos de 30 minutos &mdash; sin formularios eternos, sin call centers, sin espera.</p></li>
+        <li><p class="step-num">02</p><h3 data-i18n="how.step2.title">Recibes</h3><p data-i18n="how.step2.text">Tu auto llega al CUN, a tu villa, a tu hotel o a tu muelle privado. Inspecci&oacute;n grabada en video. Tanque lleno, TAG IAVE listo, GPS precargado. Manejas en menos de 12 minutos desde que aterrizas.</p></li>
+        <li><p class="step-num">03</p><h3 data-i18n="how.step3.title">Manejas</h3><p data-i18n="how.step3.text">L&iacute;nea directa con tu concierge las 24 horas. Si algo pasa &mdash; un rasp&oacute;n, una multa, un cambio de planes &mdash; lo resolvemos antes de que termines el caf&eacute;. Lo recogemos cuando t&uacute; decidas.</p></li>
+      </ol>
+    </section>
+
+    <section class="section section-included" id="servicio" data-section="04">
+      <p class="kicker" data-i18n="included.kicker">04 / Concierge</p>
+      <h2 class="display-2" data-i18n="included.headline">Todo lo que <em>importa</em>. Nada que no.</h2>
+      <ul class="included-grid">
+        <li data-i18n="included.item1"><strong>Entrega valet puerta a puerta</strong> &middot; CUN, hoteles, villas, marinas, beach clubs</li>
+        <li data-i18n="included.item2"><strong>Cobertura amplia premium</strong> &middot; deducible cero disponible en toda la flota ex&oacute;tica</li>
+        <li data-i18n="included.item3"><strong>TAG IAVE incluido</strong> &middot; cero paradas en casetas de Canc&uacute;n a Tulum</li>
+        <li data-i18n="included.item4"><strong>Combustible lleno a lleno</strong> &middot; sin asteriscos, sin sorpresas</li>
+        <li data-i18n="included.item5"><strong>Asistencia 24/7</strong> &middot; auto de reemplazo en menos de 60 minutos</li>
+        <li data-i18n="included.item6"><strong>Concierge biling&uuml;e</strong> &middot; espa&ntilde;ol, ingl&eacute;s, italiano y franc&eacute;s v&iacute;a WhatsApp</li>
+        <li data-i18n="included.item7"><strong>GPS curado por locales</strong> &middot; cenotes, ruinas, beach clubs y restaurantes que importan</li>
+        <li data-i18n="included.item8"><strong>Kit de bienvenida</strong> &middot; agua fr&iacute;a, snacks artesanales, mapa impreso firmado</li>
+        <li data-i18n="included.item9"><strong>Pago flexible</strong> &middot; USD, MXN o EUR &middot; todas las tarjetas premium</li>
+      </ul>
+    </section>
+
+    <section class="section section-area" data-section="05">
+      <p class="kicker" data-i18n="area.kicker">05 / Cobertura</p>
+      <h2 class="display-2" data-i18n="area.headline">De Canc&uacute;n a <em>Bacalar</em>. Y m&aacute;s all&aacute;.</h2>
+      <p class="lede" data-i18n="area.lede">Operamos en toda la Riviera Maya. Hoteles, villas y muelles privados dentro de 200 km de Playa del Carmen &mdash; y bajo solicitud, donde t&uacute; est&eacute;s.</p>
+      <ul class="area-list">
+        <li><span class="area-place" data-i18n="area.item1.place">Aeropuerto Internacional de Canc&uacute;n (CUN)</span><span class="area-time" data-i18n="area.item1.time">45 min de Playa</span></li>
+        <li><span class="area-place" data-i18n="area.item2.place">Playa del Carmen &middot; Mayakoba &middot; Bah&iacute;a Pr&iacute;ncipe Residences</span><span class="area-time" data-i18n="area.item2.time">Base de operaciones</span></li>
+        <li><span class="area-place" data-i18n="area.item3.place">Tulum &middot; Aldea Zama &middot; Hotel Zone</span><span class="area-time" data-i18n="area.item3.time">50 min</span></li>
+        <li><span class="area-place" data-i18n="area.item4.place">Zona Hotelera Canc&uacute;n &middot; Puerto Canc&uacute;n</span><span class="area-time" data-i18n="area.item4.time">55 min</span></li>
+        <li><span class="area-place" data-i18n="area.item5.place">Cozumel &middot; coordinaci&oacute;n de ferry incluida</span><span class="area-time" data-i18n="area.item5.time">Bajo solicitud</span></li>
+        <li><span class="area-place" data-i18n="area.item6.place">Bacalar &middot; Holbox &middot; M&eacute;rida &middot; Chich&eacute;n Itz&aacute;</span><span class="area-time" data-i18n="area.item6.time">Reserva con anticipaci&oacute;n</span></li>
+      </ul>
+    </section>
+
+    <section class="section section-requirements" data-section="06">
+      <p class="kicker" data-i18n="req.kicker">06 / Requisitos</p>
+      <h2 class="display-2" data-i18n="req.headline">Lo que vas a <em>necesitar</em>.</h2>
+      <div class="req-grid">
+        <article class="req-card"><h3 data-i18n="req.driver.title">Conductor</h3><ul><li data-i18n="req.driver.li1">Edad m&iacute;nima <strong>25 a&ntilde;os</strong> &middot; ex&oacute;ticos desde 30</li><li data-i18n="req.driver.li2">Licencia vigente &middot; M&eacute;xico, USA, Canad&aacute;, UE, Reino Unido</li><li data-i18n="req.driver.li3">Pasaporte para visitantes internacionales</li><li data-i18n="req.driver.li4">Historial limpio &middot; verificaci&oacute;n discreta en 10 minutos</li></ul></article>
+        <article class="req-card"><h3 data-i18n="req.payment.title">Pago y dep&oacute;sito</h3><ul><li data-i18n="req.payment.li1">Tarjeta de cr&eacute;dito a nombre del conductor</li><li data-i18n="req.payment.li2">Dep&oacute;sito en garant&iacute;a <strong>USD 500 a 5,000</strong> seg&uacute;n unidad</li><li data-i18n="req.payment.li3">IVA 16% incluido en cada tarifa</li><li data-i18n="req.payment.li4">USD, MXN o EUR &middot; liberaci&oacute;n inmediata al retorno</li></ul></article>
+        <article class="req-card"><h3 data-i18n="req.insurance.title">Seguro</h3><ul><li data-i18n="req.insurance.li1">Responsabilidad civil incluida por ley mexicana</li><li data-i18n="req.insurance.li2">Cobertura amplia premium &middot; deducible cero opcional</li><li data-i18n="req.insurance.li3">Recomendado: <strong>el seguro de tu tarjeta no aplica aqu&iacute;</strong></li><li data-i18n="req.insurance.li4">P&oacute;liza con cumplimiento PROFECO</li></ul></article>
+      </div>
+    </section>
+
+    <section class="section section-why" data-section="07">
+      <p class="kicker" data-i18n="why.kicker">07 / Diferencia</p>
+      <h2 class="display-2" data-i18n="why.headline">No los m&aacute;s baratos. <em>Los que s&iacute; cumplen</em>.</h2>
+      <div class="why-grid">
+        <article class="why-card"><p class="why-num">01</p><h3 data-i18n="why.card1.title">Flota curada</h3><p data-i18n="why.card1.text">Cada unidad es elegida a mano, probada en clima caribe&ntilde;o y revisada despu&eacute;s de cada renta. Cero kilometrajes castigados, cero concesiones, cero "ya casi listo".</p></article>
+        <article class="why-card"><p class="why-num">02</p><h3 data-i18n="why.card2.title">Entrega valet real</h3><p data-i18n="why.card2.text">Te recibimos a la salida del CUN con tu nombre. Inspecci&oacute;n grabada, llaves entregadas, ruta cargada. Manejas en menos de 12 minutos &mdash; incluso si tu vuelo aterriz&oacute; a las 2 AM.</p></article>
+        <article class="why-card"><p class="why-num">03</p><h3 data-i18n="why.card3.title">Conocimiento local</h3><p data-i18n="why.card3.text">Tu concierge vive aqu&iacute;. Te reserva el beach club, te recomienda el cenote que a&uacute;n no est&aacute; en Instagram, y sabe cu&aacute;ndo conviene la federal en lugar de la costera.</p></article>
+        <article class="why-card"><p class="why-num">04</p><h3 data-i18n="why.card4.title">Sin sorpresas</h3><p data-i18n="why.card4.text">Tarifas transparentes. Cero casetas ocultas, cero trucos de combustible, cero teatro de seguros. Lo que reservas es exactamente lo que pagas.</p></article>
+      </div>
+    </section>
+
+    <section class="section section-testimonials" data-section="08">
+      <p class="kicker" data-i18n="testi.kicker">08 / Voces</p>
+      <h2 class="display-2" data-i18n="testi.headline">Lo que dicen quienes <em>ya saben</em>.</h2>
+      <figure class="quote"><blockquote data-i18n="testi.q1.text">&ldquo;Aterric&eacute; en CUN a las 11 de la noche. La G-Wagon estaba esper&aacute;ndome con mi nombre en una placa de madera. Inspecci&oacute;n en 8 minutos. Manejaba a Mayakoba antes de medianoche. Rento autos en M&oacute;naco &mdash; esto fue mejor.&rdquo;</blockquote><figcaption data-i18n="testi.q1.author">Helena R. &middot; Rosewood Mayakoba &middot; Febrero 2026</figcaption></figure>
+      <figure class="quote"><blockquote data-i18n="testi.q2.text">&ldquo;La Wrangler se ponch&oacute; a 90 minutos de Cob&aacute;. Llam&eacute;. Tuvieron un reemplazo conmigo en 47 minutos. No perd&iacute; el d&iacute;a. No perd&iacute; el viaje. No perd&iacute; la calma.&rdquo;</blockquote><figcaption data-i18n="testi.q2.author">Marcos D. &middot; Villa privada en Tulum &middot; Enero 2026</figcaption></figure>
+      <figure class="quote"><blockquote data-i18n="testi.q3.text">&ldquo;Coordinaron dos camionetas y una Escalade para una boda de 14 invitados. La log&iacute;stica fue impecable. La novia llor&oacute; con el detalle de la champa&ntilde;a de bienvenida en cada veh&iacute;culo.&rdquo;</blockquote><figcaption data-i18n="testi.q3.author">Sandra y Tom L. &middot; Boda en Banyan Tree &middot; Marzo 2026</figcaption></figure>
+    </section>
+
+    <section class="section section-faq" id="preguntas" data-section="09">
+      <p class="kicker" data-i18n="faq.kicker">09 / Preguntas</p>
+      <h2 class="display-2" data-i18n="faq.headline">Respuestas <em>directas</em>.</h2>
+      <details class="faq-item"><summary data-i18n="faq.q1.q">&iquest;De verdad entregan en el aeropuerto?</summary><p data-i18n="faq.q1.a">S&iacute;. Te recibimos a la salida del CUN &mdash; terminales 2, 3 y 4. Coordinamos con tu vuelo en tiempo real. Si llegas con retraso, esperamos. Cero taxis, cero shuttle, cero filas.</p></details>
+      <details class="faq-item"><summary data-i18n="faq.q2.q">&iquest;Necesito licencia mexicana?</summary><p data-i18n="faq.q2.a">No. Aceptamos licencias vigentes de M&eacute;xico, USA, Canad&aacute;, Uni&oacute;n Europea, Reino Unido y la mayor&iacute;a de las internacionales. Pasaporte para verificaci&oacute;n.</p></details>
+      <details class="faq-item"><summary data-i18n="faq.q3.q">&iquest;Qu&eacute; pasa si me ponen una multa?</summary><p data-i18n="faq.q3.a">Las multas se cargan a tu tarjeta exactamente como las cobr&oacute; la autoridad. Te enviamos la documentaci&oacute;n completa por WhatsApp. Cero recargos administrativos. Cero sorpresas.</p></details>
+      <details class="faq-item"><summary data-i18n="faq.q4.q">&iquest;Incluye seguro?</summary><p data-i18n="faq.q4.a">Responsabilidad civil viene incluida por ley mexicana. La cobertura amplia premium es opcional pero altamente recomendada &mdash; el seguro de tu tarjeta de cr&eacute;dito de origen normalmente <strong>no aplica</strong> en estas categor&iacute;as en M&eacute;xico. Podemos cotizarte deducible cero en la flota ex&oacute;tica.</p></details>
+      <details class="faq-item"><summary data-i18n="faq.q5.q">&iquest;Puedo llevar el auto a Tulum, Bacalar o M&eacute;rida?</summary><p data-i18n="faq.q5.a">S&iacute; en SUVs, sedanes y convertibles. Los ex&oacute;ticos tienen un l&iacute;mite de 250 km al d&iacute;a y est&aacute;n restringidos a carretera pavimentada. Bacalar (~250 km) y M&eacute;rida (~310 km) se pre-aprueban con reserva anticipada.</p></details>
+      <details class="faq-item"><summary data-i18n="faq.q6.q">&iquest;M&eacute;todos de pago?</summary><p data-i18n="faq.q6.a">Visa, MasterCard y American Express. USD, MXN o EUR. El dep&oacute;sito en garant&iacute;a es con tarjeta de cr&eacute;dito; la renta se puede liquidar con d&eacute;bito, transferencia, Apple Pay o Google Pay.</p></details>
+      <details class="faq-item"><summary data-i18n="faq.q7.q">&iquest;Hay disponibilidad esta temporada?</summary><p data-i18n="faq.q7.a">La flota ex&oacute;tica opera con cupo limitado. Diciembre, Semana Santa y verano se cierran con 4 a 6 semanas de anticipaci&oacute;n. Si tu fecha es pr&oacute;xima, escr&iacute;benos por WhatsApp ahora &mdash; confirmamos disponibilidad real en menos de 30 minutos.</p></details>
+    </section>
+
+    <section class="section section-book" id="reservar" data-section="10">
+      <p class="kicker" data-i18n="book.kicker">10 / Reservar</p>
+      <h2 class="display-1" data-i18n="book.headline">Tu llegada. <em>Sin fricci&oacute;n</em>.</h2>
+      <p class="lede" data-i18n="book.lede">WhatsApp es lo m&aacute;s r&aacute;pido. Confirmamos disponibilidad en menos de 30 minutos &mdash; todos los d&iacute;as, a cualquier hora. Cupo limitado en temporada alta.</p>
+      <div class="book-cta-row">
+        <a class="cta cta-primary cta-large cta-wa" href="https://wa.me/5219841234567" target="_blank" rel="noopener">
+          <span class="cta-wa-label" data-i18n="book.cta_wa">Reservar por WhatsApp</span>
+          <span class="cta-wa-sep" aria-hidden="true">&middot;</span>
+          <span class="cta-wa-number">+52&nbsp;984&nbsp;123&nbsp;4567</span>
+        </a>
+        <a class="cta cta-ghost cta-large" href="mailto:concierge@costanegra.com">concierge@costanegra.com</a>
+      </div>
+      <p class="book-note" data-i18n="book.note">24 horas &middot; Espa&ntilde;ol &middot; Ingl&eacute;s &middot; Italiano &middot; Franc&eacute;s</p>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <span class="footer-logo">COSTA NEGRA</span>
+        <span class="footer-tag" data-i18n="footer.tag">Hiperlujo privado &middot; Riviera Maya, M&eacute;xico</span>
+      </div>
+      <div class="footer-row footer-meta">
+        <span>&copy; 2026 Costa Negra Rentals S.A. de C.V.</span>
+        <span>RFC: CNR260101ABC &middot; Cumplimiento PROFECO</span>
+        <span><a href="#" data-i18n="footer.terms">T&eacute;rminos</a> &middot; <a href="#" data-i18n="footer.privacy">Privacidad</a> &middot; <a href="#" data-i18n="footer.insurance">P&oacute;liza de seguro</a></span>
+      </div>
+    </footer>
+
+  </main>
+
+<script>
+/* ============================================================
+   COSTA NEGRA — Background canvas scroll-scrub + Reveal-on-scroll
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* URL de los frames en HubSpot File Manager */
+  var FRAMES_BASE = 'https://49621320.fs1.hubspotusercontent-na1.net/hubfs/49621320/COSTANEGRA/';
+
+  /* Sonido del efecto al rotar. Si tu archivo está en HubSpot File Manager
+     a otra ruta, edita esta URL. Probamos .mp3 primero (más compatible);
+     si falla, el código intenta automáticamente .wav. Si ninguna carga,
+     el sitio sigue funcionando sin sonido (fail silent). */
+  var ROTATION_SOUND_URL = 'https://49621320.fs1.hubspotusercontent-na1.net/hubfs/49621320/COSTANEGRA/costanegra.mp3';
+  var ROTATION_SOUND_FALLBACK_URL = 'https://49621320.fs1.hubspotusercontent-na1.net/hubfs/49621320/COSTANEGRA/costanegra.wav';
+
+  var FRAME_COUNT_TOTAL = 361;
+  var FRAME_PAD = 4;
+  var FRAME_EXT = 'webp';
+  var TOTAL_SECTIONS = 10;
+
+  /* Bloquear restoration del scroll para que NUNCA empiece en otra pos */
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  var stage = document.querySelector('.bg-stage');
+  if (!stage) return;
+  var canvas = stage.querySelector('.bg-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d', { alpha: false });
+  var loader = document.querySelector('[data-loader]');
+  var loaderFill = document.querySelector('[data-loader-fill]');
+  var loaderPct = document.querySelector('[data-loader-pct]');
+  var progressFill = document.querySelector('[data-progress-fill]');
+  var progressCurrent = document.querySelector('[data-progress-current]');
+  var rotatePrompt = document.querySelector('[data-rotate-prompt]');
+  var skipBtn = document.querySelector('[data-skip-rotate]');
+
+  /* Marcar como cargando — bloquea sitio mientras carga */
+  document.documentElement.classList.add('is-loading');
+
+  /* ===== Orientacion lock para mobile/tablet ===== */
+  function isCoarsePointer() { return window.matchMedia('(pointer: coarse)').matches; }
+  function isMobileSize() { return window.matchMedia('(max-width: 1024px)').matches; }
+  function isPortrait() { return window.matchMedia('(orientation: portrait)').matches; }
+  /* Override flag — el usuario presiono "Continuar en vertical" */
+  var portraitOverride = false;
+  function shouldLock() {
+    if (portraitOverride) return false;
+    return (isCoarsePointer() || isMobileSize()) && isPortrait() && window.innerWidth < 1100;
+  }
+
+  /* ===== Skip button — feedback inmediato + soporte touch iOS =====
+     El click en iOS a veces no dispara si hay otro listener `pointer-events`
+     o si el handler tarda. Atendemos pointerdown/touchend además de click,
+     hacemos preventDefault + stopPropagation para no propagar al overlay,
+     y arrancamos el fade-out al instante para feedback visual. */
+  var skipFired = false;
+  function handleSkip(e) {
+    if (skipFired) return;
+    skipFired = true;
+    if (e) {
+      try { e.preventDefault(); } catch (_) {}
+      try { e.stopPropagation(); } catch (_) {}
+    }
+    portraitOverride = true;
+    /* Fade inmediato del overlay para que el usuario vea respuesta al instante.
+       checkOrientation luego inicia el scrubber y completa la transición. */
+    if (rotatePrompt) {
+      rotatePrompt.classList.add('is-fading');
+    }
+    checkOrientation();
+  }
+  if (skipBtn) {
+    skipBtn.addEventListener('click', handleSkip);
+    /* iOS Safari: pointerdown/touchend dan latencia menor que click */
+    skipBtn.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+    skipBtn.addEventListener('touchend', handleSkip, { passive: false });
+  }
+
+  /* ===== Rotacion en tiempo real del icono del auto ===== */
+  var rotateIconWrap = document.querySelector('.rotate-prompt-icon');
+  var rotateCar = document.querySelector('[data-rotate-icon]');
+
+  function applyLiveRotation(deg) {
+    if (!rotateCar || !rotateIconWrap) return;
+    rotateIconWrap.classList.add('is-live');
+    rotateCar.style.transform = 'rotate(' + deg + 'deg)';
+  }
+
+  function bindLiveRotation() {
+    if (!rotateCar) return;
+    function handleOrientation(e) {
+      var gamma = e.gamma;
+      if (typeof gamma !== 'number') return;
+      var abs = Math.min(90, Math.abs(gamma));
+      var rotation = 90 - abs;
+      applyLiveRotation(rotation);
+    }
+    window.addEventListener('deviceorientation', handleOrientation, true);
+  }
+
+  /* iOS 13+ requiere requestPermission tras un user gesture. Pero NO debemos
+     enganchar el listener al overlay completo porque interfiere con el botón
+     skip. Lo hacemos solo en el área del icono del auto. */
+  if (rotateIconWrap && typeof DeviceOrientationEvent !== 'undefined' &&
+      typeof DeviceOrientationEvent.requestPermission === 'function') {
+    rotateIconWrap.addEventListener('click', function once() {
+      DeviceOrientationEvent.requestPermission().then(function (state) {
+        if (state === 'granted') bindLiveRotation();
+      }).catch(function () {});
+    }, { once: true });
+  } else {
+    if (typeof DeviceOrientationEvent !== 'undefined') bindLiveRotation();
+  }
+
+  function isLightDevice() { return isCoarsePointer() && window.matchMedia('(max-height: 600px)').matches; }
+  function isTabletLike() { return isCoarsePointer() && !window.matchMedia('(max-height: 600px)').matches; }
+
+  var STEP = 1;
+  var FRAME_COUNT = FRAME_COUNT_TOTAL;
+  var PRELOAD_PRIORITY, READY_THRESHOLD;
+  function recomputeDeviceProfile() {
+    if (isLightDevice()) {
+      PRELOAD_PRIORITY = 40;
+      READY_THRESHOLD = 0.55;
+    } else if (isTabletLike()) {
+      PRELOAD_PRIORITY = 65;
+      READY_THRESHOLD = 0.65;
+    } else {
+      PRELOAD_PRIORITY = 90;
+      READY_THRESHOLD = 0.75;
+    }
+  }
+  recomputeDeviceProfile();
+
+  function pad(n) { return String(n).padStart(FRAME_PAD, '0'); }
+  function frameUrl(i) { return FRAMES_BASE + 'frame-' + pad(i * STEP + 1) + '.' + FRAME_EXT; }
+
+  /* ===== Rotation sound effect =====
+     iOS Safari y la mayoría de browsers móviles bloquean audio sin user
+     gesture. Estrategia:
+       1) Precargar el <audio> al cargar.
+       2) En el PRIMER toque del usuario en cualquier parte del sitio
+          (incluido el botón skip), llamar play() seguido inmediato de
+          pause() — esto "desbloquea" el audio para futuras llamadas.
+       3) Disparar audio.play() cuando detectamos rotación portrait→landscape
+          O cuando el usuario presiona Continuar Así (mismo evento UX).
+     Si la URL no carga (404) el play() rechaza la promesa: ignoramos
+     silenciosamente para no romper la experiencia. */
+  var rotationAudio = null;
+  var audioUnlocked = false;
+  var audioFallbackTried = false;
+  if (ROTATION_SOUND_URL) {
+    try {
+      rotationAudio = new Audio(ROTATION_SOUND_URL);
+      rotationAudio.preload = 'auto';
+      rotationAudio.volume = 0.85;
+      /* iOS Safari: playsinline evita modo fullscreen y necesario para audio inline */
+      rotationAudio.setAttribute('playsinline', '');
+      rotationAudio.setAttribute('webkit-playsinline', '');
+      /* Crossorigin evita errores CORS en algunos casos del CDN HubSpot */
+      try { rotationAudio.crossOrigin = 'anonymous'; } catch (_) {}
+      /* Si el .mp3 da 404 o el codec no se soporta, cambiamos al .wav */
+      rotationAudio.addEventListener('error', function () {
+        if (audioFallbackTried || !ROTATION_SOUND_FALLBACK_URL) return;
+        audioFallbackTried = true;
+        try {
+          rotationAudio.src = ROTATION_SOUND_FALLBACK_URL;
+          rotationAudio.load();
+        } catch (_) {}
+      });
+    } catch (_) { rotationAudio = null; }
+  }
+
+  /* Web Audio API: en iOS Safari, después del unlock con un user gesture
+     podemos usar AudioContext.resume() para mantener el audio "vivo" más allá
+     del gesto inicial. Esto permite que el sonido suene cuando el usuario gira
+     el teléfono físicamente (sin tocar la pantalla en ese momento). */
+  var audioCtx = null;
+  function ensureAudioCtx() {
+    if (audioCtx) return audioCtx;
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    try {
+      audioCtx = new Ctx();
+      /* Conectamos el <audio> al AudioContext para que sus permisos
+         se "hereden" — clave para que iOS lo deje sonar tras una rotación. */
+      if (rotationAudio && audioCtx.createMediaElementSource) {
+        try {
+          var src = audioCtx.createMediaElementSource(rotationAudio);
+          src.connect(audioCtx.destination);
+        } catch (_) {}
+      }
+    } catch (_) { audioCtx = null; }
+    return audioCtx;
+  }
+
+  function unlockAudio() {
+    if (audioUnlocked || !rotationAudio) return;
+    /* Crear/resumir AudioContext aquí dentro del user gesture */
+    var ctx = ensureAudioCtx();
+    if (ctx && ctx.state === 'suspended') {
+      try { ctx.resume(); } catch (_) {}
+    }
+    audioUnlocked = true;
+    try {
+      var p = rotationAudio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(function () {
+          rotationAudio.pause();
+          rotationAudio.currentTime = 0;
+        }).catch(function () { /* unlock fallido, lo intentamos en próximo gesto */
+          audioUnlocked = false;
+        });
+      }
+    } catch (_) {}
+  }
+  /* Cualquier gesto del usuario sirve para desbloquear */
+  ['touchstart', 'pointerdown', 'click', 'touchend'].forEach(function (ev) {
+    document.addEventListener(ev, unlockAudio, { once: false, passive: true, capture: true });
+  });
+  function playRotationSound() {
+    if (!rotationAudio) return;
+    /* Re-resumir AudioContext por si se suspendió */
+    if (audioCtx && audioCtx.state === 'suspended') {
+      try { audioCtx.resume(); } catch (_) {}
+    }
+    try {
+      rotationAudio.currentTime = 0;
+      var p = rotationAudio.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(function (err) {
+          /* iOS Safari sin user gesture rechaza con NotAllowedError.
+             Si el usuario rotó sin tocar la pantalla, no podemos hacer nada
+             desde JS — es política del browser. El sonido sí va a sonar
+             cuando toque el botón "CONTINUAR ASÍ" o cuando interactúe con
+             el sitio después de rotar. */
+          if (err && err.name === 'NotAllowedError') {
+            console.warn('[COSTA NEGRA] Audio bloqueado por iOS hasta primer touch.');
+          }
+        });
+      }
+    } catch (_) {}
+  }
+
+  /* ----- Lock manager ----- */
+  var scrubInitialized = false;
+  var wasLocked = false;
+  function showRotatePrompt() {
+    document.documentElement.classList.add('is-portrait-locked');
+    if (rotatePrompt) {
+      rotatePrompt.classList.remove('is-fading');
+      rotatePrompt.style.display = 'flex';
+    }
+    wasLocked = true;
+  }
+  function hideRotatePrompt() {
+    /* Si veníamos de portrait-locked y ahora desbloqueamos, suena el efecto */
+    if (wasLocked) {
+      wasLocked = false;
+      playRotationSound();
+    }
+    if (rotatePrompt) {
+      rotatePrompt.classList.add('is-fading');
+      setTimeout(function () {
+        document.documentElement.classList.remove('is-portrait-locked');
+        rotatePrompt.style.display = '';
+      }, 550);
+    } else {
+      document.documentElement.classList.remove('is-portrait-locked');
+    }
+  }
+  function forceScrollTop() {
+    try {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    } catch (e) {
+      window.scrollTo(0, 0);
+    }
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }
+
+  function checkOrientation() {
+    if (shouldLock()) {
+      forceScrollTop();
+      showRotatePrompt();
+    } else {
+      if (!scrubInitialized) {
+        scrubInitialized = true;
+        recomputeDeviceProfile();
+        forceScrollTop();
+        setTimeout(forceScrollTop, 50);
+        setTimeout(function () {
+          forceScrollTop();
+          initScrubber();
+          setTimeout(hideRotatePrompt, 80);
+        }, 180);
+      } else {
+        hideRotatePrompt();
+      }
+    }
+  }
+
+  /* Detección robusta de rotación con múltiples eventos + re-checks tardíos.
+     iOS Safari y Chrome Android pueden reportar dimensiones inconsistentes
+     justo al rotar (el browser bar colapsa, el viewport flipea), así que
+     corremos checkOrientation en t=0, t=200, t=600 después de cada evento. */
+  function reCheckOrientation() {
+    /* Triple ping: inmediato, después del relayout y por seguridad tardía */
+    requestAnimationFrame(checkOrientation);
+    setTimeout(checkOrientation, 220);
+    setTimeout(checkOrientation, 650);
+  }
+  window.addEventListener('orientationchange', reCheckOrientation);
+  window.addEventListener('resize', reCheckOrientation);
+  if (window.matchMedia) {
+    var orientationMQ = window.matchMedia('(orientation: portrait)');
+    if (orientationMQ.addEventListener) {
+      orientationMQ.addEventListener('change', reCheckOrientation);
+    } else if (orientationMQ.addListener) {
+      orientationMQ.addListener(reCheckOrientation); /* legacy Safari */
+    }
+  }
+  if (window.screen && window.screen.orientation && window.screen.orientation.addEventListener) {
+    window.screen.orientation.addEventListener('change', reCheckOrientation);
+  }
+  /* Algunos navegadores móviles solo notifican via visualViewport.resize */
+  if (window.visualViewport && window.visualViewport.addEventListener) {
+    window.visualViewport.addEventListener('resize', reCheckOrientation);
+  }
+
+  checkOrientation();
+
+  /* ===== Scroll-scrub real ===== */
+  function initScrubber() {
+
+  var images = new Array(FRAME_COUNT);
+  var loadedCount = 0;
+  var firstFrameReady = false;
+  var readyForScrub = false;
+
+  var failedFrames = 0;
+  var FAIL_THRESHOLD = Math.floor(FRAME_COUNT * 0.15);
+
+  function loadFrame(i, eager) {
+    var img = new Image();
+    if (eager && 'fetchPriority' in img) img.fetchPriority = 'high';
+    img.decoding = 'async';
+    img.onload = function () {
+      loadedCount++; updateLoader();
+      if (i === 0) { firstFrameReady = true; drawCurrent(); }
+      if (!readyForScrub && loadedCount / FRAME_COUNT >= READY_THRESHOLD) {
+        readyForScrub = true; hideLoader();
+      }
+    };
+    img.onerror = function () {
+      failedFrames++;
+      loadedCount++;
+      updateLoader();
+      if (failedFrames === FAIL_THRESHOLD) {
+        console.warn('[COSTA NEGRA] Más del 15% de frames no cargaron. Verificar ruta:', FRAMES_BASE);
+      }
+      if (failedFrames > FRAME_COUNT * 0.5 && !readyForScrub) {
+        console.error('[COSTA NEGRA] Demasiados frames fallaron. Mostrando sitio sin scroll-scrub.');
+        readyForScrub = true;
+        hideLoader();
+      }
+    };
+    img.src = frameUrl(i);
+    images[i] = img;
+  }
+
+  function updateLoader() {
+    if (!loader) return;
+    var pct = Math.min(100, Math.round((loadedCount / FRAME_COUNT) * 100));
+    if (loaderFill) loaderFill.style.transform = 'scaleX(' + (pct / 100) + ')';
+    if (loaderPct) loaderPct.textContent = pct;
+  }
+  function hideLoader() {
+    if (!loader) return;
+    forceScrollTop();
+    loader.classList.add('is-hidden');
+    setTimeout(function () {
+      document.documentElement.classList.remove('is-loading');
+      forceScrollTop();
+      initialJump = true;
+    }, 100);
+    setTimeout(function () { loader.style.display = 'none'; }, 800);
+  }
+
+  var priority = Math.min(PRELOAD_PRIORITY, FRAME_COUNT);
+  for (var i = 0; i < priority; i++) loadFrame(i, true);
+
+  function lazyLoad() {
+    var remaining = [];
+    for (var j = priority; j < FRAME_COUNT; j++) remaining.push(j);
+    var queue = []; var step = 4;
+    for (var offset = 0; offset < step; offset++) {
+      for (var k = offset; k < remaining.length; k += step) queue.push(remaining[k]);
+    }
+    var idx = 0;
+    function next() {
+      if (idx >= queue.length) return;
+      loadFrame(queue[idx++], false);
+      if (window.requestIdleCallback) requestIdleCallback(next, { timeout: 100 });
+      else setTimeout(next, 6);
+    }
+    next();
+  }
+  if (window.requestIdleCallback) requestIdleCallback(lazyLoad);
+  else setTimeout(lazyLoad, 80);
+
+  function resize() {
+    var rect = canvas.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawCurrent();
+  }
+  var resizeTimer;
+  var lastResizeWidth = window.innerWidth;
+  var lastResizeHeight = window.innerHeight;
+  window.addEventListener('resize', function () {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    if (w === lastResizeWidth) {
+      lastResizeHeight = h;
+      return;
+    }
+    lastResizeWidth = w;
+    lastResizeHeight = h;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 100);
+  });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () {});
+  }
+  resize();
+
+  function drawCover(img) {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = canvas.width / dpr, ch = canvas.height / dpr;
+    var iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+    if (!iw || !ih) return;
+    var ratio = Math.max(cw / iw, ch / ih);
+    var w = iw * ratio, h = ih * ratio;
+    var x = (cw - w) / 2, y = (ch - h) / 2;
+    ctx.fillStyle = '#0A0E12';
+    ctx.fillRect(0, 0, cw, ch);
+    ctx.drawImage(img, x, y, w, h);
+  }
+
+  var target = 0, current = 0;
+  var easing = 1.0;
+  var lastDrawn = -1, activeSection = -1;
+  var initialJump = true;
+
+  function getGlobalProgress() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max <= 0) return 0;
+    var y = window.scrollY || document.documentElement.scrollTop || 0;
+    return Math.max(0, Math.min(1, y / max));
+  }
+  function drawCurrent() {
+    if (!firstFrameReady) return;
+    var idx = Math.min(Math.floor(current * (FRAME_COUNT - 1)), FRAME_COUNT - 1);
+    if (idx === lastDrawn) return;
+    var img = images[idx];
+    if (img && img.complete && img.naturalWidth) {
+      drawCover(img); lastDrawn = idx;
+      return;
+    }
+    var near = -1;
+    for (var d = 1; d < FRAME_COUNT; d++) {
+      if (images[idx - d] && images[idx - d].complete && images[idx - d].naturalWidth) { near = idx - d; break; }
+      if (images[idx + d] && images[idx + d].complete && images[idx + d].naturalWidth) { near = idx + d; break; }
+    }
+    if (near >= 0 && images[near] && images[near].complete) {
+      drawCover(images[near]);
+      lastDrawn = near;
+    }
+  }
+  function tick() {
+    var progress = getGlobalProgress();
+    target = progress;
+    if (initialJump) {
+      current = target;
+      initialJump = false;
+    } else {
+      current += (target - current) * easing;
+      if (Math.abs(target - current) < 0.0005) current = target;
+    }
+    drawCurrent();
+    var secIdx = Math.floor(progress * TOTAL_SECTIONS);
+    if (secIdx >= TOTAL_SECTIONS) secIdx = TOTAL_SECTIONS - 1;
+    if (secIdx !== activeSection) {
+      if (progressCurrent) progressCurrent.textContent = String(secIdx + 1).padStart(2, '0');
+      activeSection = secIdx;
+    }
+    if (progressFill) progressFill.style.transform = 'scaleY(' + progress + ')';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  } /* end initScrubber */
+})();
+
+/* ============================================================
+   Reveal-on-scroll bidireccional
+   ============================================================ */
+(function () {
+  'use strict';
+  var SELECTORS = ['.fleet-card', '.steps li', '.included-grid li', '.area-list li', '.req-card', '.why-card', '.quote', '.faq-item'];
+  var targets = [];
+  SELECTORS.forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      el.classList.add('reveal'); targets.push(el);
+    });
+  });
+  if (!targets.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    targets.forEach(function (el) { el.classList.add('is-visible'); }); return;
+  }
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(function (el) { el.classList.add('is-visible'); }); return;
+  }
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) entry.target.classList.add('is-visible');
+      else entry.target.classList.remove('is-visible');
+    });
+  }, { threshold: 0.12, rootMargin: '-6% 0px -6% 0px' });
+  targets.forEach(function (el) { observer.observe(el); });
+})();
+
+/* ============================================================
+   COSTA NEGRA — i18n switcher (ES / EN)
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var LANGS = [
+    { code: 'es', flag: '🇲🇽', name: 'Español' },
+    { code: 'en', flag: '🇺🇸', name: 'English' }
+  ];
+  var RTL = [];
+
+  /* Diccionarios — solo strings con data-i18n. Texto plano + <em>/<strong>. */
+  var DICT = {
+    es: {
+      'loader.text': 'Preparando tu llegada',
+      'rotate.title': 'Gira el <em>dispositivo</em>',
+      'rotate.text': 'Diseñada para vivirse en horizontal. Toma un segundo. Lo vas a agradecer.',
+      'rotate.hint': 'Detectando rotación',
+      'rotate.skip': 'Continuar así',
+      'nav.flota': 'Flota', 'nav.experiencia': 'Experiencia', 'nav.concierge': 'Concierge', 'nav.preguntas': 'Preguntas', 'nav.cta': 'Reservar acceso',
+      'hero.kicker': 'Hiperlujo privado &middot; Riviera Maya',
+      'hero.headline': 'Aterrizas. <em>Las llaves</em> ya están en tu mano.',
+      'hero.lede': 'Flota privada exótica, GT y todoterreno premium. Entrega valet en CUN, tu villa o tu muelle. Concierge bilingüe que opera mientras tú descansas — 24 horas, todos los días del año.',
+      'hero.cta_primary': 'Reservar acceso', 'hero.cta_ghost': 'Ver flota →',
+      'hero.scroll': 'DESLIZA', 'hero.chapters': '10 capítulos',
+      'fleet.kicker': '02 / Flota',
+      'fleet.headline': 'Un auto. <em>Un estado de ánimo</em>.',
+      'fleet.lede': 'Cada unidad fue elegida a mano para el clima del Caribe y mantenida sin concesiones. No rentamos autos — entregamos el momento que solo ese auto crea.',
+      'how.kicker': '03 / Experiencia',
+      'how.headline': 'Tres pasos. <em>Cero fricción</em>.',
+      'included.kicker': '04 / Concierge',
+      'included.headline': 'Todo lo que <em>importa</em>. Nada que no.',
+      'area.kicker': '05 / Cobertura',
+      'area.headline': 'De Cancún a <em>Bacalar</em>. Y más allá.',
+      'area.lede': 'Operamos en toda la Riviera Maya. Hoteles, villas y muelles privados dentro de 200 km de Playa del Carmen — y bajo solicitud, donde tú estés.',
+      'req.kicker': '06 / Requisitos',
+      'req.headline': 'Lo que vas a <em>necesitar</em>.',
+      'why.kicker': '07 / Diferencia',
+      'why.headline': 'No los más baratos. <em>Los que sí cumplen</em>.',
+      'testi.kicker': '08 / Voces',
+      'testi.headline': 'Lo que dicen quienes <em>ya saben</em>.',
+      'faq.kicker': '09 / Preguntas',
+      'faq.headline': 'Respuestas <em>directas</em>.',
+      'book.kicker': '10 / Reservar',
+      'book.headline': 'Tu llegada. <em>Sin fricción</em>.',
+      'book.lede': 'WhatsApp es lo más rápido. Confirmamos disponibilidad en menos de 30 minutos — todos los días, a cualquier hora. Cupo limitado en temporada alta.',
+      'book.cta_wa': 'Reservar por WhatsApp',
+      'book.note': '24 horas &middot; Español &middot; Inglés',
+      'footer.tag': 'Hiperlujo privado &middot; Riviera Maya, México',
+      'footer.terms': 'Términos', 'footer.privacy': 'Privacidad', 'footer.insurance': 'Póliza de seguro',
+      'fleet.car1.tag': 'Exótico',
+      'fleet.car1.detail': 'V10 &middot; 631 hp &middot; AWD &middot; descapotable bajo solicitud',
+      'fleet.car2.tag': 'SUV de lujo',
+      'fleet.car2.detail': 'V8 &middot; cabina de cinco &middot; acabados a la altura del Caribe',
+      'fleet.car3.tag': 'Convertible',
+      'fleet.car3.detail': 'Twin-turbo flat-six &middot; PDK &middot; techo abajo, viento a favor',
+      'fleet.car4.tag': 'SUV de lujo',
+      'fleet.car4.detail': 'V8 biturbo &middot; 577 hp &middot; presencia indiscutible',
+      'fleet.car5.tag': 'Aventura',
+      'fleet.car5.detail': 'Soft-top &middot; listo para cenotes, selva y caminos sin nombre',
+      'fleet.car6.tag': 'Eléctrico',
+      'fleet.car6.detail': 'Tri-motor &middot; 1,020 hp &middot; puertas falcón &middot; silencio total',
+      'fleet.car7.tag': 'Grupo VIP',
+      'fleet.car7.detail': 'Siete plazas &middot; chofer privado disponible &middot; transfer aeropuerto',
+      'fleet.car8.tag': 'Ejecutivo',
+      'fleet.car8.detail': '4Matic &middot; paquete confort trasero &middot; oficina rodante',
+      'fleet.price': 'Tarifa privada <strong>bajo consulta</strong>',
+      'how.step1.title': 'Eliges',
+      'how.step1.text': 'Reservas tu unidad por WhatsApp o web. Un agente bilingüe confirma en menos de 30 minutos &mdash; sin formularios eternos, sin call centers, sin espera.',
+      'how.step2.title': 'Recibes',
+      'how.step2.text': 'Tu auto llega al CUN, a tu villa, a tu hotel o a tu muelle privado. Inspección grabada en video. Tanque lleno, TAG IAVE listo, GPS precargado. Manejas en menos de 12 minutos desde que aterrizas.',
+      'how.step3.title': 'Manejas',
+      'how.step3.text': 'Línea directa con tu concierge las 24 horas. Si algo pasa &mdash; un raspón, una multa, un cambio de planes &mdash; lo resolvemos antes de que termines el café. Lo recogemos cuando tú decidas.',
+      'included.item1': '<strong>Entrega valet puerta a puerta</strong> &middot; CUN, hoteles, villas, marinas, beach clubs',
+      'included.item2': '<strong>Cobertura amplia premium</strong> &middot; deducible cero disponible en toda la flota exótica',
+      'included.item3': '<strong>TAG IAVE incluido</strong> &middot; cero paradas en casetas de Cancún a Tulum',
+      'included.item4': '<strong>Combustible lleno a lleno</strong> &middot; sin asteriscos, sin sorpresas',
+      'included.item5': '<strong>Asistencia 24/7</strong> &middot; auto de reemplazo en menos de 60 minutos',
+      'included.item6': '<strong>Concierge bilingüe</strong> &middot; español e inglés vía WhatsApp',
+      'included.item7': '<strong>GPS curado por locales</strong> &middot; cenotes, ruinas, beach clubs y restaurantes que importan',
+      'included.item8': '<strong>Kit de bienvenida</strong> &middot; agua fría, snacks artesanales, mapa impreso firmado',
+      'included.item9': '<strong>Pago flexible</strong> &middot; USD, MXN o EUR &middot; todas las tarjetas premium',
+      'area.item1.place': 'Aeropuerto Internacional de Cancún (CUN)',
+      'area.item1.time': '45 min de Playa',
+      'area.item2.place': 'Playa del Carmen &middot; Mayakoba &middot; Bahía Príncipe Residences',
+      'area.item2.time': 'Base de operaciones',
+      'area.item3.place': 'Tulum &middot; Aldea Zama &middot; Hotel Zone',
+      'area.item3.time': '50 min',
+      'area.item4.place': 'Zona Hotelera Cancún &middot; Puerto Cancún',
+      'area.item4.time': '55 min',
+      'area.item5.place': 'Cozumel &middot; coordinación de ferry incluida',
+      'area.item5.time': 'Bajo solicitud',
+      'area.item6.place': 'Bacalar &middot; Holbox &middot; Mérida &middot; Chichén Itzá',
+      'area.item6.time': 'Reserva con anticipación',
+      'req.driver.title': 'Conductor',
+      'req.driver.li1': 'Edad mínima <strong>25 años</strong> &middot; exóticos desde 30',
+      'req.driver.li2': 'Licencia vigente &middot; México, USA, Canadá, UE, Reino Unido',
+      'req.driver.li3': 'Pasaporte para visitantes internacionales',
+      'req.driver.li4': 'Historial limpio &middot; verificación discreta en 10 minutos',
+      'req.payment.title': 'Pago y depósito',
+      'req.payment.li1': 'Tarjeta de crédito a nombre del conductor',
+      'req.payment.li2': 'Depósito en garantía <strong>USD 500 a 5,000</strong> según unidad',
+      'req.payment.li3': 'IVA 16% incluido en cada tarifa',
+      'req.payment.li4': 'USD, MXN o EUR &middot; liberación inmediata al retorno',
+      'req.insurance.title': 'Seguro',
+      'req.insurance.li1': 'Responsabilidad civil incluida por ley mexicana',
+      'req.insurance.li2': 'Cobertura amplia premium &middot; deducible cero opcional',
+      'req.insurance.li3': 'Recomendado: <strong>el seguro de tu tarjeta no aplica aquí</strong>',
+      'req.insurance.li4': 'Póliza con cumplimiento PROFECO',
+      'why.card1.title': 'Flota curada',
+      'why.card1.text': 'Cada unidad es elegida a mano, probada en clima caribeño y revisada después de cada renta. Cero kilometrajes castigados, cero concesiones, cero "ya casi listo".',
+      'why.card2.title': 'Entrega valet real',
+      'why.card2.text': 'Te recibimos a la salida del CUN con tu nombre. Inspección grabada, llaves entregadas, ruta cargada. Manejas en menos de 12 minutos &mdash; incluso si tu vuelo aterrizó a las 2 AM.',
+      'why.card3.title': 'Conocimiento local',
+      'why.card3.text': 'Tu concierge vive aquí. Te reserva el beach club, te recomienda el cenote que aún no está en Instagram, y sabe cuándo conviene la federal en lugar de la costera.',
+      'why.card4.title': 'Sin sorpresas',
+      'why.card4.text': 'Tarifas transparentes. Cero casetas ocultas, cero trucos de combustible, cero teatro de seguros. Lo que reservas es exactamente lo que pagas.',
+      'testi.q1.text': '&ldquo;Aterricé en CUN a las 11 de la noche. La G-Wagon estaba esperándome con mi nombre en una placa de madera. Inspección en 8 minutos. Manejaba a Mayakoba antes de medianoche. Rento autos en Mónaco &mdash; esto fue mejor.&rdquo;',
+      'testi.q1.author': 'Helena R. &middot; Rosewood Mayakoba &middot; Febrero 2026',
+      'testi.q2.text': '&ldquo;La Wrangler se ponchó a 90 minutos de Cobá. Llamé. Tuvieron un reemplazo conmigo en 47 minutos. No perdí el día. No perdí el viaje. No perdí la calma.&rdquo;',
+      'testi.q2.author': 'Marcos D. &middot; Villa privada en Tulum &middot; Enero 2026',
+      'testi.q3.text': '&ldquo;Coordinaron dos camionetas y una Escalade para una boda de 14 invitados. La logística fue impecable. La novia lloró con el detalle de la champaña de bienvenida en cada vehículo.&rdquo;',
+      'testi.q3.author': 'Sandra y Tom L. &middot; Boda en Banyan Tree &middot; Marzo 2026',
+      'faq.q1.q': '¿De verdad entregan en el aeropuerto?',
+      'faq.q1.a': 'Sí. Te recibimos a la salida del CUN &mdash; terminales 2, 3 y 4. Coordinamos con tu vuelo en tiempo real. Si llegas con retraso, esperamos. Cero taxis, cero shuttle, cero filas.',
+      'faq.q2.q': '¿Necesito licencia mexicana?',
+      'faq.q2.a': 'No. Aceptamos licencias vigentes de México, USA, Canadá, Unión Europea, Reino Unido y la mayoría de las internacionales. Pasaporte para verificación.',
+      'faq.q3.q': '¿Qué pasa si me ponen una multa?',
+      'faq.q3.a': 'Las multas se cargan a tu tarjeta exactamente como las cobró la autoridad. Te enviamos la documentación completa por WhatsApp. Cero recargos administrativos. Cero sorpresas.',
+      'faq.q4.q': '¿Incluye seguro?',
+      'faq.q4.a': 'Responsabilidad civil viene incluida por ley mexicana. La cobertura amplia premium es opcional pero altamente recomendada &mdash; el seguro de tu tarjeta de crédito de origen normalmente <strong>no aplica</strong> en estas categorías en México. Podemos cotizarte deducible cero en la flota exótica.',
+      'faq.q5.q': '¿Puedo llevar el auto a Tulum, Bacalar o Mérida?',
+      'faq.q5.a': 'Sí en SUVs, sedanes y convertibles. Los exóticos tienen un límite de 250 km al día y están restringidos a carretera pavimentada. Bacalar (~250 km) y Mérida (~310 km) se pre-aprueban con reserva anticipada.',
+      'faq.q6.q': '¿Métodos de pago?',
+      'faq.q6.a': 'Visa, MasterCard y American Express. USD, MXN o EUR. El depósito en garantía es con tarjeta de crédito; la renta se puede liquidar con débito, transferencia, Apple Pay o Google Pay.',
+      'faq.q7.q': '¿Hay disponibilidad esta temporada?',
+      'faq.q7.a': 'La flota exótica opera con cupo limitado. Diciembre, Semana Santa y verano se cierran con 4 a 6 semanas de anticipación. Si tu fecha es próxima, escríbenos por WhatsApp ahora &mdash; confirmamos disponibilidad real en menos de 30 minutos.'
+    },
+
+    en: {
+      'loader.text': 'Preparing your arrival',
+      'rotate.title': 'Turn your <em>device</em>',
+      'rotate.text': 'Designed to be experienced in landscape. Take a second. You’ll thank yourself.',
+      'rotate.hint': 'Detecting rotation', 'rotate.skip': 'Continue anyway',
+      'nav.flota': 'Fleet', 'nav.experiencia': 'Experience', 'nav.concierge': 'Concierge', 'nav.preguntas': 'FAQ', 'nav.cta': 'Reserve access',
+      'hero.kicker': 'Private hyperluxury &middot; Riviera Maya',
+      'hero.headline': 'You land. <em>The keys</em> are already in your hand.',
+      'hero.lede': 'Private exotic, GT and premium off-road fleet. Valet delivery to CUN, your villa, or your dock. Bilingual concierge that runs while you rest — 24 hours, every day of the year.',
+      'hero.cta_primary': 'Reserve access', 'hero.cta_ghost': 'View fleet →',
+      'hero.scroll': 'SCROLL', 'hero.chapters': '10 chapters',
+      'fleet.kicker': '02 / Fleet',
+      'fleet.headline': 'One car. <em>One state of mind</em>.',
+      'fleet.lede': 'Each unit was hand-picked for the Caribbean climate and maintained without compromise. We don’t rent cars — we deliver the moment only that car creates.',
+      'how.kicker': '03 / Experience',
+      'how.headline': 'Three steps. <em>Zero friction</em>.',
+      'included.kicker': '04 / Concierge',
+      'included.headline': 'Everything that <em>matters</em>. Nothing that doesn’t.',
+      'area.kicker': '05 / Coverage',
+      'area.headline': 'From Cancun to <em>Bacalar</em>. And beyond.',
+      'area.lede': 'We operate across the Riviera Maya. Hotels, villas and private docks within 200 km of Playa del Carmen — and on request, wherever you are.',
+      'req.kicker': '06 / Requirements',
+      'req.headline': 'What you’ll <em>need</em>.',
+      'why.kicker': '07 / Difference',
+      'why.headline': 'Not the cheapest. <em>The ones who deliver</em>.',
+      'testi.kicker': '08 / Voices',
+      'testi.headline': 'What those <em>who already know</em> say.',
+      'faq.kicker': '09 / Questions',
+      'faq.headline': '<em>Direct</em> answers.',
+      'book.kicker': '10 / Reserve',
+      'book.headline': 'Your arrival. <em>Without friction</em>.',
+      'book.lede': 'WhatsApp is fastest. We confirm availability in less than 30 minutes — every day, any hour. Limited spots in high season.',
+      'book.cta_wa': 'Reserve via WhatsApp',
+      'book.note': '24 hours &middot; Spanish &middot; English',
+      'footer.tag': 'Private hyperluxury &middot; Riviera Maya, Mexico',
+      'footer.terms': 'Terms', 'footer.privacy': 'Privacy', 'footer.insurance': 'Insurance policy',
+      'fleet.car1.tag': 'Exotic',
+      'fleet.car1.detail': 'V10 &middot; 631 hp &middot; AWD &middot; convertible upon request',
+      'fleet.car2.tag': 'Luxury SUV',
+      'fleet.car2.detail': 'V8 &middot; five-seat cabin &middot; finishes worthy of the Caribbean',
+      'fleet.car3.tag': 'Convertible',
+      'fleet.car3.detail': 'Twin-turbo flat-six &middot; PDK &middot; top down, wind in your favor',
+      'fleet.car4.tag': 'Luxury SUV',
+      'fleet.car4.detail': 'V8 biturbo &middot; 577 hp &middot; undeniable presence',
+      'fleet.car5.tag': 'Adventure',
+      'fleet.car5.detail': 'Soft-top &middot; ready for cenotes, jungle and unnamed roads',
+      'fleet.car6.tag': 'Electric',
+      'fleet.car6.detail': 'Tri-motor &middot; 1,020 hp &middot; falcon doors &middot; total silence',
+      'fleet.car7.tag': 'VIP Group',
+      'fleet.car7.detail': 'Seven seats &middot; private chauffeur available &middot; airport transfer',
+      'fleet.car8.tag': 'Executive',
+      'fleet.car8.detail': '4Matic &middot; rear comfort package &middot; rolling office',
+      'fleet.price': 'Private rate <strong>upon request</strong>',
+      'how.step1.title': 'You choose',
+      'how.step1.text': 'Reserve your vehicle via WhatsApp or web. A bilingual agent confirms in less than 30 minutes &mdash; no endless forms, no call centers, no waiting.',
+      'how.step2.title': 'You receive',
+      'how.step2.text': 'Your car arrives at CUN, your villa, your hotel or your private dock. Video-recorded inspection. Full tank, IAVE TAG ready, GPS preloaded. You drive in less than 12 minutes from landing.',
+      'how.step3.title': 'You drive',
+      'how.step3.text': 'Direct line to your concierge 24 hours a day. If anything happens &mdash; a scratch, a fine, a change of plans &mdash; we solve it before you finish your coffee. We pick up when you decide.',
+      'included.item1': '<strong>Door-to-door valet delivery</strong> &middot; CUN, hotels, villas, marinas, beach clubs',
+      'included.item2': '<strong>Premium comprehensive coverage</strong> &middot; zero deductible available across the entire exotic fleet',
+      'included.item3': '<strong>IAVE TAG included</strong> &middot; zero toll stops from Cancun to Tulum',
+      'included.item4': '<strong>Full-to-full fuel</strong> &middot; no asterisks, no surprises',
+      'included.item5': '<strong>24/7 assistance</strong> &middot; replacement vehicle in less than 60 minutes',
+      'included.item6': '<strong>Bilingual concierge</strong> &middot; Spanish and English via WhatsApp',
+      'included.item7': '<strong>Locally curated GPS</strong> &middot; cenotes, ruins, beach clubs and restaurants that matter',
+      'included.item8': '<strong>Welcome kit</strong> &middot; cold water, artisan snacks, signed printed map',
+      'included.item9': '<strong>Flexible payment</strong> &middot; USD, MXN or EUR &middot; all premium cards',
+      'area.item1.place': 'Cancun International Airport (CUN)',
+      'area.item1.time': '45 min from Playa',
+      'area.item2.place': 'Playa del Carmen &middot; Mayakoba &middot; Bahía Príncipe Residences',
+      'area.item2.time': 'Operations base',
+      'area.item3.place': 'Tulum &middot; Aldea Zama &middot; Hotel Zone',
+      'area.item3.time': '50 min',
+      'area.item4.place': 'Cancun Hotel Zone &middot; Puerto Cancun',
+      'area.item4.time': '55 min',
+      'area.item5.place': 'Cozumel &middot; ferry coordination included',
+      'area.item5.time': 'Upon request',
+      'area.item6.place': 'Bacalar &middot; Holbox &middot; Mérida &middot; Chichén Itzá',
+      'area.item6.time': 'Reserve in advance',
+      'req.driver.title': 'Driver',
+      'req.driver.li1': 'Minimum age <strong>25 years</strong> &middot; exotics from 30',
+      'req.driver.li2': 'Valid license &middot; Mexico, USA, Canada, EU, United Kingdom',
+      'req.driver.li3': 'Passport for international visitors',
+      'req.driver.li4': 'Clean record &middot; discreet 10-minute verification',
+      'req.payment.title': 'Payment and deposit',
+      'req.payment.li1': "Credit card in the driver's name",
+      'req.payment.li2': 'Security deposit <strong>USD 500 to 5,000</strong> depending on vehicle',
+      'req.payment.li3': '16% VAT included in every rate',
+      'req.payment.li4': 'USD, MXN or EUR &middot; immediate release on return',
+      'req.insurance.title': 'Insurance',
+      'req.insurance.li1': 'Civil liability included by Mexican law',
+      'req.insurance.li2': 'Premium comprehensive coverage &middot; zero deductible optional',
+      'req.insurance.li3': 'Recommended: <strong>your card insurance does not apply here</strong>',
+      'req.insurance.li4': 'PROFECO-compliant policy',
+      'why.card1.title': 'Curated fleet',
+      'why.card1.text': 'Each unit is hand-picked, tested in Caribbean weather and inspected after every rental. Zero punished mileage, zero compromises, zero "almost ready".',
+      'why.card2.title': 'Real valet delivery',
+      'why.card2.text': 'We greet you at CUN arrivals with your name. Recorded inspection, keys handed over, route loaded. You drive in less than 12 minutes &mdash; even if your flight landed at 2 AM.',
+      'why.card3.title': 'Local knowledge',
+      'why.card3.text': "Your concierge lives here. They book the beach club, recommend the cenote that's not yet on Instagram, and know when to take the federal road instead of the coastal one.",
+      'why.card4.title': 'No surprises',
+      'why.card4.text': 'Transparent rates. Zero hidden tolls, zero fuel tricks, zero insurance theater. What you book is exactly what you pay.',
+      'testi.q1.text': '&ldquo;I landed at CUN at 11 PM. The G-Wagon was waiting for me with my name on a wooden plaque. Inspection in 8 minutes. I was driving to Mayakoba before midnight. I rent cars in Monaco &mdash; this was better.&rdquo;',
+      'testi.q1.author': 'Helena R. &middot; Rosewood Mayakoba &middot; February 2026',
+      'testi.q2.text': "&ldquo;The Wrangler got a flat 90 minutes from Cobá. I called. They had a replacement with me in 47 minutes. I didn't lose the day. I didn't lose the trip. I didn't lose my cool.&rdquo;",
+      'testi.q2.author': 'Marcos D. &middot; Private villa in Tulum &middot; January 2026',
+      'testi.q3.text': '&ldquo;They coordinated two SUVs and an Escalade for a 14-guest wedding. Logistics were impeccable. The bride cried at the welcome champagne detail in every vehicle.&rdquo;',
+      'testi.q3.author': 'Sandra and Tom L. &middot; Wedding at Banyan Tree &middot; March 2026',
+      'faq.q1.q': 'Do you really deliver at the airport?',
+      'faq.q1.a': "Yes. We greet you at CUN arrivals &mdash; terminals 2, 3 and 4. We coordinate with your flight in real time. If you're delayed, we wait. Zero taxis, zero shuttle, zero lines.",
+      'faq.q2.q': 'Do I need a Mexican license?',
+      'faq.q2.a': 'No. We accept valid licenses from Mexico, USA, Canada, the European Union, the United Kingdom and most international ones. Passport for verification.',
+      'faq.q3.q': 'What happens if I get a fine?',
+      'faq.q3.a': 'Fines are charged to your card exactly as the authority charged them. We send you the complete documentation via WhatsApp. Zero administrative surcharges. Zero surprises.',
+      'faq.q4.q': 'Is insurance included?',
+      'faq.q4.a': 'Civil liability is included by Mexican law. Premium comprehensive coverage is optional but highly recommended &mdash; your home credit card insurance typically <strong>does not apply</strong> in these categories in Mexico. We can quote zero deductible on the exotic fleet.',
+      'faq.q5.q': 'Can I take the car to Tulum, Bacalar or Mérida?',
+      'faq.q5.a': 'Yes for SUVs, sedans and convertibles. Exotics have a 250 km daily limit and are restricted to paved roads. Bacalar (~250 km) and Mérida (~310 km) are pre-approved with advance booking.',
+      'faq.q6.q': 'Payment methods?',
+      'faq.q6.a': 'Visa, MasterCard and American Express. USD, MXN or EUR. The security deposit is on credit card; the rental can be settled with debit, transfer, Apple Pay or Google Pay.',
+      'faq.q7.q': 'Is there availability this season?',
+      'faq.q7.a': 'The exotic fleet operates with limited capacity. December, Easter Week and summer close 4 to 6 weeks in advance. If your date is near, message us via WhatsApp now &mdash; we confirm real availability in less than 30 minutes.'
+    }
+  };
+
+  /* ============================================================
+     SETUP
+     ============================================================ */
+  var switcherEl = document.querySelector('[data-lang-switcher]');
+  var toggleEl = document.querySelector('[data-lang-toggle]');
+  var menuEl = document.querySelector('[data-lang-menu]');
+  var displayEl = document.querySelector('[data-lang-display]');
+
+  /* Build menu items */
+  if (menuEl) {
+    LANGS.forEach(function (l) {
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.setAttribute('role', 'option');
+      btn.setAttribute('data-lang', l.code);
+      btn.innerHTML = '<span class="lang-flag">' + l.flag + '</span><span class="lang-name">' + l.name + '</span>';
+      btn.addEventListener('click', function () {
+        applyLang(l.code);
+        closeMenu();
+      });
+      li.appendChild(btn);
+      menuEl.appendChild(li);
+    });
+  }
+
+  /* Toggle dropdown */
+  function openMenu() {
+    if (switcherEl) switcherEl.classList.add('is-open');
+    if (toggleEl) toggleEl.setAttribute('aria-expanded', 'true');
+  }
+  function closeMenu() {
+    if (switcherEl) switcherEl.classList.remove('is-open');
+    if (toggleEl) toggleEl.setAttribute('aria-expanded', 'false');
+  }
+  if (toggleEl) {
+    toggleEl.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (switcherEl.classList.contains('is-open')) closeMenu();
+      else openMenu();
+    });
+  }
+  document.addEventListener('click', function (e) {
+    if (switcherEl && !switcherEl.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* Apply translations */
+  function applyLang(code) {
+    var dict = DICT[code];
+    if (!dict) return;
+
+    document.documentElement.lang = code;
+    document.documentElement.dir = RTL.indexOf(code) >= 0 ? 'rtl' : 'ltr';
+
+    if (displayEl) displayEl.textContent = code.toUpperCase();
+
+    if (menuEl) {
+      menuEl.querySelectorAll('button').forEach(function (b) {
+        b.classList.toggle('is-active', b.getAttribute('data-lang') === code);
+      });
+    }
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n');
+      var val = dict[key];
+      if (typeof val !== 'string') return;
+
+      if (el.classList.contains('kicker')) {
+        var hadDot = el.querySelector('.dot') !== null;
+        el.innerHTML = (hadDot ? '<span class="dot"></span>' : '') + val;
+      } else {
+        el.innerHTML = val;
+      }
+    });
+
+    try { localStorage.setItem('cn-lang', code); } catch (e) {}
+  }
+
+  /* Restore saved language (if any). Si el valor guardado ya no existe en
+     DICT (caso: usuario tenía 'fr'/'de'/'pt'/'it' guardado de versiones
+     anteriores), LIMPIAMOS localStorage para evitar que vuelva a aparecer
+     en futuras visitas. Esto evita que el sitio quede pegado a un idioma
+     que ya no soportamos. */
+  var saved;
+  try { saved = localStorage.getItem('cn-lang'); } catch (e) {}
+  if (saved && DICT[saved]) {
+    applyLang(saved);
+  } else {
+    if (saved) { try { localStorage.removeItem('cn-lang'); } catch (e) {} }
+    var browser = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
+    var match = LANGS.find(function (l) {
+      return browser === l.code || browser.indexOf(l.code + '-') === 0 || browser.indexOf('-' + l.code) >= 0;
+    });
+    if (match && match.code !== 'es') applyLang(match.code);
+    else applyLang('es');
+  }
+})();
+
+
+/* ============================================================
+   COSTA NEGRA — WEB 4.0 INTERACTIVE LAYER
+   Runs after all original scripts
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+
+  /* ======================================================
+     1. LENIS SMOOTH SCROLL
+     ====================================================== */
+  function initLenis() {
+    if (typeof Lenis === 'undefined') return;
+    var lenis = new Lenis({
+      duration: 1.4,
+      easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+      smooth: true,
+      smoothTouch: false
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+  if (document.readyState === 'complete') {
+    initLenis();
+  } else {
+    window.addEventListener('load', initLenis);
+  }
+
+  /* ======================================================
+     2. CUSTOM CURSOR
+     ====================================================== */
+  if (!isTouchDevice) {
+    var dot = document.createElement('div');
+    var ring = document.createElement('div');
+    dot.className = 'cn-cursor-dot';
+    ring.className = 'cn-cursor-ring';
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+
+    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    var rx = mx, ry = my;
+
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top = my + 'px';
+    });
+
+    (function animCursor() {
+      rx += (mx - rx) * 0.13;
+      ry += (my - ry) * 0.13;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    })();
+
+    /* Hover states */
+    document.querySelectorAll('.fleet-card, .why-card, .req-card, .quote, .faq-item, .steps li, .area-list li, .included-grid li').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { document.body.classList.add('cursor-hover'); });
+      el.addEventListener('mouseleave', function () { document.body.classList.remove('cursor-hover'); });
+    });
+    document.querySelectorAll('.cta').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { document.body.classList.add('cursor-cta'); });
+      el.addEventListener('mouseleave', function () { document.body.classList.remove('cursor-cta'); });
+    });
+
+    /* Hide native cursor */
+    var cursorStyle = document.createElement('style');
+    cursorStyle.textContent = '*, *::before, *::after { cursor: none !important; }';
+    document.head.appendChild(cursorStyle);
+  }
+
+  /* ======================================================
+     3. FLEET CARD 3D TILT
+     ====================================================== */
+  if (!isTouchDevice) {
+    document.querySelectorAll('.fleet-card').forEach(function (card) {
+      card.addEventListener('mouseenter', function () {
+        card.classList.add('is-tilting');
+        card.classList.remove('is-leaving');
+      });
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = ((e.clientX - r.left) / r.width - 0.5) * 8;
+        var y = ((e.clientY - r.top) / r.height - 0.5) * -8;
+        card.style.transform = 'translateY(-6px) scale(1.008) rotateX(' + y + 'deg) rotateY(' + x + 'deg)';
+      });
+      card.addEventListener('mouseleave', function () {
+        card.classList.remove('is-tilting');
+        card.classList.add('is-leaving');
+        card.style.transform = '';
+        setTimeout(function () { card.classList.remove('is-leaving'); }, 600);
+      });
+    });
+  }
+
+  /* ======================================================
+     4. SPOTLIGHT ON TESTIMONIALS
+     ====================================================== */
+  document.querySelectorAll('.quote').forEach(function (quote) {
+    quote.addEventListener('mousemove', function (e) {
+      var r = quote.getBoundingClientRect();
+      quote.style.setProperty('--spotlight-x', ((e.clientX - r.left) / r.width * 100) + '%');
+      quote.style.setProperty('--spotlight-y', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+
+  /* ======================================================
+     5. MAGNETIC CTAs
+     ====================================================== */
+  if (!isTouchDevice) {
+    document.querySelectorAll('.cta-primary, .cta-secondary').forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var dx = (e.clientX - r.left - r.width / 2) * 0.22;
+        var dy = (e.clientY - r.top - r.height / 2) * 0.22;
+        el.style.transform = 'translate(' + dx + 'px, ' + (dy - 2) + 'px)';
+      });
+      el.addEventListener('mouseleave', function () {
+        el.style.transform = '';
+      });
+    });
+  }
+
+  /* ======================================================
+     6. WHY & REQ CARDS — radial cursor glow
+     ====================================================== */
+  document.querySelectorAll('.why-card, .req-card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      var x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+      var y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+      card.style.background = 'radial-gradient(circle at ' + x + '% ' + y + '%, rgba(212,181,126,0.09) 0%, rgba(20,28,38,0.44) 65%)';
+    });
+    card.addEventListener('mouseleave', function () {
+      card.style.background = '';
+    });
+  });
+
+  /* ======================================================
+     7. HERO ENTRANCE ANIMATION (fires when loader hides)
+     ====================================================== */
+  var heroSection = document.querySelector('.section-hero');
+  if (heroSection) {
+    var heroItems = heroSection.querySelectorAll('.kicker, .display-1, .lede, .cta-row, .hero-meta');
+    heroItems.forEach(function (el) {
+      el.classList.add('cn-hero-item');
+    });
+
+    function fireHeroAnim() {
+      heroItems.forEach(function (el, i) {
+        setTimeout(function () {
+          el.style.transition = 'opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1.1s cubic-bezier(0.16,1,0.3,1)';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 120 + i * 130);
+      });
+    }
+
+    var loaderEl = document.querySelector('[data-loader]');
+    if (loaderEl) {
+      var obs = new MutationObserver(function (mutations) {
+        mutations.forEach(function (m) {
+          if (loaderEl.classList.contains('is-hidden')) {
+            setTimeout(fireHeroAnim, 250);
+            obs.disconnect();
+          }
+        });
+      });
+      obs.observe(loaderEl, { attributes: true, attributeFilter: ['class'] });
+    } else {
+      setTimeout(fireHeroAnim, 400);
+    }
+  }
+
+  /* ======================================================
+     8. SECTION HEADER CINEMATIC REVEALS
+     ====================================================== */
+  var sectionRevealTargets = document.querySelectorAll(
+    '.section-fleet .kicker, .section-fleet .display-2, .section-fleet .lede,' +
+    '.section-how .kicker, .section-how .display-2,' +
+    '.section-included .kicker, .section-included .display-2,' +
+    '.section-area .kicker, .section-area .display-2, .section-area .lede,' +
+    '.section-requirements .kicker, .section-requirements .display-2,' +
+    '.section-why .kicker, .section-why .display-2,' +
+    '.section-testimonials .kicker, .section-testimonials .display-2,' +
+    '.section-faq .kicker, .section-faq .display-2,' +
+    '.section-book .kicker, .section-book .display-1, .section-book .lede'
+  );
+
+  sectionRevealTargets.forEach(function (el) {
+    el.classList.add('cn-section-reveal');
+  });
+
+  if ('IntersectionObserver' in window) {
+    var sectionObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var delay = 0;
+          if (el.classList.contains('display-1') || el.classList.contains('display-2')) delay = 60;
+          if (el.classList.contains('lede')) delay = 140;
+          setTimeout(function () { el.classList.add('is-animated'); }, delay);
+          sectionObs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '-4% 0px -4% 0px' });
+    sectionRevealTargets.forEach(function (el) { sectionObs.observe(el); });
+  } else {
+    sectionRevealTargets.forEach(function (el) { el.classList.add('is-animated'); });
+  }
+
+  /* ======================================================
+     9. BOTTOM PROGRESS LINE
+     ====================================================== */
+  var progressLine = document.createElement('div');
+  progressLine.className = 'cn-progress-line';
+  document.body.appendChild(progressLine);
+  window.addEventListener('scroll', function () {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max > 0) progressLine.style.width = Math.min(100, (window.scrollY / max) * 100) + '%';
+  }, { passive: true });
+
+  /* ======================================================
+     10. NAV SCROLL STATE
+     ====================================================== */
+  var navEl = document.querySelector('.nav');
+  if (navEl) {
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 60) navEl.classList.add('is-scrolled');
+      else navEl.classList.remove('is-scrolled');
+    }, { passive: true });
+  }
+
+})();
+
+</script>
+
+
+</body>
+</html>
