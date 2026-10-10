@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Historia de los mayas · Video animado</title>
+<meta name="description" content="Video animado de 60 segundos sobre la historia de los mayas, estilo anime mexicano. Sin dependencias externas.">
+<style>
+/* ============================================================
+   TOKENS DE COLOR · paleta cálida (ocres, turquesas, rojos tierra, dorados)
+   ============================================================ */
+:root {
+  --ocre: #C8842B;
+  --turquesa: #2BB3A3;
+  --rojo: #A8432A;
+  --oro: #F2C14E;
+  --crema: #F7EBD2;
+  --noche: #0E1A24;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: #07090c;            /* fondo de la página (modo oscuro) */
+  color: var(--crema);
+  font-family: "Trebuchet MS", Verdana, system-ui, sans-serif;
+  overflow: hidden;               /* sin scroll horizontal en móvil */
+}
+
+/* ESCENARIO: composición HyperFrames (1920×1080) */
+#root {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--noche);
+  transform: translate(-50%, -50%) scale(var(--s, 1));
+}
+
+/* Cada escena ocupa todo el escenario; la opacidad la controla el reloj */
+.scene { position: absolute; inset: 0; opacity: 0; overflow: hidden; }
+.bg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+/* PERSONAJES: caja de 480×800 que se escala desde la base (ver placeActor) */
+.actor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 480px;
+  height: 800px;
+  transform-origin: 240px 800px;
+  will-change: transform;
+  pointer-events: none;
+}
+.fig { display: block; width: 480px; height: 800px; overflow: visible; }
+/* En la escena 4 el guerrero sostiene la mano del astrónomo: no lleva escudo */
+#s4-warrior .shield { opacity: 0; }
+
+/* TEXTO: subtítulo tipo "lower third" con capítulo */
+.caption {
+  position: absolute;
+  left: 50%;
+  bottom: 64px;
+  transform: translateX(-50%);
+  width: 1480px;
+  padding: 26px 56px 30px;
+  border: 3px solid var(--ocre);
+  border-radius: 20px;
+  background: rgba(8, 12, 18, 0.66);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  text-align: center;
+  z-index: 20;
+}
+.chapter {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--oro);
+  margin-bottom: 12px;
+}
+.text {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--crema);
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+}
+.w { display: inline-block; will-change: opacity, transform; }
+
+/* Fundido global a negro (inicio y final del loop) */
+#fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 1;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* CONTROLES (fuera del escenario, no entran al render) */
+.ctrl {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  z-index: 100;
+}
+.ctrl.idle { opacity: 0; }
+.ctrl[hidden] { display: none; }
+.ctrl button {
+  min-height: 44px;                 /* área táctil cómoda en móvil */
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 193, 78, 0.55);
+  background: rgba(14, 26, 36, 0.78);
+  color: var(--crema);
+  font: 600 15px/1 "Trebuchet MS", Verdana, system-ui, sans-serif;
+  cursor: pointer;
+}
+.ctrl button[aria-pressed="true"] { background: var(--ocre); border-color: var(--oro); color: #1a1008; }
+.ctrl button:focus-visible { outline: 3px solid var(--turquesa); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     DEFINICIONES COMPARTIDAS (no se ven): filtro de brillo y símbolos mayas
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Brillo "glow": desenfoque + original encima -->
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Calendario maya (Tzolk'in / Haab simplificado) -->
+    <g id="sym-wheel">
+      <circle r="66" fill="none" stroke="#F2C14E" stroke-width="10" stroke-dasharray="8 8"/>
+      <circle r="58" fill="#1B1B3A" stroke="#F2C14E" stroke-width="6"/>
+      <circle r="38" fill="#A8432A"/>
+      <circle r="14" fill="#F2C14E"/>
+      <path d="M-26 0H26M0-26V26" stroke="#F7EBD2" stroke-width="3" opacity=".7"/>
+    </g>
+
+    <!-- Numeral maya 13: 2 barras (5 cada una) + 3 puntos (1 cada uno) -->
+    <g id="sym-dots13">
+      <rect x="-44" y="0" width="88" height="14" rx="4" fill="#F2C14E"/>
+      <rect x="-44" y="26" width="88" height="14" rx="4" fill="#F2C14E"/>
+      <circle cx="-30" cy="-22" r="10" fill="#F2C14E"/>
+      <circle cx="0" cy="-22" r="10" fill="#F2C14E"/>
+      <circle cx="30" cy="-22" r="10" fill="#F2C14E"/>
+    </g>
+
+    <!-- Concha: símbolo del cero -->
+    <g id="sym-shell">
+      <ellipse rx="46" ry="34" fill="#2BB3A3"/>
+      <ellipse rx="22" ry="14" fill="#0E1A24"/>
+      <path d="M-46 0H46" stroke="#F7EBD2" stroke-width="3" opacity=".6"/>
+    </g>
+
+    <!-- Sol / estrella -->
+    <g id="sym-sun">
+      <circle r="24" fill="#F2C14E"/>
+      <path d="M0-46V-32M0 46V32M-46 0H-32M46 0H32M-33-33L-23-23M33 33L23 23M33-33L23-23M-33 33L-23 23"
+            stroke="#F2C14E" stroke-width="6" stroke-linecap="round"/>
+    </g>
+
+    <!-- Anillo de 20 días (Tzolk'in) -->
+    <g id="sym-tzolkin">
+      <circle r="54" fill="none" stroke="#A8432A" stroke-width="5"/>
+      <g fill="#E8794F">
+        <circle cy="-54" r="7"/>
+        <circle cy="-54" r="7" transform="rotate(45)"/>
+        <circle cy="-54" r="7" transform="rotate(90)"/>
+        <circle cy="-54" r="7" transform="rotate(135)"/>
+        <circle cy="-54" r="7" transform="rotate(180)"/>
+        <circle cy="-54" r="7" transform="rotate(225)"/>
+        <circle cy="-54" r="7" transform="rotate(270)"/>
+        <circle cy="-54" r="7" transform="rotate(315)"/>
+      </g>
+      <circle r="20" fill="#E8794F"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     COMPOSICIÓN PRINCIPAL · 60 s · 1920×1080
+     data-delay = inicio de cada escena (s); cada escena dura 15 s (constante SCENE)
+     ============================================================ -->
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="60">
+
+  <!-- ==========================================================
+       ESCENA 1 (0–15 s) · LA CIVILIZACIÓN MAYA
+       Fondo: selva y Castillo de Chichén Itzá al amanecer.
+       Acción: el sacerdote entra caminando y señala el cielo.
+       ========================================================== -->
+  <section class="scene" id="scene-1" data-delay="0">
+    <svg class="bg" data-layout-allow-overflow id="bg-1" viewBox="0 0 1920 1080" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FBE3A0"/>
+          <stop offset=".55" stop-color="#F4A666"/>
+          <stop offset="1" stop-color="#D9704A"/>
+        </linearGradient>
+      </defs>
+      <rect width="1920" height="1080" fill="url(#sky1)"/>
+      <circle cx="1480" cy="300" r="130" fill="#FFF3C4" opacity=".55"/>
+      <circle cx="1480" cy="300" r="82" fill="#FFF8DC"/>
+      <path d="M0 640Q240 540 480 610T960 600T1440 590T1920 620V1080H0Z" fill="#2E6C5C"/>
+      <!-- Pirámide El Castillo (Kukulcán), reutilizada en la escena 3 y 4 -->
+      <g id="castillo">
+        <path d="M450 880H1070L1030 790H490Z" fill="#D6A96B"/>
+        <path d="M490 790H1030L990 700H530Z" fill="#CC9C5E"/>
+        <path d="M530 700H990L950 610H570Z" fill="#D6A96B"/>
+        <path d="M570 610H950L910 520H610Z" fill="#CC9C5E"/>
+        <rect x="640" y="440" width="240" height="80" fill="#E0B57A"/>
+        <rect x="660" y="410" width="200" height="30" fill="#B07A3F"/>
+        <rect x="700" y="470" width="30" height="50" fill="#2A1C12"/>
+        <rect x="740" y="520" width="40" height="370" fill="#8A5E2E"/>
+        <path d="M450 880H1070M490 790H1030M530 700H990M570 610H950" stroke="#F3D7A0" stroke-width="3" opacity=".6"/>
+      </g>
+      <path d="M0 760Q320 650 700 730T1400 720T1920 730V1080H0Z" fill="#1B4F40"/>
+      <g fill="#143D33">
+        <circle cx="120" cy="650" r="70"/><circle cx="230" cy="620" r="90"/>
+        <circle cx="360" cy="660" r="60"/><circle cx="1560" cy="640" r="80"/>
+        <circle cx="1700" cy="610" r="100"/><circle cx="1850" cy="660" r="70"/>
+      </g>
+      <path d="M0 900Q960 840 1920 900V1080H0Z" fill="#245E48"/>
+      <!-- Palmeras en primer plano -->
+      <g fill="#0E3327">
+        <path d="M-40 1080Q80 880 260 900Q140 930 40 1080Z"/>
+        <path d="M1960 1080Q1820 860 1640 880Q1760 930 1960 1080Z"/>
+        <path d="M1700 1080Q1620 960 1520 960Q1600 1000 1660 1080Z"/>
+      </g>
+    </svg>
+
+    <!-- Sacerdote: túnica blanca con glifos rojos -->
+    <div class="actor" id="s1-priest" data-kind="priest"></div>
+
+    <div class="caption">
+      <p class="chapter">01 · LA CIVILIZACIÓN MAYA</p>
+      <p class="text">Los mayas fueron una de las grandes civilizaciones del mundo antiguo.</p>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       ESCENA 2 (15–30 s) · LOS AVANCES
+       Fondo: noche con el observatorio (El Caracol) y la Vía Láctea.
+       Acción: el astrónomo dibuja glifos en el aire; los símbolos se conectan.
+       ========================================================== -->
+  <section class="scene" id="scene-2" data-delay="15">
+    <svg class="bg" data-layout-allow-overflow id="bg-2" viewBox="0 0 1920 1080" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0A1330"/>
+          <stop offset=".6" stop-color="#1E2F5A"/>
+          <stop offset="1" stop-color="#3B2F5A"/>
+        </linearGradient>
+        <linearGradient id="mw" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#9FB8FF" stop-opacity="0"/>
+          <stop offset=".5" stop-color="#CFE3FF" stop-opacity=".45"/>
+          <stop offset="1" stop-color="#9FB8FF" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect width="1920" height="1080" fill="url(#sky2)"/>
+      <path d="M-100 400Q700 200 1300 360T2050 280L2050 470Q1300 560 700 500T-100 560Z" fill="url(#mw)"/>
+      <circle cx="380" cy="220" r="120" fill="#FFF2C9" opacity=".12"/>
+      <circle cx="380" cy="220" r="62" fill="#FFF2C9" opacity=".9"/>
+      <g id="stars2"></g>
+      <path d="M0 760Q400 680 800 740T1920 720V1080H0Z" fill="#11343A"/>
+      <!-- Observatorio: torre cilíndrica con cúpula y ventanas (El Caracol) -->
+      <g id="caracol">
+        <rect x="520" y="650" width="240" height="240" fill="#CDA16C"/>
+        <rect x="500" y="630" width="280" height="26" fill="#A87A48"/>
+        <path d="M520 650Q640 520 760 650Z" fill="#B8864F"/>
+        <rect x="548" y="720" width="14" height="40" fill="#241A2A"/>
+        <rect x="603" y="720" width="14" height="40" fill="#241A2A"/>
+        <rect x="658" y="720" width="14" height="40" fill="#241A2A"/>
+        <rect x="713" y="720" width="14" height="40" fill="#241A2A"/>
+        <rect x="603" y="810" width="14" height="40" fill="#F2C14E" class="win"/>
+        <rect x="713" y="810" width="14" height="40" fill="#F2C14E" class="win"/>
+      </g>
+      <path d="M0 860Q960 800 1920 860V1080H0Z" fill="#0B2A2C"/>
+      <g fill="#06201F">
+        <circle cx="60" cy="900" r="90"/><circle cx="260" cy="920" r="110"/>
+        <circle cx="1500" cy="910" r="120"/><circle cx="1760" cy="890" r="100"/>
+      </g>
+    </svg>
+
+    <!-- Astrónomo: turbante de plumas, túnica ocre con borde turquesa -->
+    <div class="actor" id="s2-astro" data-kind="astronomer"></div>
+
+    <!-- Glifos que el astrónomo dibuja en el aire (se trazan con stroke-dashoffset) -->
+    <svg class="bg" viewBox="0 0 1920 1080" aria-hidden="true" style="pointer-events:none">
+      <g fill="none" stroke="#F2C14E" stroke-width="7" stroke-linecap="round" filter="url(#glow)">
+        <path id="glyph-1" d="M1080 290C1040 260 1000 300 1030 340C1060 380 1110 340 1080 300C1060 275 1040 320 1000 330"/>
+        <path id="glyph-2" d="M1000 430C1040 420 1080 440 1100 470C1120 500 1080 520 1050 500"/>
+      </g>
+      <g id="s2-links" stroke="#2BB3A3" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="6 10" filter="url(#glow)"></g>
+      <g id="s2-symbols"></g>
+    </svg>
+
+    <div class="caption">
+      <p class="chapter">02 · LOS AVANCES</p>
+      <p class="text">Dominaban la astronomía, las matemáticas y la arquitectura.</p>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       ESCENA 3 (30–45 s) · LA CAÍDA
+       Fondo: atardecer apagado; la selva verde se desvanece, aparecen
+       árboles secos, tierra agrietada y polvo. El guerrero observa.
+       ========================================================== -->
+  <section class="scene" id="scene-3" data-delay="30">
+    <svg class="bg" data-layout-allow-overflow id="bg-3" viewBox="0 0 1920 1080" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#5B5550"/>
+          <stop offset=".6" stop-color="#9C8566"/>
+          <stop offset="1" stop-color="#C4A46E"/>
+        </linearGradient>
+      </defs>
+      <rect width="1920" height="1080" fill="url(#sky3)"/>
+      <circle cx="960" cy="330" r="70" fill="#D8B47A" opacity=".5"/>
+      <path d="M0 640Q300 560 700 620T1400 610T1920 640V1080H0Z" fill="#4C4236"/>
+      <!-- Ruinas: El Castillo envejecido y reducido -->
+      <use href="#castillo" transform="translate(560 170) scale(.82)" opacity=".75"/>
+      <!-- Selva viva (se desvanece) -->
+      <g id="lush3" fill="#1E4F3C">
+        <circle cx="60" cy="640" r="110"/><circle cx="250" cy="600" r="130"/>
+        <circle cx="520" cy="650" r="100"/><circle cx="1420" cy="640" r="120"/>
+        <circle cx="1700" cy="600" r="140"/><circle cx="1880" cy="660" r="100"/>
+        <circle cx="120" cy="820" r="90"/><circle cx="480" cy="840" r="80"/>
+        <circle cx="1800" cy="830" r="90"/>
+      </g>
+      <!-- Árboles secos (aparecen) -->
+      <g id="dead3" fill="none" stroke="#2A1F16" stroke-linecap="round">
+        <path d="M300 960L318 520M318 660L240 580M318 600L392 500M316 540L270 440" stroke-width="18"/>
+        <path d="M1640 960L1620 470M1620 620L1700 540M1622 560L1560 470M1621 500L1660 420" stroke-width="18"/>
+        <path d="M1850 960L1834 640M1834 740L1880 690" stroke-width="12"/>
+        <path d="M90 960L104 700M104 780L40 720" stroke-width="12"/>
+      </g>
+      <!-- Tierra agrietada por la sequía -->
+      <path d="M0 930H1920V1080H0Z" fill="#7A6247"/>
+      <path d="M200 960L240 1010L220 1080M700 940L740 990L700 1040L730 1080M1400 960L1450 1000L1420 1080"
+            stroke="#4A3828" stroke-width="4" fill="none"/>
+      <!-- Capa oscura que avanza con el tiempo -->
+      <rect id="darkness3" width="1920" height="1080" fill="#0A0806" opacity="0"/>
+      <!-- Polvo / ceniza cayendo -->
+      <g id="dust3" fill="#E8D7B0" opacity="0"></g>
+    </svg>
+
+    <!-- Guerrero: escudo y lanza decorada -->
+    <div class="actor" id="s3-warrior" data-kind="warrior"></div>
+
+    <div class="caption">
+      <p class="chapter">03 · LA CAÍDA</p>
+      <p class="text">La sequía y el colapso político causaron su declive.</p>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       ESCENA 4 (45–60 s) · EL LEGADO
+       Fondo: atardecer dorado, selva restaurada, símbolos que brillan.
+       Acción: los tres personajes se toman de las manos.
+       ========================================================== -->
+  <section class="scene" id="scene-4" data-delay="45">
+    <svg class="bg" data-layout-allow-overflow id="bg-4" viewBox="0 0 1920 1080" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FFE7A8"/>
+          <stop offset=".55" stop-color="#F7B06A"/>
+          <stop offset="1" stop-color="#E56E4E"/>
+        </linearGradient>
+      </defs>
+      <rect width="1920" height="1080" fill="url(#sky4)"/>
+      <circle cx="1500" cy="260" r="150" fill="#FFF3C4" opacity=".4"/>
+      <circle cx="1500" cy="260" r="90" fill="#FFF8DC"/>
+      <use href="#castillo" transform="translate(980 120) scale(.6)"/>
+      <path d="M0 640Q320 560 700 620T1400 610T1920 640V1080H0Z" fill="#2E8B57"/>
+      <g fill="#1F6B48">
+        <circle cx="80" cy="640" r="110"/><circle cx="300" cy="600" r="130"/>
+        <circle cx="560" cy="650" r="100"/><circle cx="1420" cy="630" r="120"/>
+        <circle cx="1720" cy="600" r="140"/><circle cx="1880" cy="660" r="100"/>
+      </g>
+      <g fill="#3FA46A">
+        <circle cx="120" cy="820" r="90"/><circle cx="480" cy="840" r="80"/>
+        <circle cx="1800" cy="830" r="90"/><circle cx="1280" cy="850" r="70"/>
+      </g>
+      <path d="M0 930Q960 870 1920 930V1080H0Z" fill="#3E8A4E"/>
+    </svg>
+
+    <!-- Símbolos brillantes (reciben pulso y giro en el render) -->
+    <svg class="bg" viewBox="0 0 1920 1080" aria-hidden="true" style="pointer-events:none">
+      <g id="s4-symbols"></g>
+    </svg>
+
+    <!-- Los tres personajes juntos -->
+    <div class="actor" id="s4-priest" data-kind="priest"></div>
+    <div class="actor" id="s4-astro" data-kind="astronomer"></div>
+    <div class="actor" id="s4-warrior" data-kind="warrior"></div>
+
+    <div class="caption">
+      <p class="chapter">04 · EL LEGADO</p>
+      <p class="text">Su legado perdura en la cultura mesoamericana.</p>
+    </div>
+  </section>
+
+  <!-- Fundido global a negro (inicio y final del loop) -->
+  <div id="fade"></div>
+</div>
+
+<!-- Controles: fuera del escenario -->
+<nav class="ctrl" id="ctrl" aria-label="Controles del video" hidden>
+  <button id="btn-play" type="button" aria-label="Pausar">❚❚ Pausa</button>
+  <button id="btn-music" type="button" aria-pressed="false">♪ Música</button>
+  <button id="btn-narr" type="button" aria-pressed="false">🗣 Narración</button>
+  <button id="btn-restart" type="button" aria-label="Reiniciar">↺ Reiniciar</button>
+</nav>
+
+<!-- GSAP (suavizado y timeline que HyperFrames controla). Si no hay red, el motor
+     usa un reloj de respaldo propio y el video funciona igual offline. -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+/* ============================================================
+   MOTOR DEL VIDEO
+   Un solo reloj (segundos, 0–60) calcula el estado de cada frame.
+   Esto hace el video determinista y permite que HyperFrames lo
+   renderice fotograma a fotograma mediante seek().
+   ============================================================ */
+(() => {
+  'use strict';
+
+  /* ---------- Constantes de tiempo ---------- */
+  const DURATION = 60;     // duración total del loop (s)
+  const SCENE = 15;        // duración de cada escena (s)
+  const FADE = 0.75;       // solapamiento entre escenas (s)
+  const TOP = 250;         // borde superior de los personajes (px del escenario)
+  const TEXT_START = 1.0;  // la palabra 1 aparece a 1 s dentro de la escena
+  const WORD_STEP = 0.42;  // intervalo entre palabras (s)
+
+  /* ---------- Utilidades ---------- */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const NS = 'http://www.w3.org/2000/svg';
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const prog = (t, start, dur) => clamp((t - start) / dur);   // 0→1 dentro de [start, start+dur]
+  const easeOut = p => 1 - Math.pow(1 - p, 3);
+  const easeIn = p => p * p * p;
+  const easeInOut = p => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+  const mod = (a, n) => ((a % n) + n) % n;
+
+  /* Generador pseudoaleatorio determinista (mismas estrellas y polvo en cada carga) */
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  /* ---------- Personajes (SVG inline, estilo anime con rasgos mayas) ---------- */
+  const SKIN = '#B9774A';
+  const HAIR = '#1B1212';
+  const CREAM = '#F4EFE3';
+
+  /* Rostro: ojos grandes tipo anime, pómulos altos, nariz pronunciada */
+  function face(serious) {
+    const eyeRy = serious ? 9 : 13;
+    const lidL = serious ? 'M114 111Q128 105 142 111' : 'M114 110Q128 96 142 110';
+    const lidR = serious ? 'M158 111Q172 105 186 111' : 'M158 110Q172 96 186 110';
+    const brow = serious ? ['M116 98Q128 92 140 98', 'M160 98Q172 92 184 98'] : ['M116 92Q128 84 140 90', 'M160 90Q172 84 184 92'];
+    const mouth = serious ? 'M142 166H158' : 'M140 165Q150 173 160 165';
+    return `
+      <ellipse cx="150" cy="116" rx="50" ry="58" fill="${SKIN}"/>
+      <ellipse cx="118" cy="142" rx="12" ry="8" fill="#E08A6A" opacity=".35"/>
+      <ellipse cx="182" cy="142" rx="12" ry="8" fill="#E08A6A" opacity=".35"/>
+      <path d="M150 124Q146 140 141 146Q148 150 156 147" fill="none" stroke="#7A4524" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="128" cy="118" rx="13" ry="${eyeRy}" fill="#FFF9EE"/>
+      <circle cx="129" cy="119" r="9" fill="#2A140B"/>
+      <circle cx="126" cy="115" r="3.2" fill="#fff"/>
+      <ellipse cx="172" cy="118" rx="13" ry="${eyeRy}" fill="#FFF9EE"/>
+      <circle cx="171" cy="119" r="9" fill="#2A140B"/>
+      <circle cx="174" cy="115" r="3.2" fill="#fff"/>
+      <path d="${lidL}" fill="none" stroke="#120A06" stroke-width="4" stroke-linecap="round"/>
+      <path d="${lidR}" fill="none" stroke="#120A06" stroke-width="4" stroke-linecap="round"/>
+      <path d="${brow[0]}" fill="none" stroke="${HAIR}" stroke-width="4" stroke-linecap="round"/>
+      <path d="${brow[1]}" fill="none" stroke="${HAIR}" stroke-width="4" stroke-linecap="round"/>
+      <path d="${mouth}" fill="none" stroke="#7A2E22" stroke-width="3" stroke-linecap="round"/>`;
+  }
+
+  /* Brazos: trazos gruesos que rotan desde el hombro (transform en el <g class="arm-*">) */
+  const arm = (cls, pivotX, color, handColor = SKIN) => `
+      <g class="${cls}" transform="rotate(0 ${pivotX} 205)">
+        <line x1="${pivotX}" y1="205" x2="${pivotX}" y2="335" stroke="${color}" stroke-width="40" stroke-linecap="round"/>
+        <circle cx="${pivotX}" cy="346" r="17" fill="${handColor}"/>
+      </g>`;
+
+  const FIGURES = {
+    /* Sacerdote: túnica blanca con glifos rojos, diadema dorada y collar de jade */
+    priest: () => `
+    <svg class="fig" viewBox="0 0 300 500" aria-hidden="true">
+      <path d="M92 118Q82 56 150 40Q218 56 208 118L222 270H78Z" fill="${HAIR}"/>
+      <path d="M106 190H194L236 500H64Z" fill="${CREAM}" stroke="#B9AE97" stroke-width="2"/>
+      <line x1="104" y1="236" x2="196" y2="236" stroke="#B03A2E" stroke-width="10" stroke-dasharray="10 7"/>
+      <rect x="64" y="468" width="172" height="22" fill="#B03A2E"/>
+      <line x1="64" y1="479" x2="236" y2="479" stroke="${CREAM}" stroke-width="5" stroke-dasharray="8 8"/>
+      <rect x="136" y="160" width="28" height="42" fill="#9E6238"/>
+      <path d="M116 196Q150 232 184 196" fill="none" stroke="#2BB3A3" stroke-width="8" stroke-dasharray="2 5" stroke-linecap="round"/>
+      ${face(false)}
+      <path d="M98 112Q96 52 150 46Q204 52 202 112Q196 78 150 74Q104 78 98 112Z" fill="${HAIR}"/>
+      <path d="M106 64L116 24L134 52L150 8L166 52L184 24L194 64Z" fill="#E8B33A" stroke="#7A4A12" stroke-width="2"/>
+      <circle cx="150" cy="22" r="6" fill="#2BB3A3"/>
+      ${arm('arm-l', 100, CREAM)}
+      ${arm('arm-r', 200, CREAM)}
+    </svg>`,
+
+    /* Astrónomo: turbante de plumas (turquesa, rojo, amarillo, verde), túnica ocre */
+    astronomer: () => `
+    <svg class="fig" viewBox="0 0 300 500" aria-hidden="true">
+      <path d="M96 110Q96 64 150 62Q204 64 204 110Z" fill="${HAIR}"/>
+      <path d="M106 190H194L236 500H64Z" fill="#C8842B" stroke="#8A5A1C" stroke-width="2"/>
+      <path d="M106 190H194L200 206H100Z" fill="#2BB3A3"/>
+      <line x1="150" y1="210" x2="150" y2="500" stroke="#2BB3A3" stroke-width="6" stroke-dasharray="14 10"/>
+      <circle cx="150" cy="270" r="14" fill="none" stroke="#F2C14E" stroke-width="3"/>
+      <circle cx="150" cy="270" r="4" fill="#F2C14E"/>
+      <rect x="136" y="160" width="28" height="42" fill="#9E6238"/>
+      ${face(false)}
+      <ellipse cx="150" cy="66" rx="62" ry="24" fill="#2BB3A3"/>
+      <path d="M92 70Q150 44 208 70" fill="none" stroke="#F2C14E" stroke-width="6"/>
+      <g fill="#C0392B"><ellipse cx="150" cy="12" rx="7" ry="44" transform="rotate(-40 150 62)"/><ellipse cx="150" cy="12" rx="7" ry="44" transform="rotate(20 150 62)"/></g>
+      <g fill="#F2C14E"><ellipse cx="150" cy="12" rx="7" ry="44" transform="rotate(-20 150 62)"/><ellipse cx="150" cy="12" rx="7" ry="44" transform="rotate(40 150 62)"/></g>
+      <ellipse cx="150" cy="12" rx="7" ry="44" fill="#2E8B57"/>
+      ${arm('arm-l', 100, '#C8842B')}
+      ${arm('arm-r', 200, '#C8842B')}
+    </svg>`,
+
+    /* Guerrero: casco de jaguar, túnica roja con borde dorado, escudo y lanza */
+    warrior: () => `
+    <svg class="fig" viewBox="0 0 300 500" aria-hidden="true">
+      <path d="M106 190H194L232 500H68Z" fill="#8E3B26" stroke="#5A2216" stroke-width="2"/>
+      <path d="M104 190H196L200 214H100Z" fill="#F2C14E"/>
+      <circle cx="150" cy="300" r="6" fill="#F2C14E"/>
+      <rect x="136" y="160" width="28" height="42" fill="#9E6238"/>
+      ${face(true)}
+      <path d="M96 112Q92 46 150 40Q208 46 204 112Q200 70 150 66Q100 70 96 112Z" fill="#B5732E"/>
+      <circle cx="102" cy="50" r="16" fill="#B5732E"/><circle cx="198" cy="50" r="16" fill="#B5732E"/>
+      <circle cx="102" cy="50" r="7" fill="#3A220F"/><circle cx="198" cy="50" r="7" fill="#3A220F"/>
+      <g fill="#3A220F"><circle cx="118" cy="60" r="3.5"/><circle cx="182" cy="60" r="3.5"/><circle cx="150" cy="46" r="3.5"/><circle cx="132" cy="48" r="3"/><circle cx="168" cy="48" r="3"/></g>
+      ${arm('arm-l', 100, '#8E3B26')}
+      ${arm('arm-r', 200, '#8E3B26')}
+      <g class="shield">
+        <circle cx="54" cy="330" r="50" fill="#B5532D" stroke="#F2C14E" stroke-width="8"/>
+        <circle cx="54" cy="330" r="24" fill="#F2C14E"/>
+        <circle cx="54" cy="330" r="10" fill="#A8432A"/>
+      </g>
+      <line x1="206" y1="440" x2="206" y2="-40" stroke="#6B4A2A" stroke-width="8" stroke-linecap="round"/>
+      <polygon points="206,-70 218,-30 194,-30" fill="#F2C14E" stroke="#7A4A12" stroke-width="2"/>
+    </svg>`,
+  };
+
+  /* Inserta el SVG de cada personaje en su caja */
+  $$('.actor').forEach(el => { el.innerHTML = FIGURES[el.dataset.kind](); });
+
+  /* Coloca un personaje: centro horizontal cx, escala s (0–1), desplazamiento vertical dy */
+  function placeActor(el, cx, s, dy = 0) {
+    el.style.transform = `translate(${(cx - 240).toFixed(1)}px, ${(TOP + dy).toFixed(1)}px) scale(${s.toFixed(4)})`;
+    el.style.visibility = s < 0.001 ? 'hidden' : 'visible';
+  }
+  /* Rota un brazo alrededor de su hombro (grados) */
+  function rotateArm(el, cls, deg, pivotX) {
+    const g = el.querySelector('.' + cls);
+    if (g) g.setAttribute('transform', `rotate(${deg.toFixed(2)} ${pivotX} 205)`);
+  }
+
+  /* Ken Burns: zoom suave 1.1× → 1.3× a lo largo de la escena */
+  function kenBurns(svg, lt) {
+    svg.style.transform = `scale(${(1.1 + 0.2 * clamp(lt / SCENE)).toFixed(4)})`;
+  }
+
+  /* ---------- Subtítulos palabra por palabra ---------- */
+  function splitWords(scene) {
+    const p = $('.text', scene);
+    const words = p.textContent.trim().split(/\s+/);
+    p.textContent = '';
+    return words.map((w, i) => {
+      const span = document.createElement('span');
+      span.className = 'w';
+      span.textContent = w;
+      span.style.opacity = '0';
+      p.append(span, ' ');
+      return { el: span, t: TEXT_START + i * WORD_STEP };
+    });
+  }
+  function updateWords(words, lt) {
+    for (const w of words) {
+      const p = prog(lt, w.t, 0.35);
+      w.el.style.opacity = p.toFixed(3);
+      w.el.style.transform = `translateY(${((1 - p) * 16).toFixed(2)}px)`;
+    }
+  }
+
+  /* ---------- Referencias de escena ---------- */
+  const scenes = [1, 2, 3, 4].map(n => {
+    const el = $(`#scene-${n}`);
+    return { el, caption: $('.caption', el), words: splitWords(el) };
+  });
+  const TEXTS = scenes.map(s => s.words.map(w => w.el.textContent).join(' '));
+
+  /* ---------- Escena 2: estrellas, símbolos y conexiones ---------- */
+  const starsGroup = $('#stars2');
+  const stars = Array.from({ length: 170 }, () => {
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', (rnd() * 1920).toFixed(1));
+    c.setAttribute('cy', (rnd() * 640).toFixed(1));
+    c.setAttribute('r', (0.8 + rnd() * 2.2).toFixed(2));
+    c.setAttribute('fill', '#FFF8E0');
+    starsGroup.appendChild(c);
+    return { el: c, p: rnd() * Math.PI * 2 };
+  });
+
+  /* Símbolos flotantes: referencia, posición, momento de aparición, escala y rotación inicial */
+  const S2_SYMBOLS = [
+    { ref: 'sym-wheel', x: 640, y: 300, t: 2.0, s: 1.0, rot: -90 },
+    { ref: 'sym-tzolkin', x: 820, y: 170, t: 3.1, s: 0.9, rot: 90 },
+    { ref: 'sym-dots13', x: 1060, y: 500, t: 4.2, s: 0.9, rot: -60 },
+    { ref: 'sym-shell', x: 420, y: 580, t: 5.3, s: 0.9, rot: 60 },
+    { ref: 'sym-sun', x: 1600, y: 190, t: 7.0, s: 1.0, rot: -120 },
+  ];
+  /* Líneas que conectan símbolos: [x1, y1, x2, y2, inicio] */
+  const S2_LINKS = [
+    [640, 300, 820, 170, 8.4],
+    [640, 300, 1060, 500, 8.9],
+    [1060, 500, 420, 580, 9.4],
+  ];
+  const s2SymbolsGroup = $('#s2-symbols');
+  const s2Symbols = S2_SYMBOLS.map(cfg => {
+    const u = document.createElementNS(NS, 'use');
+    u.setAttribute('href', '#' + cfg.ref);
+    u.setAttribute('filter', 'url(#glow)');
+    s2SymbolsGroup.appendChild(u);
+    return { el: u, cfg };
+  });
+  const s2LinksGroup = $('#s2-links');
+  const s2Links = S2_LINKS.map(([x1, y1, x2, y2, t]) => {
+    const l = document.createElementNS(NS, 'line');
+    const len = Math.hypot(x2 - x1, y2 - y1);
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke-dasharray', len.toFixed(1));
+    s2LinksGroup.appendChild(l);
+    return { el: l, len, t };
+  });
+  /* Glifos dibujados por el astrónomo. Longitudes fijas (medidas en Chromium) para
+     no medir el DOM: el render debe dar lo mismo en cualquier orden de seek. */
+  const glyphs = [['#glyph-1', 315.7], ['#glyph-2', 200.0]].map(([sel, len]) => {
+    const el = $(sel);
+    el.style.strokeDasharray = len;
+    return { el, len };
+  });
+  const winLights = $$('.win');
+
+  /* ---------- Escena 3: polvo que cae ---------- */
+  const dustGroup = $('#dust3');
+  const dust = Array.from({ length: 40 }, () => {
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('r', (2 + rnd() * 4).toFixed(1));
+    dustGroup.appendChild(c);
+    return { el: c, x: rnd() * 1920, y0: rnd() * 1080, v: 30 + rnd() * 40, p: rnd() * 6 };
+  });
+
+  /* ---------- Escena 4: símbolos que brillan ---------- */
+  const S4_SYMBOLS = [
+    { ref: 'sym-sun', x: 960, y: 120, s: 0.9, phase: 0 },
+    { ref: 'sym-tzolkin', x: 250, y: 180, s: 1.1, phase: 1 },
+    { ref: 'sym-wheel', x: 1230, y: 150, s: 0.95, phase: 2 },
+    { ref: 'sym-dots13', x: 1780, y: 620, s: 0.8, phase: 3 },
+    { ref: 'sym-shell', x: 140, y: 640, s: 0.8, phase: 4 },
+  ];
+  const s4SymbolsGroup = $('#s4-symbols');
+  const s4Symbols = S4_SYMBOLS.map(cfg => {
+    const u = document.createElementNS(NS, 'use');
+    u.setAttribute('href', '#' + cfg.ref);
+    u.setAttribute('filter', 'url(#glow)');
+    s4SymbolsGroup.appendChild(u);
+    return { el: u, cfg };
+  });
+
+  /* Coloca un símbolo: traslación, rotación y escala (con transform attribute) */
+  function placeSymbol(node, x, y, rot, s) {
+    node.setAttribute('transform', `translate(${x} ${y}) rotate(${rot.toFixed(2)}) scale(${s.toFixed(3)})`);
+  }
+
+  /* ---------- Refs de personajes por escena ---------- */
+  const priest1 = $('#s1-priest');
+  const astro2 = $('#s2-astro');
+  const warrior3 = $('#s3-warrior');
+  const priest4 = $('#s4-priest');
+  const astro4 = $('#s4-astro');
+  const warrior4 = $('#s4-warrior');
+
+  /* ============================================================
+     ESCENAS: cada función recibe lt (segundos dentro de la escena)
+     ============================================================ */
+
+  /* ESCENA 1 (0–15 s): el sacerdote entra caminando y señala el cielo */
+  function drawScene1(lt) {
+    kenBurns($('#bg-1'), lt);
+    // Entrada: desliza desde la derecha (2.2 s) mientras aparece con scale 0→1 ease-out (0.6 s)
+    const slide = easeOut(prog(lt, 0.2, 2.2));
+    const pop = easeOut(prog(lt, 0.2, 0.6));
+    // Salida: scale 1→0 ease-in (0.4 s) al final de la escena
+    const out = 1 - easeIn(prog(lt, 14.6, 0.4));
+    // Caminar (rebote) mientras entra; respiración suave después
+    const walk = lt < 2.4 ? Math.abs(Math.sin(lt * 7)) * 8 : 0;
+    const breath = Math.sin(lt * 2) * 2;
+    placeActor(priest1, 1450 - 270 * slide, pop * out, -walk + breath);
+    // Brazo derecho al cielo (hacia arriba y a la derecha, sin cruzar la cara)
+    const raise = easeOut(prog(lt, 6, 1.5)) * (1 - easeInOut(prog(lt, 11.5, 1)));
+    rotateArm(priest1, 'arm-r', -150 * raise, 200);
+    updateWords(scenes[0].words, lt);
+  }
+
+  /* ESCENA 2 (15–30 s): el astrónomo dibuja glifos y los símbolos se conectan */
+  function drawScene2(lt, t) {
+    kenBurns($('#bg-2'), lt);
+    // Estrellas que parpadean
+    for (const st of stars) {
+      st.el.setAttribute('opacity', (0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 2 + st.p))).toFixed(2));
+    }
+    // Ventanas del observatorio que pulsan
+    for (const w of winLights) w.style.opacity = (0.6 + 0.4 * Math.sin(lt * 5)).toFixed(2);
+
+    // Astrónomo: entra desde la derecha; el brazo izquierdo se levanta para dibujar en el aire
+    const slide = easeOut(prog(lt, 0.2, 1.8));
+    const pop = easeOut(prog(lt, 0.2, 0.6));
+    const out = 1 - easeIn(prog(lt, 14.6, 0.4));
+    placeActor(astro2, 1420 - 70 * slide, pop * out, Math.sin(lt * 1.5) * 3);
+    const draw = easeOut(prog(lt, 2.2, 1.2)) * (1 - easeInOut(prog(lt, 10.5, 1)));
+    rotateArm(astro2, 'arm-l', 143 * draw, 100);
+
+    // Glifos: se trazan uno tras otro y se desvanecen
+    glyphs.forEach((g, i) => {
+      const start = i === 0 ? 3.6 : 6.0;
+      const p = easeInOut(prog(lt, start, 2.2));
+      g.el.style.strokeDashoffset = (g.len * (1 - p)).toFixed(1);
+      g.el.style.opacity = (1 - prog(lt, 10.6, 1.4)).toFixed(3);
+    });
+
+    // Símbolos: aparecen con rotación + escala + brillo (glow)
+    for (const s of s2Symbols) {
+      const p = easeOut(prog(lt, s.cfg.t, 0.9));
+      placeSymbol(s.el, s.cfg.x, s.cfg.y, s.cfg.rot * (1 - p), Math.max(0.001, p) * s.cfg.s);
+      s.el.style.opacity = prog(lt, s.cfg.t, 0.35).toFixed(3);
+    }
+    // Conexiones entre símbolos: trazo que se dibuja
+    for (const l of s2Links) {
+      const p = easeInOut(prog(lt, l.t, 1.2));
+      l.el.style.strokeDashoffset = (l.len * (1 - p)).toFixed(1);
+      l.el.style.opacity = p > 0 ? 1 : 0;
+    }
+    updateWords(scenes[1].words, lt);
+  }
+
+  /* ESCENA 3 (30–45 s): la selva se apaga, el guerrero observa */
+  function drawScene3(lt, t) {
+    kenBurns($('#bg-3'), lt);
+    // Árboles verdes se desvanecen; aparecen los secos
+    $('#lush3').style.opacity = (1 - easeInOut(prog(lt, 2, 6))).toFixed(3);
+    $('#dead3').style.opacity = easeInOut(prog(lt, 3, 6)).toFixed(3);
+    // Colores que se oscurecen
+    $('#darkness3').setAttribute('opacity', (0.6 * prog(lt, 0, 8)).toFixed(3));
+    // Polvo cayendo
+    dustGroup.style.opacity = prog(lt, 3, 3).toFixed(3);
+    for (const d of dust) {
+      d.el.setAttribute('cx', (d.x + Math.sin(lt + d.p) * 20).toFixed(1));
+      d.el.setAttribute('cy', mod(d.y0 + lt * d.v, 1080).toFixed(1));
+    }
+    // Guerrero: entra y respira mientras observa
+    const pop = easeOut(prog(lt, 0.2, 0.6));
+    const out = 1 - easeIn(prog(lt, 14.6, 0.4));
+    placeActor(warrior3, 1380, pop * out, Math.sin(lt * 1.6) * 5);
+    updateWords(scenes[2].words, lt);
+  }
+
+  /* ESCENA 4 (45–60 s): el legado; los tres personajes se toman de las manos */
+  function drawScene4(lt, t) {
+    kenBurns($('#bg-4'), lt);
+    // Símbolos que brillan: pulso de escala y giro lento del calendario
+    for (const s of s4Symbols) {
+      const pulse = 1 + 0.06 * Math.sin(lt * 2 + s.cfg.phase);
+      const spin = s.cfg.ref === 'sym-wheel' ? lt * 12 : 0;
+      placeSymbol(s.el, s.cfg.x, s.cfg.y, spin, s.cfg.s * pulse);
+    }
+    // Entrada escalonada de los tres personajes (0.3 s, 0.6 s, 0.9 s)
+    const enter = (start) => easeOut(prog(lt, start, 0.6));
+    placeActor(priest4, 520, enter(0.3), Math.sin(lt * 1.4) * 3);
+    placeActor(astro4, 940, enter(0.6), Math.sin(lt * 1.4 + 1) * 3);
+    placeActor(warrior4, 1360, enter(0.9), Math.sin(lt * 1.4 + 2) * 3);
+    // Manos juntas: sacerdote (der.) ↔ astrónomo (izq.) y astrónomo (der.) ↔ guerrero (izq.)
+    const reach = easeOut(prog(lt, 1.0, 1.2));
+    rotateArm(priest4, 'arm-r', -42 * reach, 200);
+    rotateArm(astro4, 'arm-l', 42 * reach, 100);
+    rotateArm(astro4, 'arm-r', -42 * reach, 200);
+    rotateArm(warrior4, 'arm-l', 42 * reach, 100);
+    updateWords(scenes[3].words, lt);
+  }
+
+  const DRAW = [drawScene1, drawScene2, drawScene3, drawScene4];
+
+  /* ============================================================
+     RENDER: estado del video para un tiempo t (0–60 s)
+     ============================================================ */
+  const sectionEls = scenes.map(s => s.el);
+  const fadeEl = $('#fade');
+  let lastIdx = -1;
+
+  function render(t) {
+    // Fundido a negro al inicio (0–0.75 s) y al final (58.5–60 s) para un loop continuo
+    let black = t < FADE ? 1 - t / FADE : 0;
+    if (t > DURATION - 1.5) black = Math.max(black, (t - (DURATION - 1.5)) / 1.5);
+    fadeEl.style.opacity = black.toFixed(3);
+
+    for (let k = 0; k < 4; k++) {
+      const start = k * SCENE;
+      const lt = t - start;
+      // Crossfade de 0.75 s centrado en cada frontera (solapamiento entre escenas)
+      const fadeIn = k === 0 ? 1 : clamp((t - start + FADE / 2) / FADE);
+      const fadeOut = k === 3 ? 1 : clamp((start + SCENE + FADE / 2 - t) / FADE);
+      const op = Math.min(fadeIn, fadeOut);
+      sectionEls[k].style.opacity = op.toFixed(3);
+      if (op > 0) {
+        const l = clamp(lt, 0, SCENE);
+        DRAW[k](l, t);
+        // Subtítulo: entra tras el crossfade y sale antes del siguiente, sin superponerse
+        scenes[k].caption.style.opacity = (prog(l, 0.4, 0.5) * (1 - prog(l, 14.1, 0.4))).toFixed(3);
+      }
+    }
+
+    // Narración: al entrar en una escena nueva
+    const idx = Math.floor(t / SCENE);
+    if (idx !== lastIdx) {
+      lastIdx = idx;
+      if (playing) speak(TEXTS[idx]);
+    }
+  }
+
+  /* ============================================================
+     RELOJ: timeline pausado de 60 s que interpola "clock" 0→60 y llama
+     a render() en cada actualización. HyperFrames lo controla con seek();
+     en el navegador se reproduce solo y en bucle.
+     ============================================================ */
+  const proxy = { clock: 0 };
+  let playing = false;
+
+  /* Timeline principal con GSAP */
+  function gsapTimeline() {
+    const timeline = gsap.timeline({ paused: true });
+    timeline.to(proxy, {
+      clock: DURATION,
+      duration: DURATION,
+      ease: 'none',
+      onUpdate: () => render(mod(proxy.clock, DURATION)),
+    }, 0);
+    return timeline;
+  }
+
+  /* Respaldo offline (sin CDN): misma interfaz mínima que usa este archivo.
+     Avanza con el reloj del documento (document.timeline) a ~60 fps. */
+  function offlineTimeline() {
+    let running = false;
+    let last = 0;
+    let onComplete = null;
+    const api = {
+      duration: () => DURATION,
+      time: () => proxy.clock,
+      paused: () => !running,
+      play() { running = true; last = document.timeline.currentTime; return api; },
+      pause() { running = false; return api; },
+      seek(t) { proxy.clock = clamp(t, 0, DURATION); render(mod(proxy.clock, DURATION)); return api; },
+      restart() { api.seek(0); return api.play(); },
+      eventCallback(name, fn) { if (name === 'onComplete') onComplete = fn; return api; },
+    };
+    setInterval(() => {
+      if (!running) return;
+      const now = document.timeline.currentTime;
+      proxy.clock = Math.min(DURATION, proxy.clock + (now - last) / 1000);
+      last = now;
+      render(mod(proxy.clock, DURATION));
+      if (proxy.clock >= DURATION) { running = false; if (onComplete) onComplete(); }
+    }, 1000 / 60);
+    return api;
+  }
+
+  const tl = window.gsap ? gsapTimeline() : offlineTimeline();
+  const clockNow = () => mod(proxy.clock, DURATION);
+
+  /* ============================================================
+     AUDIO OPCIONAL (sin archivos, sin red)
+     - Música: pad sintetizado + melodía pentatónica (Web Audio)
+     - Narración: voz del navegador (speechSynthesis) en español
+     ============================================================ */
+  const audio = { ctx: null, master: null, timer: null, on: false };
+
+  function ensureAudio() {
+    if (audio.ctx) return true;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    try {
+      const ctx = new AC();
+      const master = ctx.createGain();
+      master.gain.value = 0;
+      master.connect(ctx.destination);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 900;
+      filter.connect(master);
+      // Pad: dos triángulos y un seno ligeramente desafinados
+      [[73.42, 'triangle'], [110.0, 'triangle'], [146.83, 'sine']].forEach(([f, type], i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = type;
+        o.frequency.value = f;
+        o.detune.value = (i - 1) * 6;
+        g.gain.value = 0.5 / (i + 1);
+        o.connect(g).connect(filter);
+        o.start();
+      });
+      Object.assign(audio, { ctx, master });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /* Nota de "flauta" (seno con ataque y caída suaves) */
+  function playNote(freq) {
+    const { ctx, master } = audio;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.4);
+    o.connect(g).connect(master);
+    o.start();
+    o.stop(ctx.currentTime + 1.5);
+  }
+
+  const SCALE = [293.66, 349.23, 392.0, 440.0, 523.25, 587.33]; // re, fa, sol, la, do, re
+  let melodyIdx = 2;
+
+  function setMusic(on) {
+    audio.on = on;
+    btnMusic.setAttribute('aria-pressed', String(on));
+    if (on) {
+      if (!ensureAudio()) { audio.on = false; btnMusic.setAttribute('aria-pressed', 'false'); return; }
+      audio.ctx.resume();
+      audio.master.gain.cancelScheduledValues(audio.ctx.currentTime);
+      audio.master.gain.linearRampToValueAtTime(0.18, audio.ctx.currentTime + 1.5);
+      audio.timer = setInterval(() => {
+        if (!playing || !audio.ctx) return;
+        melodyIdx = clamp(melodyIdx + (rnd() < 0.5 ? -1 : 1), 0, SCALE.length - 1);
+        playNote(SCALE[melodyIdx]);
+      }, 1200);
+    } else if (audio.ctx) {
+      audio.master.gain.cancelScheduledValues(audio.ctx.currentTime);
+      audio.master.gain.linearRampToValueAtTime(0, audio.ctx.currentTime + 0.4);
+      clearInterval(audio.timer);
+    }
+  }
+
+  let narrOn = false;
+  function speak(text) {
+    if (!narrOn || !('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'es-MX';
+    u.rate = 0.95;
+    u.pitch = 1.05;
+    const voice = speechSynthesis.getVoices().find(v => /^es/i.test(v.lang));
+    if (voice) u.voice = voice;
+    speechSynthesis.speak(u);
+  }
+  function setNarr(on) {
+    narrOn = on;
+    btnNarr.setAttribute('aria-pressed', String(on));
+    if (on && playing) speak(TEXTS[Math.floor(clockNow() / SCENE)]);
+    if (!on && 'speechSynthesis' in window) speechSynthesis.cancel();
+  }
+
+  /* ============================================================
+     CONTROLES Y AJUSTE DE TAMAÑO
+     ============================================================ */
+  const root = $('#root');
+  const btnPlay = $('#btn-play');
+  const btnMusic = $('#btn-music');
+  const btnNarr = $('#btn-narr');
+  const ctrl = $('#ctrl');
+
+  /* Escala el escenario 1920×1080 para que quepa en cualquier pantalla */
+  function fit() {
+    const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    root.style.setProperty('--s', s.toFixed(4));
+  }
+
+  /* Reproduce o pausa el timeline (solo en modo navegador) */
+  function setPlaying(v) {
+    playing = v;
+    v ? tl.play() : tl.pause();
+    btnPlay.textContent = v ? '❚❚ Pausa' : '▶ Reproducir';
+    btnPlay.setAttribute('aria-label', v ? 'Pausar' : 'Reproducir');
+    if (audio.ctx) (v ? audio.ctx.resume() : audio.ctx.suspend());
+    if ('speechSynthesis' in window) (v ? speechSynthesis.resume() : speechSynthesis.pause());
+  }
+
+  btnPlay.addEventListener('click', () => setPlaying(!playing));
+  btnMusic.addEventListener('click', () => setMusic(!audio.on));
+  btnNarr.addEventListener('click', () => setNarr(!narrOn));
+  $('#btn-restart').addEventListener('click', () => {
+    if ('speechSynthesis' in window) speechSynthesis.cancel();
+    lastIdx = -1;
+    tl.seek(0);
+    setPlaying(true);
+  });
+  window.addEventListener('keydown', e => {
+    if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); setPlaying(!playing); }
+  });
+
+  /* Los controles se ocultan tras 2.5 s sin movimiento del puntero */
+  let idleTimer = null;
+  function wake() {
+    ctrl.classList.remove('idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => ctrl.classList.add('idle'), 2500);
+  }
+  window.addEventListener('pointermove', wake);
+  window.addEventListener('pointerdown', wake);
+  window.addEventListener('resize', fit);
+
+  /* ============================================================
+     REGISTRO PARA HYPERFRAMES: el runtime toma el timeline pausado y lo controla con seek()
+     ============================================================ */
+  window.__timelines = window.__timelines || {};
+  window.__timelines.root = tl;
+
+  /* ============================================================
+     ARRANQUE
+     - Dentro de HyperFrames (window.__hf) el runtime manda: no se autoreproduce.
+     - En un navegador normal: autoplay en bucle continuo.
+       (El audio necesita un clic del usuario por política de los navegadores.)
+     ============================================================ */
+  fit();
+  render(0);
+  window.addEventListener('load', () => {
+    if (window.__hf) return;          // render/preview: sin controles ni autoplay
+    ctrl.hidden = false;
+    tl.eventCallback('onComplete', () => { lastIdx = -1; tl.restart(); });
+    setPlaying(true);
+    wake();
+  });
+})();
+</script>
+</body>
+</html>
